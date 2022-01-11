@@ -1,5 +1,23 @@
 ### Efficiency
 In C++ string concatenation use append() instead of += or push_back()
-push_back() only append chars
-+= append strings but create new object each time it concatenates
-append() can take arg to append a substr of other string
+-> push_back() only append chars
+-> += append strings but create new object each time it concatenates
+-> append() can take arg to append a substr of other string
+
+
+### Difference in map and unordered_map C++ (Ref: GFG)
+
+                  | map             | unordered_map
+---------------------------------------------------------
+Ordering        | increasing  order   | no ordering
+                | (by default)        |
+
+Implementation  | Self balancing BST  | Hash Table
+                | like Red-Black Tree |  
+
+search time     | log(n)              | O(1) -> Average 
+                |                     | O(n) -> Worst Case
+
+Insertion time  | log(n) + Rebalance  | Same as search
+                      
+Deletion time   | log(n) + Rebalance  | Same as search
