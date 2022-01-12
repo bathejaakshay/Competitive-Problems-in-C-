@@ -21,3 +21,25 @@ search time     | log(n)              | O(1) -> Average
 Insertion time  | log(n) + Rebalance  | Same as search
                       
 Deletion time   | log(n) + Rebalance  | Same as search
+#####################################################################################################################################################################################################
+
+## Stacks and queues 
+
+Beautiful problem:
+
+link : https://www.interviewbit.com/old/problems/sliding-window-maximum/
+Explanation link : https://www.youtube.com/watch?v=39grPZtywyQ
+
+Prob : Given an array of integers A. There is a sliding window of size B which
+is moving from the very left of the array to the very right.
+You can only see the w numbers in the window. Each time the sliding window moves
+rightwards by one position. You have to find the maximum for each window.
+The following example will give you more clarity.
+
+Hint : Brute force o(n2) , max heap O(nlogn), deque O(n)
+deque: intuition is to maintain the max of window at front 
+push_back each "index" one by one. Before each insertion check: 
+1-> delete those indices at front which are invalid i.e which are out of window 
+2-> delete those indicies front back in deque which are invalid i.e whose value is lesser than the value at current index. (because till current pointer the possible max values is what we are retaining)
+
+################################################################################################################################################################################################################
