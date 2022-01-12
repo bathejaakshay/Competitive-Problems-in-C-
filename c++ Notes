@@ -43,3 +43,11 @@ push_back each "index" one by one. Before each insertion check:
 2-> delete those indicies front back in deque which are invalid i.e whose value is lesser than the value at current index. (because till current pointer the possible max values is what we are retaining)
 
 ################################################################################################################################################################################################################
+Long Long Trick
+
+Whenever multiplying int and saving it in long long , multiply the int values along with 1LL.
+Then, in the final ans u can take modulo 10^9 + 7
+e.g
+long long res;
+res = A[i]*A[j]*1LL; // A is a vector of int
+result%1000000007;
