@@ -51,3 +51,28 @@ e.g
 long long res;
 res = A[i]*A[j]*1LL; // A is a vector of int
 result%1000000007;
+
+########################################################################################################################################################################
+
+Conversion int to str and vice versa using sstream
+
+Very simple 
+
+int s_to_i(string s){
+    stringstream ss(s);
+    int i=0;
+    ss>>i;
+    return i;
+    //could ve used stoi() function
+}
+
+string i_to_s(int i){
+    ostringstream ss;
+    ss<<i;
+    return ss.str();
+    // couldve use to_string() function
+    
+}
+
+##############################################################################################################################################################################
+
