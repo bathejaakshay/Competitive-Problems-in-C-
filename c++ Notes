@@ -76,3 +76,24 @@ string i_to_s(int i){
 
 ##############################################################################################################################################################################
 
+Hashing Tricky ques: Longest Subarray length
+Given an integer array A of size N containing 0's and 1's only. 
+
+You need to find the length of the longest subarray having count of 1’s one more than count of 0’s.
+
+Q: https://www.interviewbit.com/problems/longest-subarray-length/
+
+
+CRUX : Replace 0 by -1 to maintain the difference between the counts in 0 and 1 in hash
+
+Now sum = sum+A[i]
+if(hash.find(sum)!=hash.end()) hash[sum] = i
+if sum == 1 then max_len = i + 1
+
+if (hash.find(sum-1)!=hash.end()) then max_len = max_len < i - hash[sum-1] ? i-hash[sum-1] : max_len
+// This means, If we remove length of indices whose sum is sum-1 from the length of indicies whose sum is s then we remain with the length of the subarray whose sum is 1
+
+
+
+###############################################################################################################################################################################
+
