@@ -97,3 +97,59 @@ if (hash.find(sum-1)!=hash.end()) then max_len = max_len < i - hash[sum-1] ? i-h
 
 ###############################################################################################################################################################################
 
+Binary Trees Recurrsion Technique:
+
+Instead of keep remembering if the child is the left child of root or right by passing flag in the function. 
+we can directly return the address of the child to left or right of the root respt. through recurrsion.
+
+e.g Merge Two Binary Trees. : https://www.interviewbit.com/old/problems/merge-two-binary-tree/
+
+Noob approach:
+===============
+
+void merge(TreeNode* A, TreeNode* B, TreeNode *prev,int l){
+    if(A==NULL && B==NULL){
+        return;
+    }
+    if(A!=NULL && B!=NULL){
+        A->val = A->val + B->val;
+        merge(A->left,B->left, A,1);
+        merge(A->right,B->right,A,2);
+        return;
+    }
+    else if(A==NULL && B!=NULL){
+        if(l==1){
+            prev->left = B;
+        }
+        else if(l==2){
+            prev->right = B;
+        }
+        return;
+    }
+    else if(A!=NULL && B==NULL){
+        return;
+    }
+    return;
+}
+TreeNode* Solution::solve(TreeNode* A, TreeNode* B) {
+    if(A==NULL && B!=NULL) return B;
+    if(B==NULL && A==NULL) return A;
+    merge(A,B, NULL, 0);
+    return A;
+}
+
+
+NINJA approach:
+===============
+
+TreeNode* Solution::solve(TreeNode* A, TreeNode* B) {
+    if(A==NULL){
+        return B;
+    }else if(B==NULL){
+        return A;
+    }A->val=A->val+B->val;
+    A->left=solve(A->left,B->left);   // Instead of passing flag as arg to remember the left and right of root, we can simply return the address of the nodes
+    A->right=solve(A->right,B->right);
+    return A;
+}
+
