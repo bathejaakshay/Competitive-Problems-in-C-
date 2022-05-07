@@ -153,3 +153,24 @@ TreeNode* Solution::solve(TreeNode* A, TreeNode* B) {
     return A;
 }
 
+
+####################################################################################################################################################################
+
+V.Imp Tree traversal trick
+
+Q. Return post-order traversal without recurrsion
+preorder traversal without recurrsion is very easy but postorder is hard
+So we convert postorder into modified preorder and the reverse it to get an ans
+e.d for the tree
+       2
+      1 3
+     4   6
+    Preorder = 2 1 4 3 6 (root left right)
+    Postorder  = 4 1 6 3 2 (left right root)
+    modified preorder = 2 3 6 1 4 (root right left)
+    postorder = reverse(mod preorder)
+
+link: https://www.interviewbit.com/old/problems/postorder-traversal/
+
+
+
