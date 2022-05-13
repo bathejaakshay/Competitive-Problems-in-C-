@@ -1,4 +1,5 @@
 #### 1. Convert Binary Tree into Doubly linked list (using inorder Traversal). Without any extra space and using the same pointers i.e left as previous and right as next.
+[Link to the gfg lecture](https://practice.geeksforgeeks.org/tracks/DSASP-Tree/?batchId=154&tab=1)
 
 Main Idea:
 1. Keep a global Prev pointer
