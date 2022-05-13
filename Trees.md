@@ -26,7 +26,7 @@ TreeNode * convert(TreeNode *A){
   prev = A;
   
   # Do same work for right
-  convert(A->right);
+  convert(A->right);  /* Also remember that in C++ even if you dont catch the returned object it still works fine*/
   return head;
   
 }
