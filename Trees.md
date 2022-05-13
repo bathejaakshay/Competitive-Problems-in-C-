@@ -20,7 +20,7 @@ TreeNode * convert(TreeNode *A){
   
   else{
         A->left = prev;
-        prev.right = A;
+        prev->right = A;
       }
   
   prev = A;
