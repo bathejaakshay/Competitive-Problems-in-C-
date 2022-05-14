@@ -3,7 +3,7 @@
 
 ![Image](https://assets.leetcode.com/uploads/2018/10/22/rainwatertrap.png)
 
-Height: [0,1,0,2,1,0,1,3,2,1,2,1]
+**height: [0,1,0,2,1,0,1,3,2,1,2,1]**
 
 **Main Idea**: 
 1. We need to remember for each index in the array how much water can be stored. 
