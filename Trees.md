@@ -47,6 +47,7 @@ indexpre=0;
 
 TreeNode* constructBT(vector<int> &in, vector<int> &pre, int i, int j){
   
+  if(i>j) return NULL /*sReached the end*/
   //root of the current array is pre[indexpre]
   int val = pre[indexpre++]
   int ind;
