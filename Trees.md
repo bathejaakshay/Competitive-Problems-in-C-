@@ -60,6 +60,13 @@ TreeNode* constructBT(vector<int> &in, vector<int> &pre, int i, int j){
   } 
   
   TreeNode *ptr = new TreeNode(val);
+  
+  /* Just one change in case of constructing Tree using inorder and postorder:
+     In case of post order we construct ptr->right first and then ptr->left. cuz postorder is
+     Left-Right-Root, hence we will always get the root of rightsubtree first at the last position of 
+     postorder array.
+  
+  */
   ptr->left = constructBT(in,pre,i,ind-1);
   ptr->right = constructBT(in,pre,ind+1, j);
   
