@@ -36,7 +36,7 @@ TreeNode * convert(TreeNode *A){
 ---
 
 
-#### 2. Construct a Binary Tree using Inorder and Preorder Traversal.
+#### 2. Construct a Binary Tree using Inorder and Preorder Traversal. \ [Inorder Traversal of Cartesian Tree](Inorder Traversal of Cartesian Tree)
 **Main Idea:**  
 1. We will use Preorder to get the root of the current inorder array.
 2. Then we find the root in the inorder array.
@@ -68,4 +68,4 @@ main(vector<int> in, vector<int> pre){
   TreeNode *head  = constructBT(in,pre, 0,in.size()-1);
   }
 ```
-
+---
