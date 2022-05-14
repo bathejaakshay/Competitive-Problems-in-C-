@@ -10,10 +10,10 @@
 2. For this we need to find for each index the maximum height in left array and right array respectively, say it is a and b respt.
 3. Now the water that can be stored on the top of index i is **min(a,b) - height[i]** (if this value is less than zero than store 0)
 
-Naive Approach : O(n^2)
+Naive Approach : O(n^2)  
 Two loops : for each index we compute max in its left and right;
 
-**Best : O(n)**
+**Best : O(n)**  
 We can instead do some preprocessing:
 Create two arrays left and right to store the left_max and right_max for an index i
 i.e left[i] represent left_max of i and right[i] is right_max of i (This can be done in O(n))
