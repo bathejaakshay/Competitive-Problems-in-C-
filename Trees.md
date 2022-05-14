@@ -34,3 +34,38 @@ TreeNode * convert(TreeNode *A){
 ```
 
 ---
+
+
+#### 2. Construct a Binary Tree using Inorder and Preorder Traversal.
+**Main Idea:**  
+1. We will use Preorder to get the root of the current inorder array.
+2. Then we find the root in the inorder array.
+3. We create a Tree Node with root and do the same for its left and right.
+
+```
+indexpre=0;
+
+TreeNode* constructBT(vector<int> &in, vector<int> &pre, int i, int j){
+  
+  //root of the current array is pre[indexpre]
+  int val = pre[indexpre++]
+  int ind;
+  
+  //find the root in the inorder
+  for(int x=i; x<=j; x++){
+    if(val == in[x]) ind = x;
+    break;  
+  } 
+  
+  TreeNode *ptr = new TreeNode(val);
+  ptr->left = constructBT(in,pre,i,ind-1);
+  ptr->right = constructBT(in,pre,ind+1, j);
+  
+  return ptr; 
+}
+
+main(vector<int> in, vector<int> pre){
+  TreeNode *head  = constructBT(in,pre, 0,in.size()-1);
+  }
+```
+
