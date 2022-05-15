@@ -1,3 +1,4 @@
 #### [1.Largest Combination With Bitwise AND Greater Than Zero](https://leetcode.com/contest/weekly-contest-293/problems/largest-combination-with-bitwise-and-greater-than-zero/)
-Given an array of size n, find a maximum sized combination whose and is non zero.  
+Given an array of size n, find a maximum sized combination whose and is non zero. 
+![BM1](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/bm1.png?raw=true)
 ![BM1](/Competitive-Problems-in-C-/Images/bm1.png?raw=true "Bit Manipulation Question")
