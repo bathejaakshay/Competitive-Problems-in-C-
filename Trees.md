@@ -79,4 +79,5 @@ main(vector<int> in, vector<int> pre){
 ```
 ---
 #### [3. Least Common Ancestor](https://www.interviewbit.com/old/problems/least-common-ancestor/)
-[lsa](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/lsa1.png)
+![lsa](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/lsa1.png?raw=true)
+<!-- ![BM1](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/bm1.png?raw=true) -->
