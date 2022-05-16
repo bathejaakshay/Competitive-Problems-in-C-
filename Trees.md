@@ -89,3 +89,5 @@ main(vector<int> in, vector<int> pre){
 
 **Linear solution using recursion :**  (Applicable only when both the nodes are present in the tree)  
 We traverse from the bottom, and once we reach a node which matches one of the two nodes, we pass it up to its parent. The parent would then test its left and right subtree if each contain one of the two nodes. If yes, then the parent must be the LCA and we pass its parent up to the root. If not, we pass the lower node which contains either one of the two nodes (if the left or right subtree contains either p or q), or NULL (if both the left and right subtree does not contain either p or q) up.
+
+*PS:* Approach 1 takes extra memory and approach 2 doesnot. So if it is asked to not use memory and its given that both nodes may not be present. Then, we first traverse the tree 2 times to find if both nodes exist. Then we apply approach 2. 
