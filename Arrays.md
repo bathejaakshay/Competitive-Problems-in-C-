@@ -20,3 +20,24 @@ i.e left[i] represent left_max of i and right[i] is right_max of i (This can be 
 After that iterate over height array and compute water trapped on each index : **min(left[i],right[i]) - height[i]**
 
 ---
+#### 2. Left Rotating Array by k pos.
+Naive Intuitive: Time- O(n) , space O(k) 
+keep first k numbers in a temp[k] array left rotate the rest of the array k places and copying temp[k] after k indices.
+
+**Best Approach: Time - O(n) , Space: O(1)**
+1. reverse first k numbers (inplace)  
+2. reverse remaining n-k numbers (inplace)  
+3. now reverse the whole obtained array (inplace)  
+
+```
+A=[2,3,1,4,5]
+k=2
+1. [3,2,1,4,5] // reverse first k numbers
+2. [3,2,5,4,1] // reverse remaining n-k numbers
+3. [1,4,5,2,3] // reverse the whole array
+
+```
+
+*PS*: To rotate right just perform step 3 first then 1 and 2 respt.
+
+---
