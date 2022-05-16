@@ -79,4 +79,4 @@ main(vector<int> in, vector<int> pre){
 ```
 ---
 #### [3. Least Common Ancestor](https://www.interviewbit.com/old/problems/least-common-ancestor/)
-[lsa]()
+[lsa](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/lsa1.png)
