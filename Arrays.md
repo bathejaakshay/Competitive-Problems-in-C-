@@ -133,4 +133,67 @@ The next permutation of an array of integers is the next lexicographically great
 ```
 ***PS Shortcut:*** next_permutation(nums.begin(),nums.end())  
 ***MAIN LEARNING:*** In such ques to find next lexicographical order or next permutation, always start finding  increasing from last instead of finding last increasing pair from the start.
+
 ---
+
+#### [4.Binary Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
+**Main Idea:**
+1. Find the pivot element first (around which the array is rotated i.e a decreasing pair, a[pivot] > a[pivot+1])
+2. Apply binary search in left or right side of pivot element as per its value. i.e if 0<=item<=pivot then serach in left else in right.
+
+```
+ \\ To apply binary search
+ int b_search(vector<int>& nums, int i, int j, int item){
+        if(i > j) return -1; 
+        int mid = (i+j)/2;
+        if(nums[mid] == item) return mid;
+            if(nums[mid]<item){
+                return b_search(nums, mid+1, j, item);
+            }
+            else{
+                return b_search(nums, i, mid-1, item);
+            }
+        
+    }
+    //To get pivot element
+    int get_pivot(vector<int> &nums, int i, int j, int item){
+        if(i>j) return -1;
+        int mid = (i+j)/2;
+        if(mid == nums.size()-1){
+            return -1;
+        }
+        if(nums[mid] > nums[mid+1]){
+            return mid; 
+        }
+        else{
+            if(nums[mid] < nums[nums.size()-1]){
+                return get_pivot(nums, i, mid-1, item);
+            }
+            else{
+                return get_pivot(nums, mid+1, j, item);
+            }
+        }
+            
+    }
+    \\Driver Function
+    int search(vector<int>& nums, int target) {
+        if(nums.size()==1){
+            if(nums[0]==target) return 0;
+            else return -1;
+        }
+        int pivot = get_pivot(nums, 0, nums.size()-1, target);
+        if (pivot==-1){
+            return b_search(nums, 0, nums.size()-1,target);
+        }
+        else{
+             if(target<=nums[pivot] && target>=nums[0]){
+                return b_search(nums,0,pivot, target);
+            }
+            else{
+                return b_search(nums, pivot+1,nums.size()-1,target);
+            }
+        }
+    }
+```
+
+
