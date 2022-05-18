@@ -132,5 +132,5 @@ The next permutation of an array of integers is the next lexicographically great
     }
 ```
 ***PS Shortcut:*** next_permutation(nums.begin(),nums.end());
-
+***MAIN LEARNING:*** In such ques to find next lexicographical order or next permutation, always start finding  increasing from last instead of finding last increasing pair from the start.
 ---
