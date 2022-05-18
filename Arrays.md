@@ -91,5 +91,45 @@ vector<vector<int>> threeSum(vector<int>& nums) {
 ```
 
 ---
+#### [3. Next Permutation](https://leetcode.com/problems/next-permutation/)
+**Problem Statement:** A permutation of an array of integers is an arrangement of its members into a sequence or linear order.  
+For example, for arr = [1,2,3], the following are considered permutations of arr: [1,2,3], [1,3,2], [3,1,2], [2,3,1].  
+The next permutation of an array of integers is the next lexicographically greater permutation of its integer. More formally, if all the permutations of the array are sorted in one container according to their lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted container. If such arrangement is not possible, the array must be rearranged as the lowest possible order (i.e., sorted in ascending order).
 
+**Main Idea:**  
+1. Find if there exist an increasing pair starting from the end pos. i.e a[i] < a[i+1]. Call i as index1
+2. If there does not exist such increasing pair then the array is in decreasing order hence just reverse it and return.
+3. If there exist index1 then again find index2 starting from end s.t a[index1] < a[index2]. (This is done because we want first element just greater then index 1, so we find from end). e.g: [1,3,2]: index1 = 0.. now we cant take index2 =1 as it will lead to ans [3,2,1]. We take index2 = 2. So ans= [2,1,3]
+4. Once index1 and index2 are obtained, swap them and reverse array from index1+1 till end. reverse(nums.begin()+index1+1, nums.end()). **RETURN**
 
+```
+  void nextPermutation(vector<int>& nums) {
+        if(nums.size()<=1){return;}
+        int index1=-1,index2=-1;
+        for(int i=nums.size()-1; i>=1;i--){
+            if(nums[i-1]<nums[i]){
+                index1=i-1;
+                // index2=i;
+                break;
+            }
+        } 
+        if(index1==-1){
+            reverse(nums.begin(), nums.end());
+        }
+        else{
+            for(int i = nums.size()-1; i>index1; i--){
+                if(nums[i]>nums[index1]) {
+                    index2 = i;
+                    break;
+                }
+            }
+            swap(nums[index1], nums[index2]);
+            reverse(nums.begin()+index1+1,nums.end());
+            
+        }
+        return;
+        
+    }
+```
+
+---
