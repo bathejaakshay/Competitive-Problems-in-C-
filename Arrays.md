@@ -131,5 +131,6 @@ The next permutation of an array of integers is the next lexicographically great
         
     }
 ```
+***PS Shortcut:*** next_permutation(nums.begin(),nums.end());
 
 ---
