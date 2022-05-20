@@ -196,4 +196,47 @@ The next permutation of an array of integers is the next lexicographically great
     }
 ```
 
+#### [5. Finding the Duplicate number in linear (nlogn) time with O(1) space complexity](https://leetcode.com/problems/find-the-duplicate-number/)
+**Problem:** Given an array of integers nums containing n + 1 integers where each integer is in the range [1, n] inclusive.  
+There is only one repeated number in nums, return this repeated number.  
+You must solve the problem without modifying the array nums and uses only constant extra space.  
+**Main Idea:**  
+1. It is quite clear that for linear time we need to use binary search.
+2. Idea is find the mid of values i.e (1+n)/2 , now count numbers in whole array which are <= mid. (This will show if before mid exists duplicate causing mid+1 numbers)
+3. if count<=mid then we need to search between mid+1 and high
+4. If count>mid then we need to search between low and mid-1
+5. return low  
+O(nlogn)
 
+```
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+       /*
+       Trick: Binary Search
+       */
+        int i=1, j = nums.size()-1;
+        int mid; 
+        int count=0;
+        while(i<=j){
+            mid = i + (j-i)/2;
+            count=0;
+            for(int &a:nums){
+                if(a<=mid){
+                    count++;
+                }
+            }
+                if(count<=mid){
+                    i = mid+1;
+                }
+                else{
+                    j=mid-1;
+                }
+            }
+        
+        return i;
+    }
+};
+```
+
+---
