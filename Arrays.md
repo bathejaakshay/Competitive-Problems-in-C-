@@ -240,3 +240,39 @@ public:
 ```
 
 ---
+
+####[6. Merge two sorted arrays without extra space in O((n+m)log(n+m) time](https://practice.geeksforgeeks.org/problems/merge-two-sorted-arrays5135/1#)
+![mwes]()
+**Main Idea:**  
+1. In both arr1 and arr2 we traverse from left to right.
+2. We find the first element in arr1 which is greater than first element arr2.
+3. When we find such element we swap the smaller element in arr2[] with last pos in arr1. (This is because we know one element has to be inserted in arr1 so atleast the greatest of this array arr1 has to leave). we increase pointer in arr2
+4. Now we find first element in arr2 which is greater than the second element in arr2.
+5. & so on..
+6. finally after obtain both arrays we sort them.
+
+```
+class Solution{
+public:
+    
+    void merge(int arr1[], int arr2[], int n, int m) {
+	    // code here
+	    int i=0,j=0,k=n-1;
+	    
+	    while(i<=k && j<=m-1){
+	        if(arr1[i]<=arr2[j]){
+	            i++;
+	        }
+	        else{
+	            swap(arr1[k],arr2[j]);
+	            k--;
+	            j++;
+	        }
+	    }
+	    sort(arr1, arr1+n);
+	    sort(arr2, arr2+m);
+	}
+};
+```
+
+---
