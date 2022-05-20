@@ -241,9 +241,9 @@ public:
 
 ---
 
-####[6. Merge two sorted arrays without extra space in O((n+m)log(n+m) time](https://practice.geeksforgeeks.org/problems/merge-two-sorted-arrays5135/1#)
+####[6. Merge two sorted arrays without extra space in O((n+m)log(n+m) time](https://practice.geeksforgeeks.org/problems/merge-two-sorted-arrays5135/1#)   
 
-![mwes](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/mwes.png?raw=True)
+![mwes](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/mwes.png?raw=True)   
 **Main Idea:**  
 1. In both arr1 and arr2 we traverse from left to right.
 2. We find the first element in arr1 which is greater than first element arr2.
