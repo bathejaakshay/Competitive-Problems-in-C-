@@ -277,3 +277,61 @@ public:
 ```
 
 ---
+
+#### [7. Counting Inversions in an array in O(nlongn) time](https://practice.geeksforgeeks.org/problems/inversion-of-array-1587115620/1#)
+**Main Idea**  
+1. Modify merge sort in a way that you count all inversion pairs while merging.
+
+```
+  long long int merge(vector<long long int> &arr, int left, int right, int mid){
+      long long int subleft = mid-left+1;
+      long long int subright = right-mid;
+      
+    //   int arr1[subleft], arr2[subright];
+    long long *arr1 = new long long int[subleft], *arr2= new long long int[subright];
+    
+      for(long long int i=0; i<subleft;i++) arr1[i] = arr[left+i];
+      for(long long int i=0; i<subright;i++) arr2[i] = arr[mid + 1 + i];
+      
+      long long int l=0, h=0,i=left;
+      long long int ans=0;
+      while(l<subleft && h<subright){
+          if(arr1[l] <= arr2[h]) {
+              arr[i] = arr1[l];
+              l++;
+          }
+          else{
+              arr[i] = arr2[h];
+            //   cout<<((subright-h))<<endl;
+            //   ans += ((subright-h)*(subleft-l));
+              ans+=(subleft-l);
+              h++;
+              
+          }
+          i++;
+      }
+      while(l<subleft) {
+          arr[i] = arr1[l];
+          l++;i++;
+          
+      }
+      while(h<subright){
+          arr[i] = arr2[h];
+          h++;i++;
+      }
+      return ans;
+      
+  }
+ long long int mergeSort(vector<long long int> &arr, int low, int high){
+      if(low>=high) return 0;
+      int mid = (low+high)/2;
+      long long int ans=0;
+      ans+=mergeSort(arr, low, mid);
+      ans+=mergeSort(arr, mid+1, high);
+      ans+= merge(arr, low, high, mid);
+      return ans;
+      
+  }
+```
+
+---
