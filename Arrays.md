@@ -335,3 +335,27 @@ public:
 ```
 
 ---
+
+#### [8. Subarray with sum 0 in O(N) space and time](https://practice.geeksforgeeks.org/problems/subarray-with-0-sum-1587115621/1)
+
+**Main idea:**  
+1. In a single loop maintain a sum , if sum==0 return true  
+2. else if sum is present in the hash then return true :( This means if this sum has been seen in previous subarrays then simply substracting them will give ans without actually substracting them. e.d 4 2 -3 1 6 .. at index = 3 sum = 4 now 4 exists in hash representing there exist a prior subarray with sum 4 which can be removed to simply turn the sum to zero.)  
+3. else insert sum in hash  
+
+```
+bool subArrayExists(int arr[], int n)
+    {
+    	unordered_set<int> s;
+        int sum=0;
+        for(int i=0;i<n;i++){
+            sum+=(arr[i]);
+            if(sum==0) return true;
+            if(s.find(sum)!=s.end()) return true;
+            else s.insert(sum);
+        }
+        return false;
+    }
+```
+
+---
