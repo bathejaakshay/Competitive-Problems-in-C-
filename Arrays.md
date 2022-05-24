@@ -395,3 +395,12 @@ int minJumps(int arr[], int n){
 ```
 
 ---
+
+#### [10. Rotating an NXN matrix](https://leetcode.com/problems/rotate-image/submissions/)
+**Main Idea:**  
+1. Reverse the matrix
+2. Swap ij to ji for each row i starting with zero and j starting with i;
+
+![first]()
+
+![second]()
