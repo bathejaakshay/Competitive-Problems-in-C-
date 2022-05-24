@@ -359,3 +359,39 @@ bool subArrayExists(int arr[], int n)
 ```
 
 ---
+
+#### [9. Minimum jumps to reach end of the array](https://practice.geeksforgeeks.org/problems/minimum-number-of-jumps-1587115620/1#)
+**Main Idea:**  
+Two solutions exists: greedy and DP. DP takes O(n) time and O(n) space while greedy takes O(n) time and O(1) space
+But greedy is not intuitive and a little smart approach:
+
+```
+int minJumps(int arr[], int n){
+        // Your code here
+     int mx=0,halt=0,jump=0;
+       if(n==1 and arr[0]==0)
+       return 0;
+       if(arr[0]==0)
+       return -1;
+       for(int i=0;i<n-1;i++)
+       {
+           mx=max(mx,i+arr[i]); \\ we find maximum reach till now 
+           if(mx>=n-1)          \\ If curr max reach reaches end then increment jump and return
+           {
+               jump++;
+               return jump;
+           }
+           if(i==halt)         \\we put max reach in halt and increment jump i.e jump is the min jump to reach i now we need to find same till new reach
+           {
+               halt=mx;
+               jump++;
+           }
+       }
+       if(halt>=n-1)
+       return jump;
+       else 
+       return -1;
+    }
+```
+
+---
