@@ -401,6 +401,6 @@ int minJumps(int arr[], int n){
 1. Reverse the matrix
 2. Swap ij to ji for each row i starting with zero and j starting with i;
 
-![first]()
+![first](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/first.png?raw=true)
 
-![second]()
+![second](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/second.png?raw=true)
