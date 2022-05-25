@@ -37,7 +37,7 @@ DP:
     }
 ```
 #### [2. Generating all balanced paranthesis](https://leetcode.com/problems/generate-parentheses/)
-**Problem Statement:**Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.  
+**Problem Statement:** Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.  
 **Main Idea:**  
 1. Clearly it is a combination problem so we will use backtracking.
 2. we will apply it by keeping track of n no. of left paranthesis and m no. of right paranthesis. (rememenber n should always be < m)
