@@ -21,6 +21,7 @@ search time     | log(n)              | O(1) -> Average
 Insertion time  | log(n) + Rebalance  | Same as search
                       
 Deletion time   | log(n) + Rebalance  | Same as search
+
 #####################################################################################################################################################################################################
 
 ## Stacks and queues 
@@ -83,7 +84,12 @@ string i_to_s(int i){
 }
 
 ##############################################################################################################################################################################
+String Console Input
+when inputing a string : using cin will only get the first word as console sees space as end of the line
+So we used getline instead
 
+string str; getline(cin, str);
+#############################################################################################################################################################################
 Hashing Tricky ques: Longest Subarray length
 Given an integer array A of size N containing 0's and 1's only. 
 
