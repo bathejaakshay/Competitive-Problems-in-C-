@@ -36,3 +36,36 @@ DP:
         return s.substr(a, b-a+1);
     }
 ```
+#### [2. Generating all balanced paranthesis]
+**Problem Statement:**Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.  
+**Main Idea:**  
+1. Clearly it is a combination problem so we will use backtracking.
+2. we will apply it by keeping track of n no. of left paranthesis and m no. of right paranthesis. (rememenber n should always be < m)
+3. now s.push_back('(') -> recurse -> s.pop_back()
+4. s.push_back(')') -> recurse -> s.pop_back()
+
+```
+void gp(int n, int m,string s, vector<string> &ans){
+        string temp=s;
+        
+        if(n==0 && m==0){
+            ans.push_back(s);
+        }
+        if(m<n) return ;
+        if(n<0 || m<0) return;
+        s.push_back('(');
+        gp(n-1,m,s,ans);
+        s.pop_back();
+        s.push_back(')');
+        gp(n,m-1,s,ans);
+        s.pop_back();
+        return;
+        
+    }
+    vector<string> generateParenthesis(int n) {
+        
+        vector<string> ans;string s="";
+        gp(n,n,s,ans);
+        return ans;
+    }
+```
