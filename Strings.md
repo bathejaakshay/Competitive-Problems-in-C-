@@ -36,7 +36,7 @@ DP:
         return s.substr(a, b-a+1);
     }
 ```
-#### [2. Generating all balanced paranthesis]
+#### [2. Generating all balanced paranthesis](https://leetcode.com/problems/generate-parentheses/)
 **Problem Statement:**Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.  
 **Main Idea:**  
 1. Clearly it is a combination problem so we will use backtracking.
