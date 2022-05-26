@@ -69,3 +69,20 @@ void gp(int n, int m,string s, vector<string> &ans){
         return ans;
     }
 ```
+#### 3. Pattern Matching
+Give a string of length N and a pattern of len M find the starting indices of all the matching patterns in the text.  
+e.g TXT = "abccdcabc"  
+     pattern = "abc"    
+     Output = 0 6  
+     
+**Naive Approach** : Sliding Window i.e iterate through a window of size pattern in text and compare the window with the pattern.  
+Time Complexity = O((N-M+1) * M)  
+
+**Naive Approach 2 **: If the pattern consists of unique char then no need to traverse through each window, whenever there is a mismatch in the window [i,j] say at k
+then shift the next window to [k+1, j+k] (i.e no need to look at chars at i+1 till k as they will also mismatch if we shift the window)
+Time Complexity = O(N)
+
+**Rabin Carp**: We still use sliding window. The difference is that we precompute the hash of pattern and compare its hash with all the window's hash and compare the pattern only when the hash matches. It is useful in the case of multiple patterns.  
+Time Complexity = O((N-M+1) * M).
+
+**KMP**
