@@ -404,3 +404,46 @@ int minJumps(int arr[], int n){
 ![first](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/first.png?raw=true)
 
 ![second](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/second.png?raw=true)
+
+
+#### [11. Spiral Matrix](https://practice.geeksforgeeks.org/problems/spirally-traversing-a-matrix-1587115621/1)
+**Main Idea:**  
+1. Traverse the 2D matrix in spiral form
+
+```
+vector<int> spirallyTraverse(vector<vector<int> > matrix, int r, int c) 
+    {
+        // code here 
+        int rows;
+        if(r%2==0) rows =  r/2; 
+        else rows = r/2+1; //If rows are odd then we need to traverse one extra row 
+        vector<int> ans;
+        for(int i=0;i<rows;i++){
+            //left to right
+            for(int j=i; j<c-i;j++){
+                if(ans.size() == r*c) return ans;
+                    ans.push_back(matrix[i][j]);
+                    
+            }
+            // up to down
+            for(int j=i+1;j<r-i;j++){
+                if(ans.size() == r*c) return ans;
+                    ans.push_back(matrix[j][c-i-1]);
+            }
+            // right to left
+            for(int j=c-i-2 ; j>=i;j--){
+                if(ans.size() == r*c) return ans;
+                     ans.push_back(matrix[r-i-1][j]);
+            }
+            // down to up
+            for(int j=r-i-2; j>=i+1;j--){
+                // cout<<"i,j = "<<i<<","<<j<<endl;
+                if(ans.size() == r*c) return ans;
+                    ans.push_back(matrix[j][i]);
+            }
+            
+        }
+            
+        return ans;
+    }
+```
