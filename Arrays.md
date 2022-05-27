@@ -422,24 +422,24 @@ vector<int> spirallyTraverse(vector<vector<int> > matrix, int r, int c)
             //left to right
             for(int j=i; j<c-i;j++){
                 if(ans.size() == r*c) return ans;
-                    ans.push_back(matrix[i][j]);
+                ans.push_back(matrix[i][j]);
                     
             }
             // up to down
             for(int j=i+1;j<r-i;j++){
                 if(ans.size() == r*c) return ans;
-                    ans.push_back(matrix[j][c-i-1]);
+                ans.push_back(matrix[j][c-i-1]);
             }
             // right to left
             for(int j=c-i-2 ; j>=i;j--){
                 if(ans.size() == r*c) return ans;
-                     ans.push_back(matrix[r-i-1][j]);
+                ans.push_back(matrix[r-i-1][j]);
             }
             // down to up
             for(int j=r-i-2; j>=i+1;j--){
                 // cout<<"i,j = "<<i<<","<<j<<endl;
                 if(ans.size() == r*c) return ans;
-                    ans.push_back(matrix[j][i]);
+                ans.push_back(matrix[j][i]);
             }
             
         }
