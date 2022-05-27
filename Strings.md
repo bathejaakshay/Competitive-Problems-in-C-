@@ -69,7 +69,46 @@ void gp(int n, int m,string s, vector<string> &ans){
         return ans;
     }
 ```
-#### 3. Pattern Matching
+
+---
+
+### [3. Count number of Palindromic strings](https://leetcode.com/problems/palindromic-substrings/submissions/)
+**Main Idea:**  
+1. Using 2D DP bool array to represent if d[i][j] i.e substring i to j is a palindrome or not
+2. The traversal is like 0,1 1,2 2,3 .. then 0,2 2,4 .. so substrings of length 1,2,3 ...
+
+```
+class Solution {
+public:
+    int countSubstrings(string s) {
+    
+    vector<vector<bool>> dp(s.length(), vector<bool>(s.length(),true));
+       int ans=0;
+       if(s.length()==0) return 0;
+       if(s.length()==1) return 1;
+        int k;
+     for(int i=0; i<s.length();i++){
+         ans++;
+         dp[i][i] = true;
+         k=0;
+         for(int j=i+1; j<s.length();j++){
+             if(s[k]==s[j] && dp[k+1][j-1]){
+                 ans++;
+                 dp[k][j]=true;
+             }
+             else{
+                 dp[k][j] = false;
+             }
+             k++;
+         }
+     }
+       return ans;
+    }
+};
+```
+---
+
+#### 4. Pattern Matching
 Give a string of length N and a pattern of len M find the starting indices of all the matching patterns in the text.  
 e.g TXT = "abccdcabc"  
      pattern = "abc"    
