@@ -82,6 +82,20 @@ string i_to_s(int i){
     // couldve use to_string() function
     
 }
+#########################################################################################################################################################################
+Set precision of double or float value to x
+Given: double a = 12.345, b= 10.5
+we want string a = 12.34 and string b = 10.50 i.e decimal upto two points
+
+We use stringstream for setting precision;
+stringstream st;
+st<<fixed<<a;   // fixed put zeros in empty decimal places i.e 12.3450000
+st<<setprecision(2)<<st; //setprecision sets the precision 12.34
+string a1=st.str();
+
+st<<fixed<<b;               // 10.500000
+st<<setprecision(2)<<st;    // 10.50
+string b1=st.str(); 
 
 ##############################################################################################################################################################################
 String Console Input
