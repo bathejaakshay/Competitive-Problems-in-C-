@@ -1,4 +1,4 @@
-### QuickSort
+### 1. QuickSort
 **Main Idea:**
 1. Select Pivot, Find its position 
 2. then do same for left and right subarray
@@ -39,7 +39,7 @@ void qsort(vector<int> &nums, int first, int last){
 ```
 ---
 
-#### [Merge Sorting a Linked List](https://leetcode.com/problems/sort-list/)
+#### [2. Merge Sorting a Linked List](https://leetcode.com/problems/sort-list/)
 **Main Idea:**
 1. Find the middle pointer by fast pointer technique
 2. run in recurrsion the mergesort for left and right half
