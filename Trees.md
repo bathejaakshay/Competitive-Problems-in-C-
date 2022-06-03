@@ -99,6 +99,9 @@ We traverse from the bottom, and once we reach a node which matches one of the t
 **Naive Approach:**  
 For each Node in the Tree check if its value is greater than the max value in its left subTree and lesser then the minimum value in its right subtree and if its left subTree and right subTree are valid or not in recurrsion. But This will take a lot of time as for each node we are check all other nodes so O(n2). If we keep min and max of right and left subtree parallely are compare the O(n). But there exist more easy, efficient and intuitive solution than this.
 
+**Another Approach**  
+Check the inorder Traversal of the given BST and see if the keys are sorted.
+
 **Best Approach: Range Method**  
 In this approach we specify a range for each node and check if its value lie within that range. And similarly we check for left and right subtree. An example with ranges of all nodes is given below. T(n) = O(n)
 
