@@ -93,3 +93,40 @@ We traverse from the bottom, and once we reach a node which matches one of the t
 *PS:* Approach 1 takes extra memory and approach 2 doesnot. So if it is asked to not use memory and its given that both nodes may not be present. Then, we first traverse the tree 2 times to find if both nodes exist. Then we apply approach 2. 
 
 ---
+
+#### [4. Check If a given Binary Search Tree is VALID or NOT](https://www.interviewbit.com/old/problems/valid-binary-search-tree/)
+
+**Naive Approach:**  
+For each Node in the Tree check if its value is greater than the max value in its left subTree and lesser then the minimum value in its right subtree and if its left subTree and right subTree are valid or not in recurrsion. But This will take a lot of time as for each node we are check all other nodes so O(n2). If we keep min and max of right and left subtree parallely are compare the O(n). But there exist more easy, efficient and intuitive solution than this.
+
+**Best Approach: Range Method**  
+In this approach we specify a range for each node and check if its value lie within that range. And similarly we check for left and right subtree. An example with ranges of all nodes is given below. T(n) = O(n)
+
+<figure>
+<center><img src="https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/isvalidBST.png?raw=True" alt="drawing" width="400"/></center>
+<center><figcaption>Checking Binary Search Tree is Valid</figcaption></center>
+</figure>
+
+```
+bool isValid(TreeNode* root, int min, int max){
+    
+    if(root == NULL) return true;
+    
+    if(root->val > min && root->val<max && isValid(root->left, min, root->val) && isValid(root->right, root->val, max) return true;
+    else return false;
+}
+
+bool isValidBST(TreeNode *root){
+
+  return isValid(root, INT_MIN, INT_MAX); //Driver code: for root the range is [INT_MIN,INT_MAX]
+  
+}
+```
+
+---
+
+
+
+
+
+
