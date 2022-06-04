@@ -82,3 +82,67 @@ public:
 ```
 ---
 
+#### [3. Smallest Distinct Subsequence of a string]
+
+**Problem:**  
+Given a string s, remove duplicate letters so that every letter appears once and only once. You must make sure your result is the smallest in lexicographical order among all possible results.  
+
+**Example 1:**  
+Input: s = "bcabc"  
+Output: "abc"  
+
+**Example 2:**  
+Input: s = "cbacdcbc"  
+Output: "acdb"  
+ **Constraints:**  
+1 <= s.length <= 104  
+s consists of lowercase English letters.  
+
+**Approach**
+1. For each char keep track of its last index in lastidx array
+2. Maintain a bool array seen[] to represent if that char has been seen already or not.
+3. We also maintain a stack to keep record of smallest distinct subsequence
+4. Now iterate from index 0 to str.length()
+5. In each iteration check if char at i is already seen. If yes then no need to process it just continue.
+6. Else pop out all the chars in stack and mark them unseen which are lexicographically greater than curr char i.e str[i] and they have duplicate at some later position than i.
+7. Now push the current char and mark it as seen.
+
+```
+
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        
+        //lastidx to track the last index of each char
+        vector<int> lastidx(26,-1); 
+        for(int i=0;i<s.length();i++) lastidx[s[i] - 'a']=i;
+        
+        //bitmask to see if we have seen that char or not
+        vector<bool> seen(26,false);
+        
+        //stack to keep distinct smallest subsequence 
+        stack<char> st;
+        
+        for(int i=0; i<s.length(); i++){
+            if(seen[s[i]-'a'] == false){
+                while(!st.empty() && st.top()>s[i] && i<lastidx[st.top()-'a']){
+                    seen[st.top()-'a'] = false;
+                    st.pop();
+                }
+            st.push(s[i]);
+            seen[s[i]-'a']=true;    
+            }
+            
+        }
+        string ans="";
+        while(!st.empty()){
+            ans = st.top() + ans;
+            st.pop();
+        }
+         return ans;
+    }
+    
+    
+   
+};
+```
