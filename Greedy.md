@@ -42,3 +42,43 @@ vector<int> Solution::solve(vector<int> &A, int B) {
 ```
 
 ---
+
+#### [2. Largest Number in an array](https://leetcode.com/problems/largest-number/)
+**Problem:**  
+Given a list of non-negative integers nums, arrange them such that they form the largest number and return it.  
+Since the result may be very large, so you need to return a string instead of an integer.  
+**Main Idea:**  
+1. Sort the array in a way that concatenation two numbers is always greater
+
+```
+bool comparator(int a,int b){
+    string x=to_string(a);
+    string y=to_string(b);
+    if(x+y > y+x) return true;
+    return false;
+}
+class Solution {
+public:
+    string largestNumber(vector<int>& nums) {
+        
+        if(nums.size()==1){
+            string ans =  to_string(nums[0]);
+            return ans;
+        }
+        int i;
+        for(i=0;i<nums.size();i++){
+            if(nums[i]>0) break;
+        }
+        if(i==nums.size()) return "0"; \\Edge case when array contains only zeros
+        sort(nums.begin(),nums.end(),comparator);
+        string ans =to_string(nums[0]);
+        for(i=1;i<nums.size();i++){
+            string curr = to_string(nums[i]);
+                ans = ans+curr;
+        }
+        return ans;
+    }
+};
+```
+---
+
