@@ -147,3 +147,43 @@ public:
 };
 ```
 ---
+
+#### [4 Meeting Rooms required](https://www.interviewbit.com/old/problems/meeting-rooms/)
+**Problem**  
+Given an 2D integer array A of size N x 2 denoting time intervals of different meetings.  
+Where:  
+A[i][0] = start time of the ith meeting.  
+A[i][1] = end time of the ith meeting.  
+Find the minimum number of conference rooms required so that all meetings can be done.
+
+
+**Approach:**
+1. Sort the intervals by their start time
+2. Use a minheap to keep record of the least end time for any allocated room
+3. Now for each interval loop at the top element of the min heap if current room's start time is later than already allocated room then that means we do not require extra room as we can allocate that particular room to that. So we remove that end time from min heap so that other rooms do not use that room.
+4. If it clashes with the current room then it is intuitive that all other allocated room also clash hence we increase the number of rooms required.
+
+
+```
+int Solution::solve(vector<vector<int> > &A) {
+
+    sort(A.begin(),A.end());
+    int count=0;
+    int mini=INT_MIN;
+    priority_queue<int, vector<int>, greater<int>> pq;
+    for(int i=0;i<A.size();i++){
+        int start = A[i][0], end = A[i][1];
+        if(start>=mini && !pq.empty()){
+            pq.pop();
+        }
+        else{
+            count++;
+        }
+        pq.push(end);
+        mini = pq.top();
+    }
+    return count;
+}
+```
+
+---
