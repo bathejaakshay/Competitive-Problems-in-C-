@@ -187,3 +187,67 @@ int Solution::solve(vector<vector<int> > &A) {
 ```
 
 ---
+
+#### [5 Minimum number of arrows to burst balloons]
+There are some spherical balloons taped onto a flat wall that represents the XY-plane. The balloons are represented as a 2D integer array points where `points[i] = [xstart, xend]` denotes a balloon whose horizontal diameter stretches between xstart and xend. You do not know the exact y-coordinates of the balloons.  
+Arrows can be shot up directly vertically (in the positive y-direction) from different points along the x-axis. A balloon with xstart and xend is burst by an arrow shot at x if `xstart <= x <= xend.` There is no limit to the number of arrows that can be shot. A shot arrow keeps traveling up infinitely, bursting any balloons in its path.  
+Given the array points, return the **minimum** number of arrows that must be shot to burst all balloons.  
+```
+Example 1:  
+Input: points = [[10,16],[2,8],[1,6],[7,12]]  
+Output: 2  
+Explanation: The balloons can be burst by 2 arrows:
+- Shoot an arrow at x = 6, bursting the balloons [2,8] and [1,6].
+- Shoot an arrow at x = 11, bursting the balloons [10,16] and [7,12].
+```
+
+**Main Idea**
+1. The main case to think of while designing the solution is the following example: [[1,10],[2,5],[7,9]]
+2. We want to start from the greatest starting time i.e the last interval.
+3. Put its Start time in min heap and keep moving backwards till their ending time is greater than pq.top() time.
+4. Then do pq.pop() count++ and pq.push() current interval.
+5. After do this till starting we count the remaining intervals in the priority queue by popping them.
+
+```
+bool compare(vector<int> &a, vector<int> &b){
+    if(a[0]>b[0]){
+        return true;
+    }
+    else if(a[0] == b[0]){
+        if(a[1]>b[1]){
+            return true;
+        }
+        else return false;
+    }
+    return false;
+}
+class Solution {
+public:
+    int findMinArrowShots(vector<vector<int>>& points) {
+        sort(points.begin(),points.end(), compare );
+        priority_queue<int, vector<int> , greater<int>> pq;
+        int count=0;
+        for(int i=0;i<points.size();i++){
+            if(pq.empty()){
+                pq.push(points[i][0]);
+                
+            }
+            else{
+                while(!pq.empty()&&pq.top()>points[i][1]){
+                    count++;
+                    pq.pop();
+                }
+                if(pq.empty()){
+                    pq.push(points[i][0]);
+                }
+                
+            }
+        }
+        while(!pq.empty()){
+            count++;
+            pq.pop();
+        }
+        return count;
+    }
+};
+```
