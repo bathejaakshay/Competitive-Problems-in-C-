@@ -251,3 +251,59 @@ public:
     }
 };
 ```
+
+---
+
+#### [Distribute Candy (Tricky)](https://www.interviewbit.com/old/problems/distribute-candy/)
+There are N children standing in a line. Each child is assigned a rating value.
+
+You are giving candies to these children subjected to the following requirements:
+`1. Each child must have at least one candy.`    
+`2. Children with a higher rating get more candies than their neighbors.`
+What is the minimum candies you must give?  
+
+Input Format:  
+`The first and the only argument contains N integers in an array A.`
+
+Example:  
+Input 2:  
+    A = [1, 5, 2, 1]  
+
+Output 2:  
+    7  
+    
+Explanation 2:  
+    Candies given = [1, 3, 2, 1]  
+    
+**Main Idea:**
+1. The sorting approach doesnt pass all the test cases hence we use a trick for O(n) sol.
+2. We parse through the vector twice once from Left to right and right to left respt & maintain two arrays left and right.
+3. We check if the previous neighbour is smaller if yes then increment neighbours value by 1 and assign to curr.
+4. Finally we traverse the left and right arrays and the max of them.
+
+```
+
+int Solution::candy(vector<int> &A) {
+
+    vector<int> left(A.size(),1); //Initializing with 1 candies as that's the least amount
+    for(int i=1;i<left.size();i++){
+        if(A[i] > A[i-1]) left[i] = left[i-1]+1;  // Comparing for all the left neighbours
+    }
+    
+    vector<int> right(A.size(),1); //Intializaing with 1 candy
+    for(int i=A.size()-2;i>=0;i--){
+        if(A[i] > A[i+1]) right[i] = right[i+1]+1; //Comparing for all the right neighbours
+    
+    }
+    
+    int count=0;
+    for(int i=0;i<A.size();i++){
+        count+=(max(left[i],right[i])); //Keeping the max value computed by Left and right neighbour
+        // count+=(ans[i]);
+    }
+    return count;
+    
+}
+
+```
+    
