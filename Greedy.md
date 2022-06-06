@@ -306,4 +306,78 @@ int Solution::candy(vector<int> &A) {
 }
 
 ```
+
+---
+
+####[7, Reconstruction of queue by height **GOOD**](https://leetcode.com/problems/queue-reconstruction-by-height/)
+**Problem:**  
+You are given an array of people, people, which are the attributes of some people in a queue (not necessarily in order). Each `people[i] = [h_i, k_i]` represents the ith person of height `h_i` with exactly `k_i` other people in front who have a height greater than or equal to h_i.  
+Reconstruct and return the queue that is represented by the input array people. The returned queue should be formatted as an array queue, where `queue[j] = [hj, kj]` is the attributes of the jth person in the queue (`queue[0]` is the person at the front of the queue).  
+
+Basically we need to rearrange the people array such that each person can come in its correct position to satisfy the height order mentioned in their second attribute.  
+**Example:** 
+```
+Input: people = [[7,0],[4,4],[7,1],[5,0],[6,1],[5,2]]
+Output: [[5,0],[7,0],[5,2],[6,1],[4,4],[7,1]]
+Explanation:
+Person 0 has height 5 with no other people taller or the same height in front.
+Person 1 has height 7 with no other people taller or the same height in front.
+Person 2 has height 5 with two persons taller or the same height in front, which is person 0 and 1.
+Person 3 has height 6 with one person taller or the same height in front, which is person 1.
+Person 4 has height 4 with four people taller or the same height in front, which are people 0, 1, 2, and 3.
+Person 5 has height 7 with one person taller or the same height in front, which is person 1.
+Hence [[5,0],[7,0],[5,2],[6,1],[4,4],[7,1]] is the reconstructed queue.
+```
+
+**Approach:**
+1. We will start from the smallest height guy and keep fixing its smallest possible position.
+2. For e.g in the above example we start with height h=4 and we know that 4 person of more or equal height will come in front of it some leave 4 vacant places and fixed the 5th vacant space for it.
+3. We will keep doing it till last element. We maintain a bool array to represent if the pos is vacant or not.
+4. Also while sorting initially maintain the order in a way that for equal height people we can assign the guy with higher second argument as we would need to fix its position first.
+
+```
+bool comparator(const vector<int> &a, const vector<int> &b){
+    if(a[0]<b[0]){
+        return true;
+    }
+    else if(a[0]==b[0]){
+        return a[1]>b[1];
+    }
+    else return false;
+}
+class Solution {
+public:
+    /*
+    7 4 7 5 6 5
+    0 4 1 0 1 2 //Req
+    1 5 1 4 2 4 //Possible 5 elements have height >= 4 but we need only 4
+    5-0 7-0 5-2 6-1 4-4 7-1
+    
+    */
+    vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
+        sort(people.begin(),people.end(),comparator);
+        
+        vector<vector<int>> ans (people.size(), vector<int>(2));
+        vector<bool> occ(people.size(),false);
+        for(int i=0;i<people.size();i++){
+            int count=0;
+            int req = people[i][1];
+            int j=0;
+            for(j=0;j<occ.size();j++){
+                if(occ[j]==false){
+                    count++;
+                    if (req+1==count){
+                        break;
+                    }
+                }
+            }
+            ans[j][0] = people[i][0];
+            ans[j][1] = people[i][1];
+            occ[j] = true;
+        }
+        return ans;
+    }
+};
+```
+
     
