@@ -209,3 +209,61 @@ whlie(i<text.length()){
 ```
 
 ---
+
+#### [5. Find Palindrome With Fixed Length](https://leetcode.com/problems/find-palindrome-with-fixed-length/)
+Given an integer array queries and a positive integer intLength, return an array answer where `answer[i]` is either the `queries[i]th` smallest positive palindrome of length intLength or `-1` if no such palindrome exists.  
+A palindrome is a number that reads the same backwards and forwards. Palindromes cannot have leading zeros.  
+
+ 
+```
+Example 1:
+
+Input: queries = [1,2,3,4,5,90], intLength = 3
+Output: [101,111,121,131,141,999] : The 1st palindrome number of length 3 is 101, 2nd is 111 and so on.
+Explanation:
+The first few palindromes of length 3 are:
+101, 111, 121, 131, 141, 151, 161, 171, 181, 191, 202, ...
+The 90th palindrome of length 3 is 999.
+```
+**Approach :**
+1. The approach is easy once you think about it.
+2. First we need to understand then we just need to find the half number as the other half would be repeating for the palindrome.
+3. So cal half = (len+1)/2
+4. Now find the min and max number with this half i.e for two digits half=2 min = 10 and max=99
+5. so start = 10^(half-1), end = 10^(half)-1
+6. now the kth palindrome of length len is: its first half will be start+k-1
+7. If the len is odd then last digit of half wont be reversed else the whole half will be reversed and concatenated with the original half for the ans
+
+```
+long long kpalin(int n, int len){
+        int half = (len+1)/2;
+        int start = pow(10,half-1);
+        int end = pow(10,half)-1;
+        if(n> end-start+1){
+            return -1;
+        }
+        string front=to_string(start+n-1);
+        string f;
+        string b;
+        if(len%2==1){
+            f = front.substr(0,half-1);
+            reverse(f.begin(),f.end());
+            return stoll(front+f);
+        }
+        else{
+            f = front;
+            reverse(f.begin(),f.end());
+            return stoll(front+f);
+        }
+    }
+    
+    vector<long long> kthPalindrome(vector<int>& queries, int intLength) {
+        vector<long long> ans;
+        for(int &q:queries){
+            ans.push_back(kpalin(q,intLength));
+        }
+        return ans;
+    }
+```
+
+---
