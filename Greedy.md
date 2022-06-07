@@ -414,7 +414,7 @@ return A[majority_idx];
 2. Firstly sort by start time.
 3. Now traverse from left to right. 
 4. If the interval overlaps with q.top() (q.top() contains max end time for currently seen non overlapping intervals), then see if q.top() is also greater than current interval's end time. if yes then remove it and count++. Do it till no such interval is there in priority queue.The idea is to always keep an interval with lesser end time in case of overlapping.
-5. If no overlapping then push current interval.
+5. If no overlapping then push current interval else if current interval is still overlapping and has bigger end time also then dont push it and do count++
 
 ```
 int eraseOverlapIntervals(vector<vector<int>>& intervals) {
