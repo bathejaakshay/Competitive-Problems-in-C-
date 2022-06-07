@@ -380,4 +380,30 @@ public:
 };
 ```
 
+#### [8. Majority Element](https://www.interviewbit.com/old/problems/majority-element/)
+**Problem** For an unordered array output the element which occurs more than floor(n/2) time where n is the size of the array.
+**Approach:**
+1. There are many approaches including hashmap. But the most efficient is to use a count variable and majority index variable to keep indx of current majority element.
+2. Now iterate through the array and see if the elements are same as majority element if yes then inc the count else dec
+3. if the count==0 then change the majority index to current variable.
+
+```
+int majority_element(const vector<int> &A){
+    
+    int majority_idx = 0,count,i;
+    for(count=1,i=1;i<A.size();i++){
+        if(A[i] == A[majority_idx]){
+            count++;
+            }
+         else{
+            count--;
+         }
+         if(count==0){
+         count=1;
+         majority_idx = i;
+         }
+    }
+return A[majority_idx];
+}
+```
     
