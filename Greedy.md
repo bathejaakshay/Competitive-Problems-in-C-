@@ -406,4 +406,39 @@ int majority_element(const vector<int> &A){
 return A[majority_idx];
 }
 ```
-    
+---
+
+#### [9. Minimum Intervals to remove to make all other non overlapping](https://leetcode.com/problems/non-overlapping-intervals/)
+**Approach:**
+1. Always remember to use priority queue (max heap) on end time for such ques.
+2. Firstly sort by start time.
+3. Now traverse from left to right. 
+4. If the interval overlaps with q.top() (q.top() contains max end time for currently seen non overlapping intervals), then see if q.top() is also greater than current interval's end time. if yes then remove it and count++. Do it till no such interval is there in priority queue.The idea is to always keep an interval with lesser end time in case of overlapping.
+5. If no overlapping then push current interval.
+
+```
+int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+        sort(intervals.begin(), intervals.end());
+        int count=0;
+        priority_queue<int> q;
+        for(int i=0;i<intervals.size();i++){
+            if(q.empty()){
+                q.push(intervals[i][1]);
+                
+            }
+            else{
+                while(!q.empty()&&q.top()>intervals[i][0]&&q.top() > intervals[i][1]){
+                    q.pop();
+                    count++;
+                }
+                if(q.empty()||q.top()<=intervals[i][0]){
+                    q.push(intervals[i][1]);
+                }
+                else if(!q.empty()&&q.top()>intervals[i][0] && q.top() <= intervals[i][1]){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+```
