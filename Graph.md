@@ -52,3 +52,73 @@ public:
     }
 };
 ```
+---
+
+#### [2. Cycle Detection in UnDirected Graph](https://www.codingninjas.com/codestudio/problems/1062670?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0)
+**Approach:**
+1. We will look at BFS approach as DFS is relatively easy, will also mention the approach for DFS.
+2. Cycle Detection is possible in undirected graph by looking at the visited array.
+3. For an element say x we are traversing through its neighbours:
+4. Now say its neighbour y is already visited i.e visited[y]=1, now if y is not the parent of x then this is a cycle.
+5. We can say that there is always a cycle when a visited node is visted again and it is not a parent node.
+6. In BFS we use hashmap to keep track of parents of the node.
+```
+e.g 
+graph:- 
+
+1-2 (In this graph node 1 will be visited twice, first by starting with 1 and next time as a neighbour of 2 but this is not a cycle as 1 is the parent of 2)
+
+1-2-3-1 is the cycle
+```
+
+```
+#include<bits/stdc++.h>
+void addEdge(vector<vector<int>> &adjlist, vector<int> &edge){
+    adjlist[edge[0]-1].push_back(edge[1]-1);
+    adjlist[edge[1]-1].push_back(edge[0]-1);
+}
+string cycleDetection (vector<vector<int>>& edges, int n, int m)
+{
+    vector<vector<int>> adjlist(n);
+    for(int i=0; i<edges.size();i++){
+        addEdge(adjlist, edges[i]);
+    }
+    vector<bool> visited(n,false);
+    queue<int> q;
+    unordered_map<int,int> par;
+    for(int i=0;i<n;i++){
+        if(!visited[i]){
+            if(q.empty()){
+                q.push(i);
+            }
+            par[i]=-1;
+            visited[i]= true;
+            while(!q.empty()){
+                int x = q.front();
+                q.pop();
+                for(int &j:adjlist[x]){
+                    
+                    if(!visited[j]){
+                        visited[j]=true;
+                        par[j]=x;
+                        q.push(j);
+                    }
+                    else{
+                        if(j!=par[x]){
+                            return "Yes";
+                        }
+                        
+                    }
+                }
+            }
+        }
+    }
+    return "No";
+}
+
+```
+
+**DFS Approach:**
+1. DFS approach is relatively simple as we dont need to use extra hashmap. We just pass the parent node value in the dfs recursive call.
+2. The rest of the logic is same, if the node is visited twice and is not same as the parent of its neighbour node then there is a cycle.
+
