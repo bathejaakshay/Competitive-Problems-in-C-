@@ -122,3 +122,46 @@ string cycleDetection (vector<vector<int>>& edges, int n, int m)
 1. DFS approach is relatively simple as we dont need to use extra hashmap. We just pass the parent node value in the dfs recursive call.
 2. The rest of the logic is same, if the node is visited twice and is not same as the parent of its neighbour node then there is a cycle.
 
+```
+void addEdge(vector<vector<int>> &adjlist, vector<int> &edge){
+    adjlist[edge[0]-1].push_back(edge[1]-1);
+    adjlist[edge[1]-1].push_back(edge[0]-1);
+}
+bool dfs(vector<vector<int>> &adjlist, int source, int parent, vector<bool> &visited){
+    //Cycle Detection using DFS
+    for(int &i:adjlist[source]){
+        if(!visited[i]){
+            visited[i]=true;
+            if(dfs(adjlist, i, source, visited)){
+                return true;
+            }
+        }
+        else if(i!=parent){
+            return true;
+        }
+        
+    }
+    return false;
+}
+string cycleDetection (vector<vector<int>>& edges, int n, int m)
+{
+    vector<vector<int>> adjlist(n);
+    for(int i=0; i<edges.size();i++){
+        addEdge(adjlist, edges[i]);
+    }
+    vector<bool> visited(n,false);
+// Cycle Detection Using DFS
+    for(int i=0;i<n;i++){
+        if(!visited[i]){
+            visited[i] = true;
+            if(dfs(adjlist, i, -1, visited)){
+                return "Yes";
+            }
+        }
+    
+    }    
+
+    return "No";
+}
+
+```
