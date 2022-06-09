@@ -165,3 +165,45 @@ string cycleDetection (vector<vector<int>>& edges, int n, int m)
 }
 
 ```
+
+---
+
+####[3. Topological Sort using BFS](https://practice.geeksforgeeks.org/problems/topological-sort/1)
+**Approach: Very Easy**
+1.After creating an adjacency list, create an indegree vector which keeps note of indeg of each node.
+2.Now initially push all nodes in queue whose indeg is 0;
+3. Now traverse these nodes in BFS fashion i.e pop 1 by 1 and reduce their neighbours in deg by one and add those neighbours in the queue whose indeg is now 0
+4. No need for visited array as there are no cycles and we are traversing nodes one by one.
+
+```
+vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    // code here
+	    unordered_map<int,int> indeg;
+	    for(int i=0;i<V;i++){
+	        for(int &j : adj[i]){
+	            indeg[j]++;
+	        }
+	    }
+	    queue<int> q;
+	    
+	    for(int i=0;i<V;i++){
+	        if(indeg[i]==0){
+	            q.push(i);
+	        }
+	    }
+	    vector<int> ans;
+	    while(!q.empty()){
+	        int x = q.front();
+	        ans.push_back(x);
+	        q.pop();
+	        for(int &j: adj[x]){
+	            indeg[j]--;
+	            if(indeg[j]==0){
+	                q.push(j);
+	            }
+	        }
+	    }
+	    return ans;
+	}
+```
