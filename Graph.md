@@ -168,7 +168,7 @@ string cycleDetection (vector<vector<int>>& edges, int n, int m)
 
 ---
 
-####[3. Topological Sort using BFS](https://practice.geeksforgeeks.org/problems/topological-sort/1)
+#### [3. Topological Sort using BFS](https://practice.geeksforgeeks.org/problems/topological-sort/1)
 **Approach: Very Easy**
 1.After creating an adjacency list, create an indegree vector which keeps note of indeg of each node.
 2.Now initially push all nodes in queue whose indeg is 0;
