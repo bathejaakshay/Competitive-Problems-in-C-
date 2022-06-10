@@ -326,7 +326,7 @@ class Solution
         while(!q.empty()){ // Simple bfs prims
             auto it = q.top();
             q.pop();
-            if(!mset[it.second]){ // As priority queue implementation doesnt have decrease key so we make use of mset which sets for the minimum value of the node and removes the other
+            if(!mset[it.second]){ // As priority queue implementation doesnt have decrease key so we make use of mset which sets for the minimum value of the node and removes the other. We use LAZY Deletion i.e we keep on adding copies of the node with new distances and after extracting it as the minimum distance we mark it as finalized so that we donot process it again.
             ans+=(it.first);
             mset[it.second]=true;
             vector<vector<int>> j = adj[it.second];
