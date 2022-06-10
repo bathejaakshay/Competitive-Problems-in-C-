@@ -295,3 +295,55 @@ ShortestPath(adjlist, src, weight)
 ```
 
 ---
+
+
+#### [6. Finding MST using Prim's Algo](https://practice.geeksforgeeks.org/problems/minimum-spanning-tree/1)
+**Approach:**
+1. Simple BFS Traversal using Priority queue as minheap.
+2. Start with any node say source and push it in the minheap as a pair (0,src) where 0 is the distance of src from src
+3. Now extract min from the priority queue and set the node as finalized and add its distance to the ans. If the node was already finalized then do nothing.
+4. Now push its neighbours into the priority queue with their values from the parent node. (Remember while pushing the nodes its possible that it already exists which greater distance in which case we use decrease key but as decrease key is not available in c++, we use a way around through finalized vector.)
+5. Repeat step 3,4 until priority queue gets empty. 
+
+```
+struct comparator{
+    bool operator()(const pair<int,int> &a, const pair<int,int> &b){
+        return a.first>b.first;
+    }
+};
+class Solution
+{
+	public:
+	//Function to find sum of weights of edges of the Minimum Spanning Tree.
+    int spanningTree(int V, vector<vector<int>> adj[])
+    { // adj is an array of vectors of vectors where a[0] = {{1,5},{2,1}} i.e weight of edge (0,1) is 5 and (0,2) is 1.
+        // code here
+        vector<bool> mset(V,false); // To keep record of all the nodes that have been poped out
+        priority_queue<pair<int,int>, vector<pair<int,int>>, comparator> q; // Min heap of pairs , remember that the comparator should be a class with operator() as its function. for minheap return greater.
+        int src=0;
+        q.push(make_pair(0,src)); // making paris of the next node and the distance to reach there from the current node
+        int ans=0;
+        while(!q.empty()){ // Simple bfs prims
+            auto it = q.top();
+            q.pop();
+            if(!mset[it.second]){ // As priority queue implementation doesnt have decrease key so we make use of mset which sets for the minimum value of the node and removes the other
+            ans+=(it.first);
+            mset[it.second]=true;
+            vector<vector<int>> j = adj[it.second];
+            for(int x=0;x<j.size();x++){
+                if(!mset[j[x][0]]){
+                    q.push(make_pair(j[x][1],j[x][0]));
+                }
+            }
+                
+            }
+            
+        }
+        
+        return ans;
+        
+    }
+};
+```
+
+---
