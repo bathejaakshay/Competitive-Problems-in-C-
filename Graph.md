@@ -271,3 +271,27 @@ public:
 
 ```
 ---
+
+#### 5. Shortest Path in DAG
+**Approach 1**  
+We could use Djikstra or bellmenford but then its TC world be O((V+E)logV)
+
+**Approach 2**
+The Better and efficient approach would be through Topological Sorting TC(O(V+E))
+
+**ALGO**
+```
+ShortestPath(adjlist, src, weight)
+	1. Initialize vector<int> dist (size = Vertices, value = INT_MAX)
+	2. Set dist[src] = 0
+	3. Find Topological Sort T of this graph.
+	4. Now For every vertex u of Topological sort T
+		For every adjacent v of u:
+			if dist[v] > dist[u] + weight(u,v) \\Relax edge (u,v)
+				dist[v] = dist[u] + weight(u,v)
+				
+
+	5. Done	
+```
+
+---
