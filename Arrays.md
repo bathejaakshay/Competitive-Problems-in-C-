@@ -107,10 +107,45 @@ Given an array of integers and another number. Find all the unique quadruple fro
 
 TC: For each pair we go through candidate pairs of quadruples: O(n3)
 
+```
+class Solution{
+    public:
+    // arr[] : int input array of integers
+    // k : the quadruple sum required
+    vector<vector<int> > fourSum(vector<int> &a, int k) {
+        // Your code goes here
+        unordered_map<int,vector<pair<int,int>>> mp;
+        vector<vector<int>> ans;
+        for(int i=0;i<a.size();i++){
+            for(int j=i+1;j<a.size();j++){
+                if(mp.find(k-a[i]-a[j])!=mp.end()){
+                    vector<pair<int,int>> q = mp[k-a[i]-a[j]];
+                    for(int x=0;x<q.size();x++){
+                        if(i!=q[x].first&& i!=q[x].second && j!=q[x].first && j!=q[x].second){
+                            vector<int> pr = {a[i],a[j],a[q[x].first],a[q[x].second]};
+                            sort(pr.begin(),pr.end());
+                                ans.push_back(pr);
+                        }
+                    }
+                }
+                
+                mp[(a[i]+a[j])].push_back(make_pair(i,j));
+            }
+        }
+        set<vector<int>> st;
+        for(int i=0; i<ans.size();i++){
+            st.insert(ans[i]);
+        }
+        ans = vector<vector<int>>(st.begin(),st.end());
+        return ans;
+    }
+};
+
+```
 
 ---
 
-#### [3. Next Permutation](https://leetcode.com/problems/next-permutation/)
+#### [5. Next Permutation](https://leetcode.com/problems/next-permutation/)
 **Problem Statement:** A permutation of an array of integers is an arrangement of its members into a sequence or linear order.  
 For example, for arr = [1,2,3], the following are considered permutations of arr: [1,2,3], [1,3,2], [3,1,2], [2,3,1].  
 The next permutation of an array of integers is the next lexicographically greater permutation of its integer. More formally, if all the permutations of the array are sorted in one container according to their lexicographical order, then the next permutation of that array is the permutation that follows it in the sorted container. If such arrangement is not possible, the array must be rearranged as the lowest possible order (i.e., sorted in ascending order).
@@ -155,7 +190,7 @@ The next permutation of an array of integers is the next lexicographically great
 
 ---
 
-#### [4.Binary Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
+#### [6.Binary Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
 **Main Idea:**
 1. Find the pivot element first (around which the array is rotated i.e a decreasing pair, a[pivot] > a[pivot+1])
 2. Apply binary search in left or right side of pivot element as per its value. i.e if 0<=item<=pivot then serach in left else in right.
@@ -215,7 +250,7 @@ The next permutation of an array of integers is the next lexicographically great
     }
 ```
 
-#### [5. Finding the Duplicate number in linear (nlogn) time with O(1) space complexity](https://leetcode.com/problems/find-the-duplicate-number/)
+#### [7. Finding the Duplicate number in linear (nlogn) time with O(1) space complexity](https://leetcode.com/problems/find-the-duplicate-number/)
 **Problem:** Given an array of integers nums containing n + 1 integers where each integer is in the range [1, n] inclusive.  
 There is only one repeated number in nums, return this repeated number.  
 You must solve the problem without modifying the array nums and uses only constant extra space.  
@@ -260,7 +295,7 @@ public:
 
 ---
 
-#### [6. Merge two sorted arrays without extra space in O((n+m)log(n+m) time](https://practice.geeksforgeeks.org/problems/merge-two-sorted-arrays5135/1#)   
+#### [8. Merge two sorted arrays without extra space in O((n+m)log(n+m) time](https://practice.geeksforgeeks.org/problems/merge-two-sorted-arrays5135/1#)   
 
 ![mwes](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/mwes.png?raw=True)   
 **Main Idea:**  
@@ -297,7 +332,7 @@ public:
 
 ---
 
-#### [7. Counting Inversions in an array in O(nlongn) time](https://practice.geeksforgeeks.org/problems/inversion-of-array-1587115620/1#)
+#### [9. Counting Inversions in an array in O(nlongn) time](https://practice.geeksforgeeks.org/problems/inversion-of-array-1587115620/1#)
 **Main Idea**  
 1. Modify merge sort in a way that you count all inversion pairs while merging.
 
@@ -355,7 +390,7 @@ public:
 
 ---
 
-#### [8. Subarray with sum 0 in O(N) space and time](https://practice.geeksforgeeks.org/problems/subarray-with-0-sum-1587115621/1)
+#### [10. Subarray with sum 0 in O(N) space and time](https://practice.geeksforgeeks.org/problems/subarray-with-0-sum-1587115621/1)
 
 **Main idea:**  
 1. In a single loop maintain a sum , if sum==0 return true  
@@ -379,7 +414,7 @@ bool subArrayExists(int arr[], int n)
 
 ---
 
-#### [9. Minimum jumps to reach end of the array](https://practice.geeksforgeeks.org/problems/minimum-number-of-jumps-1587115620/1#)
+#### [11. Minimum jumps to reach end of the array](https://practice.geeksforgeeks.org/problems/minimum-number-of-jumps-1587115620/1#)
 **Main Idea:**  
 Two solutions exists: greedy and DP. DP takes O(n) time and O(n) space while greedy takes O(n) time and O(1) space
 But greedy is not intuitive and a little smart approach:
@@ -415,7 +450,7 @@ int minJumps(int arr[], int n){
 
 ---
 
-#### [10. Rotating an NXN matrix](https://leetcode.com/problems/rotate-image/submissions/)
+#### [12. Rotating an NXN matrix](https://leetcode.com/problems/rotate-image/submissions/)
 **Main Idea:**  
 1. Reverse the matrix
 2. Swap ij to ji for each row i starting with zero and j starting with i;
@@ -425,7 +460,7 @@ int minJumps(int arr[], int n){
 ![second](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/second.png?raw=true)
 
 
-#### [11. Spiral Matrix](https://practice.geeksforgeeks.org/problems/spirally-traversing-a-matrix-1587115621/1)
+#### [13. Spiral Matrix](https://practice.geeksforgeeks.org/problems/spirally-traversing-a-matrix-1587115621/1)
 **Main Idea:**  
 1. Traverse the 2D matrix in spiral form
 
