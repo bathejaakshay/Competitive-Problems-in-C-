@@ -168,7 +168,7 @@ string cycleDetection (vector<vector<int>>& edges, int n, int m)
 
 ---
 
-#### [3. Topological Sort using BFS](https://practice.geeksforgeeks.org/problems/topological-sort/1)
+#### [3. Topological Sort using BFS Kahn's Algo](https://practice.geeksforgeeks.org/problems/topological-sort/1)
 **Approach: Very Easy**
 1.After creating an adjacency list, create an indegree vector which keeps note of indeg of each node.
 2.Now initially push all nodes in queue whose indeg is 0;
@@ -207,7 +207,11 @@ vector<int> topoSort(int V, vector<int> adj[])
 	    return ans;
 	}
 ```
-
+ **Using DFS**:  
+ 1. Finding Topological Sort using DFS is also easy.
+ 2. We just maintain an extra stack and visited array
+ 3. Simple Call the DFS for all edges.
+ 4. The moment DFS for that particular node is over add its value into the stack. That way they will be topologicaly sorted in the stack.
 ---
 
 #### [4. Number of Islands](https://leetcode.com/problems/number-of-islands/submissions/)
