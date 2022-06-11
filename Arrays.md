@@ -91,6 +91,25 @@ vector<vector<int>> threeSum(vector<int>& nums) {
 ```
 
 ---
+
+#### [4. Four Sum](https://practice.geeksforgeeks.org/problems/find-all-four-sum-numbers1732/1#)
+
+**Problem** 
+Given an array of integers and another number. Find all the unique quadruple from the given array that sums up to the given number. TC shouldnt be more than O(n3)
+
+**Approach**
+1. We will use a hashmap `mp` with key k as sum and value as vector of pairs which has sum = k.
+2. Now for each pair we will see if k-sum of curr pair exist in `mp`. If yes then check for all the pairs corresponding to key k-sum. 
+3. 	The quadruple should have distinct indices otherwise it will mean a value from the same index is repeating. Add this quadruple into ans after sorting.
+4. 	push curr pair as value to key sum of hashmap
+5. Now After we have traversed all the pairs we have obtained the ans but it is not unique. So we create a set of vectors from the ans
+6. Then again we convert this set to vector of vectors and return it as ans.
+
+TC: For each pair we go through candidate pairs of quadruples: O(n3)
+
+
+---
+
 #### [3. Next Permutation](https://leetcode.com/problems/next-permutation/)
 **Problem Statement:** A permutation of an array of integers is an arrangement of its members into a sequence or linear order.  
 For example, for arr = [1,2,3], the following are considered permutations of arr: [1,2,3], [1,3,2], [3,1,2], [2,3,1].  
