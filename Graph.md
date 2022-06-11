@@ -347,3 +347,49 @@ class Solution
 ```
 
 ---
+
+#### [7. Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/)
+**Approach - DFS**
+1. A Biparitite graph is one which requires 2 colors to color all vertices. Or we can say we can divide it among two sets such that vertices in a set are not adjacent to each other.
+2. Using DFS it is a very simple and intuitive approach. Instead of using boolean visited array, we use int array to represent -> `-1 : not visited`, `0 : first colored`, `1: second colored`.
+3. Now we apply DFS and while travering adjacent nodes we color it with different than its parent.
+4. If we find the neighbour node is already colored with the same color as the current node then we return false. i.e Graph is not bipartite.
+
+```
+bool dfs(vector<vector<int>> &graph, vector<int> &color, int i){
+    for(int &j:graph[i]){
+        if(color[j] == -1){
+            color[j] = abs(1-color[i]);
+            if(dfs(graph,color,j)==false) return false;
+        }
+        else{
+            if(color[j] == color[i]){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+class Solution {
+public:
+    bool isBipartite(vector<vector<int>>& graph) {
+        vector<int> color(graph.size(),-1);
+        
+        for(int i=0;i<graph.size();i++){
+            if(color[i] == -1){
+                color[i]=0;
+                if(dfs(graph, color, i)==false) return false;
+            }
+        }
+        return true;
+    }
+};
+```
+
+**Approach-BFS**  
+1. This approach is also easy. Similar to DFS we maintain a single array to represent color and visited.
+2. Now while traversing adjacent nodes we color all its neighbours with different color than the present one. We also check if the neighbour node is already colored with the same color as current one.
+3. If yes then return false.
+
+---
+
