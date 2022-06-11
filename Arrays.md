@@ -97,7 +97,50 @@ vector<vector<int>> threeSum(vector<int>& nums) {
 **Problem** 
 Given an array of integers and another number. Find all the unique quadruple from the given array that sums up to the given number. TC shouldnt be more than O(n3)
 
-**Approach**
+**Approach 1 using 2 pointers**
+1. Sort the vector
+2. for each distinct pair (means no repetition for i and no repetition for j)(our final quadruple will always be {i,j,k,l} so make sure no repetitions  at first two locations)
+3. Now find another two numbers between j+1 and n whose sum with i and j is target and append it to ans. 
+4. This is done using two pointer approach we also make sure once we find such k and l then next k and l should be distinct.
+5. two pointer approach: while(k<l) if(sum==target){} else if (sum>target) l-- else k++
+
+```
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& a, int target) {
+        vector<vector<int>> ans;
+        sort(a.begin(),a.end());
+        int sum;
+        for(int i=0;i<a.size()-1;i++){
+            if(i!=0&& a[i]==a[i-1]) continue; \\ To ensure no repetition for first element of quadruple
+            
+            for(int j=i+1;j<a.size();j++){
+                if(j!=i+1 && a[j]==a[j-1]) continue; \\ To ensure no repetition for second element of quadruple
+                sum = a[i]+a[j];
+                int k = j+1;
+                int l = a.size()-1;
+                
+                while(k<l){
+                    
+                    if(1LL+ a[k]+a[l] + sum -1LL == target){
+                        ans.push_back({a[i],a[j],a[k],a[l]});  
+                        while(k<a.size()-1 && a[k] == a[k+1]) k++;  \\ To ensure no repetition for third element of quadruple
+                        while(l>j && a[l] == a[l-1]) l--;        \\ To ensure no repetition for fourth element of quadruple
+                        k++;
+                        l--;
+                    }
+                    else if(1LL + a[k] + a[l] +sum - 1LL> target) l--;
+                    else k++;
+                    
+                }
+                
+            }
+        }        
+       return ans;
+    }
+};
+```
+**Approach 2 Less efficient Approach using hashmap**
 1. We will use a hashmap `mp` with key k as sum and value as vector of pairs which has sum = k.
 2. Now for each pair we will see if k-sum of curr pair exist in `mp`. If yes then check for all the pairs corresponding to key k-sum. 
 3. 	The quadruple should have distinct indices otherwise it will mean a value from the same index is repeating. Add this quadruple into ans after sorting.
