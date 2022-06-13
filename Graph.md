@@ -397,3 +397,62 @@ public:
 
 ---
 
+
+#### [8. Dijkstra Using Minheap](https://practice.geeksforgeeks.org/problems/implementing-dijkstra-set-1-adjacency-matrix/1#)
+**Approach:**  
+1. Using BFS approach starting from source, relax each neighbour edge by checking `d[v] > d[u] + w(u,v)` and pushing into priority queue.
+2. We maintain boolean final vector which represents if the vertext is completed or not so that vertex doesnt repeat as we are pushing multiple copies of the vertex.
+
+O((V+E)logV)
+
+```
+class Solution
+{
+    struct compare{
+  bool operator()(const pair<int,int> &a, const pair<int,int> &b){
+      return a.first>b.first;
+  }  
+};
+
+	public:
+	//Function to find the shortest distance of all the vertices
+    //from the source vertex S.
+    vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
+    {
+        // Code here
+        vector<int> dist(V,INT_MAX);
+        vector<bool> final(V, false);
+        dist[S]=0;
+        priority_queue<pair<int,int>, vector<pair<int,int>> , Solution::compare> pq;
+        // cout<<"pushing"<<endl;
+        pq.push(make_pair(0,S));
+        // cout<<"S = "<<S<<endl;
+        // cout<<"psuhed="<<pq.top().first<<endl;        
+        while(!pq.empty()){
+            auto it = pq.top();
+            pq.pop();
+            if(!final[it.second]){
+                final[it.second] = true;
+                for(int i=0; i<adj[it.second].size();i++){
+                    
+                    int v = adj[it.second][i][0];
+                    int d = adj[it.second][i][1];
+                    // cout<<" u = "<<it.second<<" v = "<<v<<" d="<<d<<endl;
+                    if(!final[v]){
+                        
+                        if(dist[v]>dist[it.second] + d){
+                            dist[v] = dist[it.second]+d;
+                            pq.push(make_pair(dist[v],v));
+                        }
+                        
+                    }
+                }
+            }
+            
+        };
+        return dist;
+    }
+};
+
+```
+
