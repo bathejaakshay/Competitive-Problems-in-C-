@@ -455,4 +455,14 @@ class Solution
 };
 
 ```
+#### [9. Finding Strongly Connected components - Kosaraju's]()
 
+**Approach:**
+1. Intuition is that we need to apply dfs from sink to source fashion, i.e we start applying it on sink first then its previous nodes.
+2. Three step process:
+3. First step is to find Topological Order or decreasing order of finish time in dfs. 
+4. Second step is to transpose the graph i.e reverse the edges (This will give as sink to source order).
+5. Now using the order generated in step 3 do dfs traversal on transpose of the graph. If doing traversal there are no more nodes unvisited then those many nodes are strongly connected. Now choose next node in the order generated in step 3. This node will belong to another strongly connected component.
+
+```
+```
