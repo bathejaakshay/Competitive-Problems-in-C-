@@ -466,3 +466,20 @@ class Solution
 
 ```
 ```
+
+#### [10. Bellman Ford's ]()
+**Problem Statement:**  Find a short path from a vertex src to every other vertex if the graph contains negative weights.  
+**Approach**:
+1. Relax every edge V-1 times because the number of edges in the min path for a source vertex s cant be more than of V-1 length.
+
+**Algo**:
+1. Initialize distance vector d of size V with value INT_MAX;
+2. set d[src]=0;
+3. for i in range(V-1): 
+4. 	for every edge(u,v):
+5. 		if (d(v)>d(u) + w(u,v)): (Relax edge)
+6. 			d(v) = d(u) + w(u,v)
+7. 		
+
+**Time Complexity O(VE)**
+
