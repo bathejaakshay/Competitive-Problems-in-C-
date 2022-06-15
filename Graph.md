@@ -535,7 +535,7 @@ vector<vector<int>> stronglyConnectedComponents(int n, vector<vector<int>> &edge
 }
 ```
 
-#### [10. Bellman Ford's ]()
+#### [10. Bellman Ford's ](https://www.codingninjas.com/codestudio/problems/2041977?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1)
 **Problem Statement:**  Find a short path from a vertex src to every other vertex if the graph contains negative weights.  
 **Approach**:
 1. Relax every edge V-1 times because the number of edges in the min path for a source vertex s cant be more than of V-1 length.
@@ -551,3 +551,22 @@ vector<vector<int>> stronglyConnectedComponents(int n, vector<vector<int>> &edge
 
 **Time Complexity O(VE)**
 
+```
+int bellmonFord(int n, int m, int src, int dest, vector<vector<int>> &edges) {
+    // Write your code here.
+    // For V-1 times relax each edge
+    vector<int> dist(n, INT_MAX);
+    dist[src-1] = 0;
+    for(int it=0;it<n-1;it++){
+        for(int i=0; i<edges.size();i++){
+            int u=edges[i][0], v=edges[i][1], w=edges[i][2];
+            if(dist[u-1] == INT_MAX) continue;
+            if(dist[v-1] > dist[u-1]  + w ){
+                dist[v-1] = dist[u-1] + w;
+            }
+        }
+    }
+    if(dist[dest-1]==INT_MAX) return 1000000000;
+    return dist[dest-1];
+}
+```
