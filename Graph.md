@@ -546,8 +546,7 @@ vector<vector<int>> stronglyConnectedComponents(int n, vector<vector<int>> &edge
 3. for i in range(V-1): 
 4. 	for every edge(u,v):
 5. 		if (d(v)>d(u) + w(u,v)): (Relax edge)
-6. 			d(v) = d(u) + w(u,v)
-7. 		
+6. 			d(v) = d(u) + w(u,v)		
 
 **Time Complexity O(VE)**
 
