@@ -455,7 +455,7 @@ class Solution
 };
 
 ```
-#### [9. Finding Strongly Connected components - Kosaraju's]()
+#### [9. Finding Strongly Connected components - Kosaraju's](https://www.codingninjas.com/codestudio/problems/985311?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1)
 
 **Approach:**
 1. Intuition is that we need to apply dfs from sink to source fashion, i.e we start applying it on sink first then its previous nodes.
@@ -465,6 +465,74 @@ class Solution
 5. Now using the order generated in step 3 do dfs traversal on transpose of the graph. If doing traversal there are no more nodes unvisited then those many nodes are strongly connected. Now choose next node in the order generated in step 3. This node will belong to another strongly connected component.
 
 ```
+void add_edge(vector<vector<int>> & adjlist, int u,int v){
+    adjlist[u].push_back(v);
+    return;
+}
+void dfs(vector<vector<int>> &adjlist, stack<int> & st, int i, vector<bool> &visited){
+    for(int &x : adjlist[i]){
+        if(!visited[x]){
+            visited[x]=true;
+            dfs(adjlist, st, x, visited);
+            st.push(x);
+        }
+    } 
+    return;
+}
+
+void dfs2(vector<vector<int>> &adjlist, vector<bool> &visited, int u, vector<int> &cand){
+    for(int &x: adjlist[u]){
+        if(!visited[x]){
+            visited[x] = true;
+            cand.push_back(x);
+            dfs2(adjlist, visited, x, cand);
+        }
+    }
+    return;
+}
+vector<vector<int>> stronglyConnectedComponents(int n, vector<vector<int>> &edges)
+{
+    // Write your code here.
+    vector<vector<int>> adjlist(n);
+    vector<vector<int>> alist(n);    
+    for(int i=0; i<edges.size(); i++){
+        add_edge(adjlist, edges[i][0], edges[i][1]);
+        add_edge(alist, edges[i][1], edges[i][0]);
+    }
+    
+    // Step 1 : Using DFS sort in decreasing order of end times
+    
+    vector<bool> visited(n,false);
+    stack<int> st;
+    for(int i=0;i<n;i++){
+        if(!visited[i]){
+            visited[i] = true;
+            dfs(adjlist, st, i, visited);
+            st.push(i);
+        }    
+    }
+    
+    // Step 2: Transpose of the graph or Adjlist Done in A list;
+    
+    // Step 3: Again dfs in the stack order
+    vector<bool> visit(n, false);
+    vector<vector<int>> ans;
+     while(!st.empty()){
+         int u = st.top();
+         st.pop();
+         if(!visit[u]){
+             vector<int> cand;
+             visit[u]=true;
+             cand.push_back(u);
+             dfs2(alist, visit, u, cand);
+             ans.push_back(cand);       
+         }
+         
+     }
+    return ans;
+    
+    
+}
 ```
 
 #### [10. Bellman Ford's ]()
