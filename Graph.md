@@ -581,7 +581,7 @@ We Try removing each vertex and find number of connected components using kojaru
 **Little Efficient: DFS TREE**:
 When we traverse a graph using dfs we obtain a dfs root tree. i.e starting from a vertex say "src" if I visit its neighbours in a dfs fashion and comeback to src and look for other neighbours of it. Then that means dfs has multiple children.  
 <figure>
-<center><img src="https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/labse1.png?raw=True" alt="drawing" width="400"/></center>
+<center><img src="https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/gfg1.png?raw=True" alt="drawing" width="400"/></center>
 <center><figcaption> LaBSE Model Architecture</figcaption></center>
 </figure>
 
