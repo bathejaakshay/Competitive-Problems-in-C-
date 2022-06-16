@@ -582,7 +582,6 @@ We Try removing each vertex and find number of connected components using kojaru
 When we traverse a graph using dfs we obtain a dfs root tree. i.e starting from a vertex say "src" if I visit its neighbours in a dfs fashion and comeback to src and look for other neighbours of it. Then that means dfs has multiple children.  
 <figure>
 <center><img src="https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/gfg1.png?raw=True" alt="drawing" width="400"/></center>
-<center><figcaption> LaBSE Model Architecture</figcaption></center>
 </figure>
 
 1. for each vertex find its dfs tree and see if the root has more than 1 child. If yes then it is an articulation point.
