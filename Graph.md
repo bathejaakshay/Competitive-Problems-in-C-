@@ -569,3 +569,21 @@ int bellmonFord(int n, int m, int src, int dest, vector<vector<int>> &edges) {
     return dist[dest-1];
 }
 ```
+
+#### 11. Articulation Points
+
+**Problem:**  
+Given an undirected and connected graph, articulations points are the set of those vertices, removal of which divides the graph into more than 1 connected components.
+
+**Naive Approach:**  
+We Try removing each vertex and find number of connected components using kojaru's or simple dfs or bfs. `TC O((V+E)*(V+E))`. 
+
+**Little Efficient: DFS TREE**:
+When we traverse a graph using dfs we obtain a dfs root tree. i.e starting from a vertex say "src" if I visit its neighbours in a dfs fashion and comeback to src and look for other neighbours of it. Then that means dfs has multiple children.  
+<figure>
+<center><img src="https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/labse1.png?raw=True" alt="drawing" width="400"/></center>
+<center><figcaption> LaBSE Model Architecture</figcaption></center>
+</figure>
+
+1. for each vertex find its dfs tree and see if the root has more than 1 child. If yes then it is an articulation point.
+**TC** : O(V(V+E))
