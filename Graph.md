@@ -586,3 +586,9 @@ When we traverse a graph using dfs we obtain a dfs root tree. i.e starting from 
 
 1. for each vertex find its dfs tree and see if the root has more than 1 child. If yes then it is an articulation point.
 **TC** : O(V(V+E))
+
+**Second Efficient Approach**:
+We first construct a directed DFS tree. Now for each non root node say u, if its child say v has no back edge to the ancestor nodes of u (i.e parents of node u). Then node u is an articulation point.  
+<figure>
+<center><img src="https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/gfg-acp.png?raw=True" alt="drawing" width="400"/></center>
+</figure>
