@@ -40,3 +40,37 @@ The same number may be chosen from candidates an unlimited number of times. Two 
 ```
 
 ---
+
+#### [2. Finding All permutations of a string/array](https://www.codingninjas.com/codestudio/problems/758958?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1)
+
+**Approach - Backtracking with swapping**:
+1. The intution is we fix an index and start swapping it with all other indices values ahead of it. and this is done n times;
+2. So for first time  we swap first index it with n numbers (including itself)
+3. For second time we swap second index with n-1 numbers  (including itself, leaving number at first index as it is fixed)
+4. For third time we swap third index with n-2 numbers
+5. Little tricky but interesting approach
+
+`T.c : n!*n`
+
+```
+void permute(string &s,vector<string> & ans, int index){
+    if(index == s.length()) {
+        ans.push_back(s);
+    }
+    else{
+        for(int i=index; i<s.length(); i++){
+            swap(s[index],s[i]);
+            permute(s, ans, index+1);
+            swap(s[index],s[i]);
+        }
+    }
+}
+vector<string> findPermutations(string &s) {
+    // Write your code here.
+    vector<string> ans;
+    permute(s,ans, 0);
+    return ans;
+}
+```
+
+---
