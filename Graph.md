@@ -592,3 +592,87 @@ We first construct a directed DFS tree. For root node we know if there exist mor
 <figure>
 <center><img src="https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/gfg-acp.png?raw=True" alt="drawing" width="400"/></center>
 </figure>
+
+**Implementation of Second Approach**:
+
+<figure>
+<center><img src="https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/gfg1.png?raw=True" alt="drawing" width="400"/></center>
+</figure>
+
+
+1. The key idea is two maintain two things for each `u` vertex: Its discovery time `disc` (the time we traverse that node) and `low` discovery time of a node which is reachable from `u` and is the least.
+2. Remember that leaf nodes can never be cut vertex
+3. For each non root node if its `disc[u] <= low[u]` then u is a cut vertex or articulation point.
+4. **DFS**:
+5. We also maintain another vector namely `parent` which maintains the parent of current node. This is to check in dfs if my child `v` is my parent then we dont consider it to update `low[u]`.
+6. We can start with any source node say `u`. We also maintain visited array.
+7. We apply dfs in the following way
+8. Intialize static time = 0
+9. Set both `disc[u] and low[u]  to ++time`
+10. Set visited[u] = true
+11. Now for each child `v` of `u` :
+12. if `v` not visited then set `par[v]=u` and call dfs on `v`.
+13. We set `low[u] = min(low[u] , low[v])`   // This means that the lowest discovery is either u itself or the least one reachable by its child.
+14. if `v` was visited and and `parent[u]!=v` then also set `low[u] = min(low[u] , low[v])`  
+15. Once we have done traversing all children of u
+16. We see if u is a root node, if it is then if it had more than one unvisited child (during traversing just maintain count) then its an articulation point.
+17. If it is a non root and non leaf node and  `disc[u] == low[u]` then `u` is an articulation point.
+
+```
+void dfs(vector<vector<int>> &adjlist,int u, vector<bool> &visited, vector<int> &disc, vector<int> &low, vector<int> &par, vector<int> &ans){
+    
+    static int time = 0;
+    visited[u] = true;
+    ++time;
+    disc[u] = low[u] = time;
+    int cnt = 0;
+    for (int &x : adjlist[u]){
+        if(!visited[x]){
+            cnt++;  //Maintaining count of unvisited children for root node
+            par[x] = u;
+            dfs(adjlist, x, visited, disc, low, par, ans);
+            low[u] = min(low[u], low[x]);
+            
+            // if(low[x] > disc[u]){                               //Code for bridge
+            // cout<<" bridge : "<<u<<" "<<x<<endl;
+        }
+        else if(x!=par[u]){
+            low[u] = min(low[u], low[x]); 
+        }
+
+
+    }
+    if(disc[u] == 1 && cnt>1){  //For root node.
+        ans.push_back(u);   
+    }
+    else if(disc[u]!=1 && adjlist[u].size()>1 && disc[u]<=low[u]){  
+
+                ans.push_back(u);  //For non root non leaf node.
+            }
+    
+}
+class Solution {
+public:
+    vector<int> criticalConnections(int n, vector<vector<int>>& connections) {
+        // create adjlist
+        // DO dfs and note discovery and smallest node reachable
+        vector<vector<int>> adjlist(n);
+        for(int i=0; i<connections.size(); i++){
+            add_edge(adjlist, connections[i][0], connections[i][1]);
+        }
+        vector<int> disc(n);
+        vector<int> low(n);
+        vector<bool> visited(n, false);
+        vector<int> par(n,-1);
+        int count = 0;
+        vector<int> ans;
+        for(int i=0; i<adjlist.size(); i++){
+            if(!visited[i]){
+                dfs(adjlist, i, visited, disc, low, par, ans);
+            }
+        } 
+        return ans;
+    }
+};
+
+```
