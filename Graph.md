@@ -687,8 +687,13 @@ public:
 
 ---
 
-#### 13 Find Strongly Connected Components using Tarzan's.
+#### 13 Find Strongly Connected Components using Tarjan's.
 **Approach:**
+
+<figure>
+<center><img src="https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/tarzan.png?raw=True" alt="drawing" width="400"/></center>
+</figure>
+
 1. This is a very simple approach. Kojaru's algo took two parse of DFS but Tarzan takes only one.
 2. We use the same concept of discovery and lowest reachable discovery as in Bridges and Articulation points.
 3. We have a directed graph and we need to find the strongly connected componenets.
