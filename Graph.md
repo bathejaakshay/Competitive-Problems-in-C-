@@ -678,12 +678,62 @@ public:
 ```
 ---
 
-#### 12 Finding Bridges in a graph
+#### [12 Finding Bridges in a graph](https://leetcode.com/problems/critical-connections-in-a-network/submissions/)
 **Approach:**
 1. Bridges are the set of cut edges in a graph
 2. The idea is exactly the same as in the articulation points. We find discovery and lowest discovery reachable for each node. (low is used to represent if ancestors are reachable)
 3. Now for an edge `(u,v)` if low[v] <= disc[u] then it is not a bridge   because ancestors are reachable from v.
-4. The code is commented in the above code.
+```
+
+void add_edge(vector<vector<int>> & adjlist, int u, int v){
+    adjlist[u].push_back(v);
+    adjlist[v].push_back(u);
+}
+void dfs(vector<vector<int>> &adjlist, vector<bool> &visited, vector<int> &disc, vector<int> &low, int i, vector<vector<int>> & ans, vector<int> &par){
+    static int time = 0;
+    low[i] = disc[i] = ++time;
+    visited[i] = true;
+    for(int &x : adjlist[i]){
+        if(!visited[x]){
+            par[x] = i; 
+            dfs(adjlist, visited, disc, low, x, ans, par);
+            
+            low[i] = min(low[i], low[x]);
+            if(low[x]>disc[i]){
+                ans.push_back({i,x});
+            }
+        }
+        else{
+            if(x!=par[i]){
+                low[i] = min(low[i], low[x]);
+            }
+        }
+    }
+    
+}
+class Solution {
+public:
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        // create adjlist
+        // DO dfs and note discovery and smallest node reachable
+        vector<vector<int>> adjlist(n);
+        for(int i=0;i<connections.size();i++){
+            add_edge(adjlist, connections[i][0], connections[i][1]);
+        }
+        vector<int> disc(n);
+        vector<int> low(n);
+        vector<bool> visited(n, false);
+        vector<vector<int>> ans;
+        vector<int> par(n, -1);
+        for(int i=0; i<adjlist.size(); i++){
+            if(!visited[i]){
+                dfs(adjlist, visited, disc, low, i, ans, par);    
+            }
+        }
+        return ans;
+    }
+};
+```
 
 ---
 
