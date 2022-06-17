@@ -678,11 +678,91 @@ public:
 ```
 ---
 
-#### Finding Bridges in a graph
+#### 12 Finding Bridges in a graph
 **Approach:**
 1. Bridges are the set of cut edges in a graph
 2. The idea is exactly the same as in the articulation points. We find discovery and lowest discovery reachable for each node. (low is used to represent if ancestors are reachable)
 3. Now for an edge `(u,v)` if low[v] <= disc[u] then it is not a bridge   because ancestors are reachable from v.
 4. The code is commented in the above code.
+
+---
+
+#### 13 Find Strongly Connected Components using Tarzan's.
+**Approach:**
+1. This is a very simple approach. Kojaru's algo took two parse of DFS but Tarzan takes only one.
+2. We use the same concept of discovery and lowest reachable discovery as in Bridges and Articulation points.
+3. We have a directed graph and we need to find the strongly connected componenets.
+4. We need to rememeber the main concept that, after we have build up low and high for all nodes. After starting from leaf nodes whenever we find `low[u] = disc[u]` then it means all nodes beneath than node is a part of some strongly connected component.
+5. We make a use of stack to keep all nodes while traversing and once all the child nodes are traversed for a node `u` we check this condition `low[u] = disc[u]`. And pop it.
+6. We also make use of extra vector namely stack_member which keeps record of the nodes currently present in the stack.
+7. stack_memeber if used to see if for a node `u` we traverse a child node which is visited and not a stack_member than that means it is a cross edge.
+8. We dont update low when we see cross edge because it is not a back_edge.
+
+```
+void add_edge(vector<vector<int>> &adjlist, int u, int v){
+	adjlist[u].push_back(v);
+}
+
+
+dfs(vector<vector<int>> &adjlist, int u, vector<int> &d, vector<int>&low, vector<bool> &visited, vector<bool> &stmemb, vector<vector<int>> &ans, stack<int> &st){
+
+	static int time = 0;
+	d[u] = low[u] = ++time;
+	visited[u] = true;
+	st.push(u);
+	stmemb[u]=true;
+
+	for(int &x : adjlist[u]){
+		if(!visited[x]){
+			dfs(adjlist, x, d, low, visited, stmemb, ans, st);
+			low[u] = min(low[u],low[x]);
+		}
+		else if(stmemb[x]){
+			low[u] = min(low[u], low[x]);
+		}
+	}
+
+	if(low[u] == d[u]){
+		vector<int> cand;
+		while(!st.empty() && st.top()!= u){
+			cand.push_back(st.top());
+			stmemb[st.top()] = false;
+			st.pop();
+		}
+		if(!st.empty() && st.top() == u){
+			cand.push_back(st.top());
+			stmemb[st.top()] = false;
+			st.pop();
+		}
+		ans.push_back(cand);
+	}
+
+}
+class Solution {
+public:
+    vector<vector<int>> SCC(int n, vector<vector<int>>& edges) {
+        // create adjlist
+        // DO dfs and note discovery and smallest node reachable
+        vector<vector<int>> adjlist(n);
+        for(int i=0; i<edges.size(); i++){
+            add_edge(adjlist, edges[i][0], edges[i][1]);
+        }
+         
+        vector<int> d(n);
+        vector<int> low(n);
+        vector<bool> visited(n,false);
+        vector<bool> stmemb(n,false);
+        stack<int> st;
+        vector<std::vector<int>> ans;
+        for(int i=0;i<adjlist.size();i++){
+        	if(!visited[i]){
+        		dfs(adjlist, i, d, low, visited, stmemb, ans, st);
+        	}
+        }
+        return ans;
+    }
+};
+
+```
 
 ---
