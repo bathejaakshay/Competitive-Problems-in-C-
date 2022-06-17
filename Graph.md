@@ -691,7 +691,7 @@ public:
 **Approach:**
 
 <figure>
-<center><img src="https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/tarzan.png?raw=True" alt="drawing" width="400"/></center>
+<center><img src="https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/tarzanalgo.png?raw=True" alt="drawing" width="400"/></center>
 </figure>
 
 1. This is a very simple approach. Kojaru's algo took two parse of DFS but Tarzan takes only one.
