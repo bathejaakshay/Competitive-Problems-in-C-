@@ -74,3 +74,105 @@ vector<string> findPermutations(string &s) {
 ```
 
 ---
+
+#### 3. Pattern for Finding all subsequences of an array.
+**Approach:**
+1. We use recursion with backtracking.
+2. For each element of an array we have two choices either to take it or not in our ans.
+3. Starting from zero index we make two recurvisive funciton calls to next index , one including element at index 0 and another excluding.
+4. This is the pattern to remember.
+
+
+```
+class Solution{
+public:
+	void subseq(int i, vector<int> &arr, vector<int> &curr_ans, vector<vector<int>> &ans){
+		if(i>=arr.size()) {
+			ans.push_back(curr_ans);
+			return;
+		}
+
+		curr_ans.push_back(arr[i]);   
+		subseq(i+1, arr, curr_ans, ans); // subseqs containing element arr[i]
+		curr_ans.pop_back();
+		subseq(i+1, arr, curr_ans, ans); // subseqs not containing element arr[i]
+	}
+};
+
+int main(int argc, char const *argv[])
+{
+	/* code */
+	int n;
+	cin>>n;
+	vector<int> q(n);
+	for(int i=0;i<n;i++){
+		cin>>q[i];
+	}
+
+	vector<int> curr_ans;
+	vector<vector<int>> ans;
+
+	Solution s;
+
+	s.subseq(0, q, curr_ans, ans);
+	for (int i = 0; i < ans.size(); ++i)
+	{
+		/* code */
+		for(int j=0; j<ans[i].size(); j++){
+			cout<<ans[i][j]<<" "; 
+		}
+		cout<<endl;
+	}
+
+	return 0;
+}
+```
+
+#### 4. String Transfer Using 2 operations.
+**Problem** There are 3 string A, B, C. Initially B and C are empty and only A has characters (only lowercased alphabets). Can perform the following operations,
+```
+1. Remove first character from A and append to B
+2. Remove last character from B and append to C
+```  
+We need to perform the operation and make string A and B empty and only C should contain the characters. Find the lexicographically smallest string C that can be made by performing the operations.
+
+**Approach :**
+1. We will be generating all the strings possible using only these two operations.
+2. We will start with index 0.
+3. For each index we will try pushing a[i] at each location of B and popping the rest to c. 
+4. We do this recursively for i=0 to n-1
+5. This is a brute force approach T.C O(n^n)
+
+```
+main: string a <- input, b = "", c = "";
+void rep(string &a, string b, string c, int i, string &ans){
+	if(i>=a.length()) {
+		while(!b.empty()){
+			c+=(b.back());
+			b.pop_back();
+		}
+		if(c.size() == a.size()){
+			if(ans == "" || ans>c ){
+				ans = c;
+			}
+			cout<<c<<endl;
+		}
+
+		return;
+	}
+	b.push_back(a[i]);
+	rep(a, b, c, i+1, ans);
+	b.pop_back();
+	while(!b.empty()){
+		c += b.back();
+		b.pop_back();
+		b.push_back(a[i]);
+		rep(a,b,c,i+1, ans);
+		b.pop_back();		
+	}
+
+	return;
+	
+}
+
+```
