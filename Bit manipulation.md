@@ -48,3 +48,6 @@ void subseq(string &s, vector<string> &ans){
 
 }
 ```
+**TC**=O((2^n)*n)
+
+---
