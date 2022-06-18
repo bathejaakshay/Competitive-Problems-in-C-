@@ -70,7 +70,7 @@ The same number may be chosen from candidates an unlimited number of times. Two 
 
 ```
 ---
-#### [1. ii Combination Sum 2]()
+#### [1. ii Combination Sum 2](https://leetcode.com/problems/combination-sum-ii/discuss/2167453/C%2B%2B-Simple-Basic-Backtracking-approach.)
 **Approach:**
 1. Simple approach as subseq sum. The Difference is that array contains duplicates and we need unique combination whose sum is target.
 2. For this sort the array initially.
