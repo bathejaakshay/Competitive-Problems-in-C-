@@ -821,3 +821,36 @@ public:
 ```
 
 ---
+
+#### [14. Kruskal using  Union and Find](codingninjas.com/codestudio/problems/1082553?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0)
+
+**Approach**
+1. You can find implementation of Union and find in `Disjoint_Set.md` file.
+2. Algo is really simple. Sort the edges based on their weights.
+3. Now traversing sorted edges in increasing order. 
+4. We check if the vertices of an edge lie in same set, if it does then we cant put an edge between them as it will lead  to a cycle.
+5. if find(u)!=find(v) then we Union(u,v) and result+=(w(u,v))
+
+```
+int kruskalMST(int n, int m, vector<vector<int>> &graph) {
+	// Write your code here.
+    
+    sort(graph.begin(), graph.end(), compare);
+    // Kruskal take edges in increasing order of weight and add it in the graph until we have n-1 edges. We dont add in case of cycles.
+    int result = 0;
+    vector<int> parent(n);
+    for(int i=0; i<parent.size(); i++) parent[i] = i;
+    vector<int> rank(n, 0);
+    for(int i=0, s=0; i< graph.size() && s<n-1; i++){
+        int u = graph[i][0] - 1, v = graph[i][1] - 1;
+        if(find(u, rank, parent)!=find(v, rank, parent)){
+            Union(u, v, rank, parent);
+            s++;
+            result += (graph[i][2]);
+        }
+        
+    }
+    return result;
+    
+}
+```
