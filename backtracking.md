@@ -4,7 +4,7 @@ The same number may be chosen from candidates an unlimited number of times. Two 
 
 ![CombSum](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/combsum.png?raw=True)
 
-**Approach 1: Not Best : TC: O(n^n) ** 
+**Approach 1**: **Not Best** : **TC:O(n^n)** 
 1. For any sych combinations and permutations where things can repeat, we use backtracking. We try one solution if it aint good we go back and try another.
 2. In a recurrsion we use a for loop from currIndex till end. (we use currIndex as we need only unique comb, we already have all req comb with previous Index hence keep record of the currIndex)
 3. we push_back our current value before calling the function. If the function returns we pop_back(). (To maintain consistency)
