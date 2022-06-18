@@ -70,6 +70,38 @@ The same number may be chosen from candidates an unlimited number of times. Two 
 
 ```
 ---
+#### [1. ii Combination Sum 2]()
+**Approach:**
+1. Simple approach as subseq sum. The Difference is that array contains duplicates and we need unique combination whose sum is target.
+2. For this sort the array initially.
+3. Now picking the element is same.
+4. While not picking the element at index i make sure you do not pick any of the next continous elements which have same value as i's.
+
+```
+void comb_sum(vector<int> &candidates, int index, int target, vector<int> &curr_ans, vector<vector<int>> &ans){
+        if(index >= candidates.size()){
+            if(target==0){
+                ans.push_back(curr_ans);
+            }
+            return;
+        }
+        
+        //Pick the element at current index
+        
+        if(candidates[index]<=target){
+            curr_ans.push_back(candidates[index]);
+            comb_sum(candidates, index+1, target-candidates[index], curr_ans, ans);
+            curr_ans.pop_back();
+        }
+        
+        //Do not pick the element at current index and do dont pick all the next contigous elements which have same value as index's.
+        
+        index++;
+        while(index<candidates.size()&& candidates[index-1] == candidates[index]) index++;
+        comb_sum(candidates, index, target, curr_ans, ans);
+        return;
+    }
+```
 
 #### [2. Finding All permutations of a string/array](https://www.codingninjas.com/codestudio/problems/758958?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1)
 
