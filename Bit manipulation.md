@@ -19,3 +19,32 @@ int largestCombination(vector<int>& cs) {
 }
 ```
 ---
+
+#### 2. Powerset or all subsequences of strings Brute Force using Bit Manipulation
+**Approach**:
+1. Given a string : abc, we need to find all of its subsequences.
+2. Our approach is to take 1 to 2^(n)-1 represent all the subsequences in binary format
+3. 1: 001 i.e take only first char , 3: 011 take first and second char.
+4. Now For all these numbers we find what all bits are set at which index and we append char at that index to our candidate subseq string.
+
+```
+void subseq(string &s, vector<string> &ans){
+
+	int x = pow(2, s.length())-1;
+
+	for(int i=0; i<=x; i++){  // Iterating 0 to 2^(s.length()) -1
+
+		string cand="";
+		for(int j=0; j<s.length(); j++){	// Iterating 0 to s.length() -1 to compare check set bits
+			if(i&(1<<j)){   // Most important, check if jth bit is set in i.
+				cand+=(s[j]);
+			}
+		}
+		ans.push_back(cand);
+
+	}
+
+	return;
+
+}
+```
