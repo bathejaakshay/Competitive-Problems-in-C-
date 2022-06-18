@@ -1,10 +1,10 @@
-#### [Combination Sum](https://leetcode.com/problems/combination-sum/)
+#### [1. Combination Sum](https://leetcode.com/problems/combination-sum/)
 Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.
 The same number may be chosen from candidates an unlimited number of times. Two combinations are unique if the frequency of at least one of the chosen numbers is different.  
 
 ![CombSum](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/combsum.png?raw=True)
 
-**MainIdea:** 
+**Approach 1: Not Best : TC: O(n^n) ** 
 1. For any sych combinations and permutations where things can repeat, we use backtracking. We try one solution if it aint good we go back and try another.
 2. In a recurrsion we use a for loop from currIndex till end. (we use currIndex as we need only unique comb, we already have all req comb with previous Index hence keep record of the currIndex)
 3. we push_back our current value before calling the function. If the function returns we pop_back(). (To maintain consistency)
@@ -38,7 +38,37 @@ The same number may be chosen from candidates an unlimited number of times. Two 
     }
 };
 ```
+**Approach 2:**
+1. This is a very simple approach. Just Following the pattern of subseq sum.
+2. This is a question of pick and not pick index i.
+3. We start from index 0 and call recursion for picking index and not picking index.
+4. The difference in subseq prob and this prob is that in this prob we can pick a index any number of times. So in the recursive call of picking i, we again pass i as i is again a candidate to be picked.
 
+**TC: O(2^t * k)**
+```
+ void comb_sum(vector<int> &candidates, int index, int target, vector<int> &curr_ans,vector<vector<int>> &ans){
+        if(index == candidates.size()) {
+            if(target == 0){
+                ans.push_back(curr_ans);
+            }
+            return;
+        }
+        
+        //Pick the element at index i
+        if(candidates[index] <=target){
+            curr_ans.push_back(candidates[index]);
+            comb_sum(candidates, index, target-candidates[index], curr_ans, ans);
+            curr_ans.pop_back();
+        }
+        
+        //Donot pick the element at index i
+        comb_sum(candidates, index+1, target, curr_ans, ans);
+        return;
+        
+        
+    }
+
+```
 ---
 
 #### [2. Finding All permutations of a string/array](https://www.codingninjas.com/codestudio/problems/758958?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1)
