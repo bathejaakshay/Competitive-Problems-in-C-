@@ -159,6 +159,37 @@ bool subseq(int i, vector<int> &arr, vector<int> &curr_ans, vector<vector<int>> 
 };
 
 ```
+#### 3 (iii) Pattern of printing Count of all subsequences with sum k
+**Approach**
+1. In this pattern in the base case we return 1 when sum==k 
+2. We sum up all the returned values for the recursive calls and return that value as ans.
+
+```
+int subseq(int i, vector<int> &arr, int sum, int req){
+		if(i>=arr.size()) {
+			if(sum == req) {
+				return 1;
+			}
+			return 0;
+		}
+
+		// Pick i in the subsequence
+		// curr_ans.push_back(arr[i]);
+		sum+=(arr[i]);
+		int l = subseq(i+1, arr, sum, req);
+		sum-=(arr[i]);
+		// curr_ans.pop_back();
+
+		// Not pick i
+		int r = subseq(i+1, arr, sum, req);
+
+		return l+r;
+	}
+};
+```
+
+---
+
 #### 4. String Transfer Using 2 operations.
 **Problem** There are 3 string A, B, C. Initially B and C are empty and only A has characters (only lowercased alphabets). Can perform the following operations,
 ```
