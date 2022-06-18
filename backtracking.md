@@ -44,7 +44,7 @@ The same number may be chosen from candidates an unlimited number of times. Two 
 3. We start from index 0 and call recursion for picking index and not picking index.
 4. The difference in subseq prob and this prob is that in this prob we can pick a index any number of times. So in the recursive call of picking i, we again pass i as i is again a candidate to be picked.
 
-**TC: O(2^t * k)**
+**TC:O(2^t * k)**
 ```
  void comb_sum(vector<int> &candidates, int index, int target, vector<int> &curr_ans,vector<vector<int>> &ans){
         if(index == candidates.size()) {
