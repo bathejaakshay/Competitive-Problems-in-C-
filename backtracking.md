@@ -75,7 +75,7 @@ vector<string> findPermutations(string &s) {
 
 ---
 
-#### 3. Pattern for Finding all subsequences of an array.
+#### 3. (i) Pattern for Finding all subsequences of an array.
 **Approach:**
 1. We use recursion with backtracking.
 2. For each element of an array we have two choices either to take it or not in our ans.
@@ -126,8 +126,39 @@ int main(int argc, char const *argv[])
 
 	return 0;
 }
-```
 
+```
+#### 3. (ii) Pattern for printing anyone 1 subsequence with sum k
+**Approach**
+1. For printing 1 we can return boolean values to keep record of the recursive calls i.e if they found the subseq or not.
+
+```
+bool subseq(int i, vector<int> &arr, vector<int> &curr_ans, vector<vector<int>> &ans, int sum, int req){
+		if(i>=arr.size()) {
+			ans.push_back(curr_ans);
+			if(sum == req) {
+				for(int x:curr_ans) cout<<x<<" ";
+					cout<<endl;
+				return true;
+			}
+			return false;
+		}
+
+		// Pick i in the subsequence
+		curr_ans.push_back(arr[i]);
+		sum+=(arr[i]);
+		if(subseq(i+1, arr, curr_ans, ans,sum, req)) return true;
+		sum-=(arr[i]);
+		curr_ans.pop_back();
+
+		// Not pick i
+		if(subseq(i+1, arr, curr_ans, ans,sum, req)) return true;
+
+		return false;
+	}
+};
+
+```
 #### 4. String Transfer Using 2 operations.
 **Problem** There are 3 string A, B, C. Initially B and C are empty and only A has characters (only lowercased alphabets). Can perform the following operations,
 ```
