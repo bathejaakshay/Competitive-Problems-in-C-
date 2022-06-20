@@ -129,6 +129,7 @@ void perm(vector<int> &nums, vector<bool> &visited, vector<int> &curr_ans, vecto
         
     }
 ```
+**TC** n! function calls * n time of each function call -> n!*n
 
 **Approach 2- Backtracking with swapping**:
 1. The intution is we fix an index and start swapping it with all other indices values ahead of it. and this is done n times;
