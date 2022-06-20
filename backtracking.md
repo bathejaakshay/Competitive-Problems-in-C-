@@ -105,7 +105,32 @@ void comb_sum(vector<int> &candidates, int index, int target, vector<int> &curr_
 
 #### [2. Finding All permutations of a string/array](https://www.codingninjas.com/codestudio/problems/758958?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=1)
 
-**Approach - Backtracking with swapping**:
+**Approach 1- Using Backtracking and visited array**
+1. This is a common pattern approach, in which we buil up permutations level by level. At first level all permutations start with each possible element.
+2. At second level we find all possible permuations at pos 2 with given first position. and so on.
+
+```
+void perm(vector<int> &nums, vector<bool> &visited, vector<int> &curr_ans, vector<vector<int>> &ans){
+        if(curr_ans.size() == nums.size()){
+            ans.push_back(curr_ans);
+            return;
+        }
+        for(int i=0; i<nums.size(); i++){
+            if(!visited[i]){
+                visited[i] =1;
+                curr_ans.push_back(nums[i]);
+                perm(nums,visited,curr_ans,ans);
+                curr_ans.pop_back();
+                visited[i] =0;
+            }
+        }
+        
+        return;
+        
+    }
+```
+
+**Approach 2- Backtracking with swapping**:
 1. The intution is we fix an index and start swapping it with all other indices values ahead of it. and this is done n times;
 2. So for first time  we swap first index it with n numbers (including itself)
 3. For second time we swap second index with n-1 numbers  (including itself, leaving number at first index as it is fixed)
