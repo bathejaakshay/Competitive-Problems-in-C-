@@ -300,3 +300,46 @@ void rep(string &a, string b, string c, int i, string &ans){
 }
 
 ```
+
+---
+
+#### [4. Subsets || - Pattern](https://leetcode.com/problems/subsets-ii/)
+**Problem:** Need to find (unique) powerset of an array in O(2^n) TC and SC. 
+**Approach**
+1. Sort the array.
+2. We will recursively find all the subsets.
+3. at level 0 of the recurrsion tree we will get empty subset, at level 1 subsets of length 1, at level 2 subsets of length two and so on..
+4. for each recursive call we will run a loop from index to n-1 we skip the elements with same values if previously recurrsed for that value.
+5. Very common pattern. Its like we are picking and not picking a particular element in the array in each recurrsive call.
+
+```
+
+
+class Solution {
+public:
+    // At First level we obtain all subsets of length 1
+    // At Second level of rec tree we obtain all subsets of length 2.
+    void subdup(vector<int> &nums, int index, vector<int> &curr_ans, vector<vector<int>> &ans){
+        ans.push_back(curr_ans);
+        for(int i=index; i<nums.size(); i++){
+            if(i!=index && nums[i]==nums[i-1]) continue;
+            curr_ans.push_back(nums[i]);
+            subdup(nums, i+1, curr_ans, ans);
+            curr_ans.pop_back();
+        }
+        
+    }
+    
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<int> curr_ans;
+        vector<vector<int>> ans;
+        sort(nums.begin(), nums.end());
+        subdup(nums, 0, curr_ans, ans);
+        return ans;
+        
+    }
+};
+
+```
+
+---
