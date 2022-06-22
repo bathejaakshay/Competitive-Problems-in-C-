@@ -369,3 +369,60 @@ public:
 ```
 
 ---
+
+#### [5. N Queens](https://leetcode.com/problems/n-queens/)
+
+**Approach**
+1. The approach is simple backtracking.
+2. We each col c we traverse each ith row and see if we can place the queen there. If yes then do same for col i+1. 
+3. The issafe block can have three O(n) loops checking for two diagonals and one row. Instead we can maintain a vector as a map we consists key as the diagnoal number or row number and value as if it is marked (marked means there is a queen in that digonal or row).
+4. Left Upper diagonal is represented by i+j, Right Upper diagonals are represented by i+(n-j), rows are represented as i;
+
+```
+bool isSafe(vector<string> &board, int i, int j, int n, vector<int> &updiag, vector<int> &downdiag, vector<int> &rowmap)
+{ 
+   
+    if(updiag[i+j]==1 || downdiag[i+n-j]==1 || rowmap[i]==1){
+        return false;
+    }
+    return true;
+}
+void solveQ(vector<string> &board, int n, int col, vector<int> &updiag, vector<int> &downdiag, vector<int> &rowmap, vector<vector<string>> &ans){
+    if(col >= n) {
+        ans.push_back(board);
+        return;
+        }
+    for(int i=0; i<n; i++){
+        if(isSafe(board, i, col, n, updiag, downdiag, rowmap)){
+            board[i][col]='Q';
+            updiag[i+col]=1;
+            downdiag[i+n-col]=1;
+            rowmap[i]=1;
+            solveQ(board, n, col+1, updiag, downdiag, rowmap, ans);
+            
+            updiag[i+col]=0;
+            downdiag[i+n-col]=0;
+            rowmap[i]=0;
+            board[i][col]='.';
+        }
+    }
+    return;
+}
+
+class Solution {
+public:
+    vector<vector<string>> solveNQueens(int n) {
+    string s="";
+    for(int i=0;i<n;i++) s+='.';
+    vector<string> board(n,s);
+    vector<vector<string>> ans;
+    vector<int> updiag(2*n,0);
+    vector<int> downdiag(2*n,0);
+    vector<int> rowmap(n,0);
+    solveQ(board, n, 0, updiag, downdiag, rowmap, ans);
+    return ans;
+    }
+};
+```
+
+---
