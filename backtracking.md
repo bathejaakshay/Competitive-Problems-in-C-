@@ -426,3 +426,37 @@ public:
 ```
 
 ---
+
+#### [6. Sudoku](https://leetcode.com/problems/sudoku-solver/submissions/)
+```
+bool isSafe(vector<vector<char>> &board, int i, int j, char s){
+    int r = 3*(i/3);
+    int c = 3*(j/3);
+    for(int a=0; a<9; a++){
+        if(board[i][a] == s || board[a][j] == s || board[r+a/3][c+a%3] == s) return false;
+    }
+    return true;
+}
+
+bool sudoku(vector<vector<char>> &board){
+    for(int i=0; i<9; i++){
+        for(int j=0; j<9; j++){
+            if(board[i][j] == '.'){
+                for(int x=1;x<=9;x++){
+                    char s='0'+x;
+                    if(isSafe(board, i,j,s)){   
+                        board[i][j] = s;
+                        if(sudoku(board)) return true;
+                        board[i][j] = '.';
+                    }
+                    if(x==9) return false;
+                    
+                }
+                
+            }
+        }
+    }
+    return true;
+}
+
+```
