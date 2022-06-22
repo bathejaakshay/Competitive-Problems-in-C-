@@ -428,6 +428,8 @@ public:
 ---
 
 #### [6. Sudoku](https://leetcode.com/problems/sudoku-solver/submissions/)
+**Approach:**  
+For each empty place in sudoku we try all 9 numbers and see if it is safe recursively by checking other locations as well. 
 ```
 bool isSafe(vector<vector<char>> &board, int i, int j, char s){
     int r = 3*(i/3);
