@@ -1,3 +1,12 @@
+#### DP Shortcut
+Identification: If the question asks to count something or find minimum or maximum from all the ways possible then its recursion.
+
+Steps:
+1. Try to represent the problems in terms of index.
+2. Do all possible stuff on the index according to the problem.
+3. For count all the ways -> sum up all the stuff
+4. If mini of all the ways -> find minimum of all stuff. Same for maximum
+
 #### 1. kth Fibbonacci number
 
 **Approach 1** Memoization: (Top Down)
