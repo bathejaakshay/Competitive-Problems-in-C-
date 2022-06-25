@@ -504,3 +504,130 @@ class Solution{
 ```
 ---
 
+
+#### [8. Word Break II](https://www.codingninjas.com/codestudio/problems/983635?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0)
+**Problem**
+Given a dictionary of words Dict and a non empty string S. Generate all possible ordered sentences from string S with " " /sp included between words and all words should be in dict.
+
+```
+E.g 
+Dict = ["god", "is", "now", "no", "where", "here"]
+S = "godisnowherenowhere"
+
+Output:
+
+god is no where no where
+god is no where now here
+god is now here no where
+god is now here now here
+```
+
+**Approach**
+1. At each index of string S we compute all substrings starting from that index `ind` and check if the substring is in dict. If yes then add it in current_ans substr and find next substring in the remaining string.
+
+```
+void findsent(string &s, vector<string> &dict, int ind, string curr, vector<string> &ans){
+    if(ind >= s.length()) {
+        ans.push_back(curr);
+        return;
+    }
+    
+    for(int i=ind; i<s.length(); i++){
+        string temp = s.substr(ind, i-ind+1);
+        for(string ss: dict){
+            if(ss==temp){
+                findsent(s, dict, i+1, curr+temp+" ", ans);
+                break;
+            }
+        }
+    }
+}
+
+vector<string> wordBreak(string &s, vector<string> &dictionary)
+{
+    // Write your code here
+    
+    vector<string> ans;
+    string curr="";
+    findsent(s, dictionary, 0, curr, ans);
+    return ans;
+
+}
+```
+
+`TC: n^2 * size of dict :  for each substring we are checking if it lies in dict` 
+
+
+---
+
+#### [9. kth permutation](https://leetcode.com/problems/permutation-sequence/submissions/)
+
+```
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        vector<int> num;
+        int fact=1;
+        int i;
+        for(i=1;i<n;i++){
+            fact*=i;
+            num.push_back(i);
+        }
+        num.push_back(i);
+        
+        k = k-1;  // To set 0th index : 3rd permutation is at 2nd ind
+        string ans="";
+        i--;
+        while(true){
+                
+            ans+=to_string(num[k/fact]); 
+            
+            /* we find the first element by diving the sequences into the groups e.g for n=3
+           
+           1 2 3   (two permutations start with 1)
+           1 3 2    
+           
+           2 1 3   (two permutations start with 2)
+           2 3 1
+           
+(2! in each group)
+
+           3 1 2    (two permutations start with 3)
+           3 2 1
+           
+         We now find in which group does kth permutation belong say k=3.
+         so 3rd permutation will have index=2 in this list.
+         so 2/2 = 1 so it must lie in 1th group i.e 213 or 231.
+         we are sure that it starts with 2. and now we need to find k%2 i.e 2%2 = 0th indexed permutation in the group starting with 2.
+         
+         Now do the same thing for
+         1 3 (1 permutation start with 1)
+
+(1! in each group)
+
+         3 1 (1 permutation start with 3)
+         
+         so we divide  0/1 = 0
+         so it is the 0%1 = 0th permutation in 1st group i.e 1 3
+         so second number is 1 for sure.
+         
+         now we remain with
+         3  (1 permutation start with 3)
+         so 0/1 = 0
+         so it is the 0%1 = 0 th permutation in the 1st group i.e 3
+         so third number is 3.
+         Now the list is empty hence the ans is "213". 3rd permutation in 3!. 
+         
+        */
+            cout<<"ans= "<<ans<<" fact = "<<fact<<" k/fact = "<<(k/fact)<<" k%fact = "<<(k%fact)<<endl; 
+            num.erase(num.begin() + k/fact);
+            if(num.empty()) break;
+            k=k%fact;
+            fact/=i;
+            i--;
+        }
+        
+        return ans;
+    }
+};
+```
