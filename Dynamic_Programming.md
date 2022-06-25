@@ -52,3 +52,23 @@ SC: O(1)
 ```
 
 ---
+
+#### [2. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
+**Approach**
+1. Given n stairs we can represent in index from 1 to n where 0 means floor and 1 to n are stairs.
+2. Secondly we need to find all the ways so we return 1 in base case.
+3. Now we add left and right to compute all.
+
+```
+climbst(int n)
+{
+  if(n<=1) return 1;
+  
+  int left = f(n-1);
+  int right = f(n-2);
+  return left+right;
+}
+```
+The recurrsion seems like fibonacci hence we can use the same.
+
+---
