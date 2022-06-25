@@ -462,3 +462,45 @@ bool sudoku(vector<vector<char>> &board){
 }
 
 ```
+---
+
+#### [7. Rat in a maze](https://practice.geeksforgeeks.org/problems/rat-in-a-maze-problem/1#)
+**Approach**
+1. Simple backtracking, at every i,j index we look at all four directions if we can visit, if yes then mark curr as visited and go to next while updating the path.
+
+```
+void fp(int i, int j,int n, string path, vector<string> &ans, vector<vector<int>> &m, string &dd){
+    if(i==n-1 && j==n-1){
+        ans.push_back(path);
+        return;
+    }
+    
+    vector<pair<int,int>> dir = {{1,0},{0,-1},{0,1},{-1,0}};
+    int ni,nj;
+    for(int x=0;x<dir.size();x++){
+        ni = i+dir[x].first;
+        nj = j+dir[x].second;
+        if(ni>=0 && nj>=0 && ni<n && nj<n && m[ni][nj]==1){
+            m[i][j]=0;
+            fp(ni,nj,n,path+dd[x],ans,m,dd);
+            m[i][j]=1;
+        }
+    }
+
+    return;
+}
+class Solution{
+    public:
+    vector<string> findPath(vector<vector<int>> &m, int n) {
+        // Your code goes here
+        vector<string> ans;
+        string dd="DLRU";
+        if(m[0][0] == 0 || m[n-1][n-1]==0) return ans;
+        string path="";
+        fp(0,0,n,path,ans,m,dd);
+        return ans;
+    }
+};
+```
+---
+
