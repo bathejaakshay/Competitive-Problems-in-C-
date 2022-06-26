@@ -205,4 +205,65 @@ SC: O(1)
 ```
 
 ---
-  
+
+#### [5. Ninjq Trqining](https://www.codingninjas.com/codestudio/problems/ninja-s-training_3621003?leftPanelTab=0)
+```
+#include<bits/stdc++.h>
+// DP: Memo
+int ninja(int n, vector<vector<int>> &points, int last, vector<vector<int>> &dp){
+    if(n==0){
+        int maxi=0;
+        for(int i=0; i<3; i++){
+            if(i!=last){
+                maxi = max(maxi, points[0][i]);
+            }
+        }
+        return maxi;
+    }
+    if(dp[n][last]!=-1) return dp[n][last];
+    int maxi=0;
+    for(int i=0;i<3;i++){
+        
+        if(i!=last){
+            maxi = max(maxi, points[n][i] + ninja(n-1, points, i, dp));
+        }
+    }
+    return dp[n][last]=maxi;
+}
+// DP: Tabulation1
+int ninja(int n, vector<vector<int>> &points, vector<vector<int>> &dp){
+    dp[0][0] = max(points[0][1], points[0][2]);
+    dp[0][1] = max(points[0][0], points[0][2]);
+    dp[0][2] = max(points[0][0], points[0][1]);
+    dp[0][3] = max(dp[0][0],points[0][0]);
+    
+    
+    for(int i=1; i<=n; i++){ // For each day for each last training value we compute each current training value
+        
+        
+        for(int last=0;last<4;last++){
+            dp[i][last]=0;
+            int maxi =0;
+            for(int j=0;j<3;j++){
+                if(j!=last){
+                    maxi = max(maxi, points[i][j] + dp[i-1][last]);  
+                  }
+             
+            }
+            dp[i][last] = maxi; 
+            
+        }
+        dp[i][last]=maxi;
+        last=
+        
+    }
+    
+}
+
+int ninjaTraining(int n, vector<vector<int>> &points)
+{
+    // Write your code here.
+    vector<vector<int>> dp(n, vector<int> (4,-1));
+    return ninja(n-1, points, 3, dp);
+}
+```
