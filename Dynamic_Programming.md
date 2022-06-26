@@ -135,4 +135,74 @@ int frogJump(int n, vector<int> &heights)
 
 ---
 
+#### [4. Maximum Subsequence sum with no adjacent elements/ Maximum sum of non-adjacent elements](https://www.codingninjas.com/codestudio/problems/maximum-sum-of-non-adjacent-elements_843261?leftPanelTab=1)
+
+**Problem** Find the maximum subsequence sum in an array with a condition that no two elements in a subsequence should be adjacent in the given array.
+**Approach**
+1. Approach is simple pick and not pick as it is a subsequence question. 
+2. Now say f(n) represents the maximum subarray sum with no adjacent elements. 
+3. Now if I say the subsequence includes a[n] then one possible ans has to be a[n] + f(n-2). f(n-2) 
+4. Because if we have picked f(n) we cant pick f(n-1) 
+5. And If I dont pick then another possible ans could be f(n-1)
+6. f(n) = max(a[n] + f(n-2), f(n-1))
+
+
+**Approach 1** Memoization: (Top Down)
+```
+int max_sum(int n, vector<int> &nums, vector<int> &dp){
+    if(n==0) return nums[0];
+    if(n<0) return 0;
+    
+    if(dp[n]!=-1) return dp[n];
+    
+    int left = nums[n] + max_sum(n-2, nums, dp);
+    int right = max_sum(n-1,nums, dp);
+    return dp[n] = max(left, right);
+}
+TC: O(n)
+Space : O(n) + O(n) : Aux + DP_array
+```
+
+**Approach 2** Tabular 1 : Bottom up
+```
+int max_sum(int n, vector<int> &nums, vector<int> &dp){
+    
+    dp[0] = nums[0];
+    int left=INT_MIN,right=INT_MIN;
+    for(int i=1; i<nums.size(); i++){
+        if(i>1)
+            left = nums[i] + dp[i-2];
+        else
+            left = nums[i];
+        right = dp[i-1];
+        dp[i] = max(left, right);
+    }
+    return dp[n];
+}
+
+
+TC: O(n)
+SC: O(n) : Dp array
+```
+
+**Approach 3** Tabular 2: Bottom up with only two variables
+
+```
+int max_sum(int n, vector<int> &nums, vector<int> &dp){
+    int prev1 = nums[0], prev2 = 0, curr, left, right;
+    for(int i=1; i<nums.size(); i++){
+        left = nums[i] + prev2;
+        right = prev1;
+        curr = max(left, right);
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    return prev1;
+    
+}
+TC: O(n)
+SC: O(1)
+```
+
+---
   
