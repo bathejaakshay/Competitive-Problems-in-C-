@@ -369,3 +369,41 @@ int up_spc(int m, int n){
 
 ```
 `SC: O(2*N)`
+
+---
+
+#### [7. Minimum Path Cost in a Grid](https://leetcode.com/contest/weekly-contest-297/problems/minimum-path-cost-in-a-grid/)
+
+**Approach**
+1. f(i,j) is the min path cost from first row
+2. we find min path for each column j in last row. by adding the required costs.
+3. For each j we pull a the following recurrsion
+4. For each j in previous row find min path to current column.
+
+```
+int minpath(vector<vector<int>> &grid, vector<vector<int>> &moveCost, int m, int n, vector<vector<int>> &dp){
+    
+ if(m==0){
+     return grid[0][n];
+ }   
+    if(dp[m][n]!=-1) return dp[m][n];
+    int mini=INT_MAX;
+ for(int j=0; j<grid[0].size(); j++){
+     mini = min(mini, grid[m][n] + moveCost[grid[m-1][j]][n] + minpath(grid, moveCost, m-1, j, dp));
+ }   
+    return dp[m][n] = mini;
+}
+
+class Solution {
+public:
+    int minPathCost(vector<vector<int>>& grid, vector<vector<int>>& moveCost) {
+    vector<vector<int>> dp(grid.size(), vector<int>(grid[0].size(),-1));
+        int ans=INT_MAX;
+        for(int j=0; j<grid[0].size(); j++){
+            ans = min(ans,minpath(grid, moveCost, grid.size()-1, j, dp));
+        }
+        
+    return ans;
+    }
+};
+```
