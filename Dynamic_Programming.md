@@ -315,4 +315,57 @@ int up_f(int m, int n, vector<vector<int>> &dp){
 
 **Tabulation**
 ```
+int up_tab(int m, int n, vector<vector<int>> &dp){
+    dp[0][0] = 1;
+    for(int i=0; i<=m; i++){
+        for(int j=0; j<=n; j++){
+            if(dp[i][j]==-1){
+                int up=0,left=0;
+                if(i>0){
+                    up = dp[i-1][j];
+                }
+                if(j>0){
+                    left = dp[i][j-1];
+                }
+                dp[i][j] = up+left;
+            }
+        }
+    }
+    
+    return dp[m][n];
+}
+
+SC: O(M*N)
 ```
+**Space Optimization**
+Golden Rule: Whenever we refer to previous row and col we can always space optimize.
+1. How to see? : In for loops we are traversing grid from left to right and for each element we require `[i][j-1]` of the same row and `[i-1][j]` of the previous row. So we can make 2 arrays 1 dp (consists prev row) and another temp(consist curr row) to do this.
+
+```
+int up_spc(int m, int n){
+     vector<int> dp(n+1,0);
+    for(int i=0; i<=m; i++){
+        vector<int> temp(n+1,0);
+        for(int j=0; j<=n; j++){
+            int up=0, left=0;
+            if(i==0 && j==0){
+                temp[0]=1;
+                continue;
+            }
+            
+            up = dp[j];
+                
+            if(j>0){
+                    left = temp[j-1];
+                }
+            
+            else left=0;
+            temp[j]=up+left;
+        }
+        dp = temp;
+    }
+    return dp[n];
+}
+
+```
+`SC: O(2*N)`
