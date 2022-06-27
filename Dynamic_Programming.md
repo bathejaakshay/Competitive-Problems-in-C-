@@ -206,7 +206,7 @@ SC: O(1)
 
 ---
 
-#### [5. Ninjq Training](https://www.codingninjas.com/codestudio/problems/ninja-s-training_3621003?leftPanelTab=0)
+#### [5. Ninja Training](https://www.codingninjas.com/codestudio/problems/ninja-s-training_3621003?leftPanelTab=0)
 **Approach**:
 1. We start with nth day and go top down. We say then on n+1th day we didn't do any training so last=3 (i.e neither 0 or 1 or 2).
 2. Now we compute ,`f(n) = max(maxi,points[n][j] + f(n-1,j))` if last!=j , for each activity on day n and max_points till day n-1 with last day activity as j   
@@ -286,3 +286,33 @@ int ninja_spc(int n, vector<vector<int>> &points){
 ```
 
 ---
+
+### DP on GRIDS
+
+#### [6. No of ways to reach a destination in `M*N` grid/ Unique paths](https://www.codingninjas.com/codestudio/problems/total-unique-paths_1081470?leftPanelTab=1)
+
+**Approach**
+1. Representing problem in terms of index: f(i,j) represents number of unique paths from point(m,n) to point (i,j).
+2. Doing all stuff on indices: as we are doing top down hence we start from m,n and we can move left or up. So we find f(m-1,n) and f(m,n-1)
+3. Sum up all paths: f(m,n) = f(m-1,n) + f(m,n-1)
+4. As there are a lot of overlapping subproblems, hence we can use DP
+
+**Memoization**
+```
+int up_f(int m, int n, vector<vector<int>> &dp){
+    if(m==0 && n==0) return 1;
+    if(m<0 || n<0) return 0;
+    
+    if(dp[m][n]!=-1) return dp[m][n];
+    
+    int left = up_f(m, n-1, dp);
+    int up = up_f(m-1, n, dp);
+    return dp[m][n] = left+up;
+}
+```
+`TC: O(m*n) : Total no of states`
+`SC : O(((m-1) + (n-1)) + O(m*n)) : (aux space longest valid path length from m,n to 0,0) + (DP)`
+
+**Tabulation**
+```
+```
