@@ -407,3 +407,90 @@ public:
     }
 };
 ```
+---
+
+#### [8. Minimum path on a Triangle Grid](https://leetcode.com/problems/triangle/)
+**Approach**
+1. In this we approach recurrsion in a little different way.
+2. Instead of starting with m-1,n-1 going to 0,0 , we go from 0,0 to last row. Because if we start from last then we can have n different recurrsions of which we would need to take min of.
+3. But here f(i,j) will represent the min path cost from last row.
+
+```
+f(i,j){
+  if(j==m-1) // last row
+    return cost[i][j]
+    
+ int down = cost[i][j] + f(i+1,j);
+ int diag = cost[i][j] + f(i+1, j+1);
+ 
+ return min(down, diag);
+}
+```
+
+`Its bottom up is also iteresting, as we do opposite of top down`
+
+
+**Top Down: Memo**
+```
+ 
+int minTot(vector<vector<int>> &triangle, int i, int j, vector<vector<int>> &dp){
+    
+    if(i==triangle.size()-1){
+        return triangle[i][j];
+    }
+    if(dp[i][j]!=-1) return dp[i][j];
+    int down = triangle[i][j] + minTot(triangle,i+1,j, dp);
+    int diag = triangle[i][j] + minTot(triangle,i+1,j+1, dp);
+    
+    return dp[i][j] = min(down, diag);
+}
+```
+**Bottom up**
+```
+int minTot_b(vector<vector<int>> & triangle, int i , int j, vector<vector<int>> &dp){
+    int m = triangle.size();
+    int n = triangle[m-1].size();
+    
+    for(int x=0; x<n; x++){
+        dp[m-1][x] = triangle[m-1][x]; 
+    }
+    
+    //Just opposite the top down approach: in top down we go from 0,0 to last row, here we from last row to 0,0. Also we computed dp for the last row so we start from the second last row. Also no of columns in nth row is n 
+    int down, diag;
+    for(int row=m-2; row>=0; row--){
+        for(int col=row; col>=0; col--){
+            down = triangle[row][col] + dp[row+1][col];
+            diag = triangle[row][col] + dp[row+1][col+1];
+            dp[row][col] = min(down,diag);
+        }
+    }
+    return dp[0][0];
+}
+
+```
+**Bottom up space optimization**
+```
+int minTot_spc(vector<vector<int>> &triangle){
+    int m = triangle.size();
+    int n = triangle[m-1].size();
+    vector<int> dp(n,-1);
+    
+    for(int x=0; x<n; x++){
+        dp[x] = triangle[m-1][x]; 
+    }
+    
+    int down, diag;
+    for(int row=m-2; row>=0; row--){
+        vector<int>temp(n,0);
+        for(int col=row; col>=0; col--){
+            down = triangle[row][col] + dp[col];
+            diag = triangle[row][col] + dp[col+1];
+            temp[col] = min(down,diag);
+        }
+        dp = temp;
+    }
+    return dp[0];
+}
+
+```
+
