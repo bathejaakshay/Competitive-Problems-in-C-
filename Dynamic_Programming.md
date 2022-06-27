@@ -206,10 +206,12 @@ SC: O(1)
 
 ---
 
-#### [5. Ninjq Trqining](https://www.codingninjas.com/codestudio/problems/ninja-s-training_3621003?leftPanelTab=0)
+#### [5. Ninjq Training](https://www.codingninjas.com/codestudio/problems/ninja-s-training_3621003?leftPanelTab=0)
+**Approach**:
+1. We start with nth day and go top down. We say then on n+1th day we didn't do any training so last=3 (i.e neither 0 or 1 or 2).
+2. Now we compute ,`f(n) = max(maxi,points[n][j] + f(n-1,j))` if last!=j , for each activity on day n and max_points till day n-1 with last day activity as j   
 ```
-#include<bits/stdc++.h>
-// DP: Memo
+#// DP: Memo
 int ninja(int n, vector<vector<int>> &points, int last, vector<vector<int>> &dp){
     if(n==0){
         int maxi=0;
@@ -231,7 +233,7 @@ int ninja(int n, vector<vector<int>> &points, int last, vector<vector<int>> &dp)
     return dp[n][last]=maxi;
 }
 // DP: Tabulation1
-int ninja(int n, vector<vector<int>> &points, vector<vector<int>> &dp){
+int ninja_tab(int n, vector<vector<int>> &points, vector<vector<int>> &dp){
     dp[0][0] = max(points[0][1], points[0][2]);
     dp[0][1] = max(points[0][0], points[0][2]);
     dp[0][2] = max(points[0][0], points[0][1]);
@@ -246,24 +248,41 @@ int ninja(int n, vector<vector<int>> &points, vector<vector<int>> &dp){
             int maxi =0;
             for(int j=0;j<3;j++){
                 if(j!=last){
-                    maxi = max(maxi, points[i][j] + dp[i-1][last]);  
+                    maxi = max(maxi, points[i][j] + dp[i-1][j]);  
                   }
              
             }
             dp[i][last] = maxi; 
-            
         }
-        dp[i][last]=maxi;
-        last=
         
     }
+    return dp[n][3];
+}
+// DP: Tabulation Space optimization
+int ninja_spc(int n, vector<vector<int>> &points){
+    vector<int> prev(4,-1); // prev[i] represents the points scored on previous day when last activity was i, at any time we only want points scored on previous day for all 3 training options.
+    prev[0] = max(points[0][1], points[0][2]);
+    prev[1] = max(points[0][0], points[0][2]);
+    prev[2] = max(points[0][0], points[0][1]);
+    prev[3] = max(prev[2], points[0][2]);
     
+    for(int i=1; i<=n; i++){
+        vector<int> temp(4,0);
+        for(int last=0; last<4; last++){
+            
+            int maxi =0;
+           
+            for(int task=0; task<3; task++){
+                if(task!=last)
+                    maxi = max(maxi, points[i][task] + prev[task]);       
+            }
+            temp[last] = maxi;
+        }
+        prev = temp;
+    }
+    return prev[3];
 }
 
-int ninjaTraining(int n, vector<vector<int>> &points)
-{
-    // Write your code here.
-    vector<vector<int>> dp(n, vector<int> (4,-1));
-    return ninja(n-1, points, 3, dp);
-}
 ```
+
+---
