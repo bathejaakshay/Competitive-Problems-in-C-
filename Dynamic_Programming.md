@@ -458,6 +458,7 @@ int minpath_spc(vector<vector<int>> &grid, vector<vector<int>>&moveCost, int a, 
 }
 
 ```
+`TC: O(M*(n^2))`
 ---
 
 #### [8. Minimum path cost on a Triangle Grid](https://leetcode.com/problems/triangle/)
