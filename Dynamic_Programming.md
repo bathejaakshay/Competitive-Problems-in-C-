@@ -373,7 +373,7 @@ int up_spc(int m, int n){
 ---
 
 #### [7. Minimum Path Cost in a Grid](https://leetcode.com/contest/weekly-contest-297/problems/minimum-path-cost-in-a-grid/)
-
+Also known as variable starting and variable ending point.
 **Approach**
 1. f(i,j) is the min path cost from first row
 2. we find min path for each column j in last row. by adding the required costs.
@@ -406,6 +406,57 @@ public:
     return ans;
     }
 };
+
+
+// Bottom Up: Just do opposite of Top Down
+int minpath_b(vector<vector<int>> &grid, vector<vector<int>> &moveCost, int a, int b, vector<vector<int>> &dp){
+    
+    int m = grid.size();
+    int n = grid[0].size();
+    
+    //Base case 
+    for(int j=0; j<n; j++){
+        dp[0][j] = grid[0][j];
+    }
+    
+    // In TopDown we have variables i and j which went from m,n to 0,0 here it will be opposite: 2 for loops- i: 1 -> m and j 0->n;
+    
+    for(int i=1; i<m; i++){
+        for(int j=0; j<n; j++){
+            int mini = INT_MAX;
+            for(int x=0; x<n; x++){
+                mini = min(mini, grid[i][j] + moveCost[grid[i-1][x]][j] + dp[i-1][x]);
+            }
+            dp[i][j] = mini;
+        }
+    }
+    return dp[a][b];
+}
+
+// Space optimization:
+int minpath_spc(vector<vector<int>> &grid, vector<vector<int>>&moveCost, int a, int b){
+    int m= grid.size();
+    int n= grid[0].size();
+    
+    vector<int> dp(n, -1);
+    
+    for(int j=0; j<n; j++) dp[j]=grid[0][j];
+    
+    for(int i=1; i<m; i++){
+        vector<int> temp(n, -1);
+         for(int j=0; j<n; j++){
+            int mini=INT_MAX;
+             for(int x=0; x<n; x++){
+                 mini = min(mini, grid[i][j] + moveCost[grid[i-1][x]][j] + dp[x]);
+                 
+                                }
+             temp[j] = mini;
+         }
+        dp = temp;
+    }
+    return dp[b];
+}
+
 ```
 ---
 
