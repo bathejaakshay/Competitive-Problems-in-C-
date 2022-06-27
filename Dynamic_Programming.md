@@ -409,7 +409,7 @@ public:
 ```
 ---
 
-#### [8. Minimum path on a Triangle Grid](https://leetcode.com/problems/triangle/)
+#### [8. Minimum path cost on a Triangle Grid](https://leetcode.com/problems/triangle/)
 **Approach**
 1. In this we approach recurrsion in a little different way.
 2. Instead of starting with m-1,n-1 going to 0,0 , we go from 0,0 to last row. Because if we start from last then we can have n different recurrsions of which we would need to take min of.
