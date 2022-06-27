@@ -493,4 +493,4 @@ int minTot_spc(vector<vector<int>> &triangle){
 }
 
 ```
-
+`TC : O(m*n)`
