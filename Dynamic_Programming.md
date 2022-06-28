@@ -740,3 +740,17 @@ bool subset_bt_spc(vector<int> &nums, int i, int target){
 4. Now it boils down to previous problem where we want to compute subsequence sum equal to target/2.
 
 ---
+
+#### 12. Partition A Set Into Two Subsets With Minimum Absolute Sum Difference 
+We need to partition A set into subsets such that their sums have minimum absolute difference.
+**Approach**
+1. We know the total sum of set say S. Now if the sum of first subset is s1 then sum of second one has to be S-s1.
+2. So we need to find all the possible subsets s1 with sum 0 to S. and then we will compute S-s1 and find min abs diff.
+3. But wait didnt we do that earlier?
+4. In ques 10. `DP[n-1][0..target]` i.e the last row of the tabulation method represents if the subset sum with value `xE[0,target]` is possible or not.
+5. So we first apply ques 10 to build dp table for subset sum with target value S.
+6. Then we apply following algo:
+
+```
+
+```
