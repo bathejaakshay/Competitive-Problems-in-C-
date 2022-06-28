@@ -650,8 +650,9 @@ int cherrypick_spc(vector<vector<int>> &grid, int m, int n){
 1. We follow pick and not pick approach.
 2. For each element in the array we have an option to pick and not pick and the target changes accordingly.
 3. we get TC of 2^n using this.
-4. We use `dp[n][target+1]`, here `dp[i][j] = true` signifies that subset sequqnce whose sum is equal to j includes ith element.
-5. Base Cases are important.
+4. We use `dp[n][target+1]`, here `dp[i][j] = true` signifies that subset  sum is equal to j is possible with subsequence inS
+5.  0 to i-1 elements 
+6. Base Cases are important.
 **TopDown: Memo** 
 ```
 bool subset(vector<int> &nums, int i, int target, vector<vector<int>> &dp){
