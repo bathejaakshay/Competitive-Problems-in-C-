@@ -546,3 +546,54 @@ int minTot_spc(vector<vector<int>> &triangle){
 
 ```
 `TC : O(m*n)`
+
+---
+
+#### [9. Cherry Pickup 2 - 3D DP](https://leetcode.com/problems/cherry-pickup-ii/)
+In this problem we are provided with a grid of `M*N` with cherries in each cell. Given two robots at 0,0 and 0,n-1.  
+Find the maximum no of cherries that can be collected by the robots if they can move to next row in left diag, straight down, and right diag. 
+If both robots are at same cell then only one can collect the cherries.
+**Approach**
+1. We move them simultaneously.
+2. One thing to notice is that is a fixed to variable dp on grids, hence we start from starting and move down.
+3. We are moving both robots together so that they both be at the end row together.
+4. There can be 9 move combs. for each movement of first robot the second robot can move in three ways.
+
+`TC with Memo : O(3^n * 3^n)`
+**Top Down: Memo**
+```
+int cherrypick(vector<vector<int>> &grid, int i, int j, int i2, int j2, vector<vector<vector<int>>> &dp){
+    
+    //out of bounds return -1e8 and not INT_MIN as there could be int overflow error if we add negative to INT_MIN
+    if(j<0 || j>grid[0].size()-1 || j2<0 || j2>grid[0].size()-1){
+        return -1e8;
+    }    
+    // In fixed to variable point dp on grid we start from fixed instead of end. We are moving both robots together so that they both be at the end row together
+    
+    if(i==grid.size()-1 && i2==grid.size()-1){
+        if(j==j2){
+            return grid[i][j];
+        }
+        else return grid[i][j] + grid[i2][j2];
+    }
+    if(dp[i][j][j2]!=-1) return dp[i][j][j2];
+    // For each transition of robot1 we have 3 transition of robot2
+    
+    // int dir[] = {-1,0,1};
+    int maxi = 0;
+    for(int x=-1;x<=1;x++){
+        for(int y=-1; y<=1; y++){
+            if(j == j2){
+                maxi = max(maxi, grid[i][j] + cherrypick(grid, i+1, j+x, i2+1, j2+y, dp));
+            }
+            else{
+                maxi = max(maxi, grid[i][j] + grid[i2][j2]+ cherrypick(grid, i+1, j+x, i2+1, j2+y, dp));    
+            }
+            
+        }
+    }
+    return dp[i][j][j2]=maxi;
+    
+}
+```
+`TC: O(M*N*N) No of distinct function calls`
