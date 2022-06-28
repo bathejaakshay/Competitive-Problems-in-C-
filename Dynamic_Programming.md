@@ -731,7 +731,7 @@ bool subset_bt_spc(vector<int> &nums, int i, int target){
 ```
 
 ---
-#### [11. Partition of an array into two subsets such that their sum is equal and total sum is target]
+#### 11. Partition of an array into two subsets such that their sum is equal and total sum is target
 **Approach**
 1. Intuitively two subsets of same size hence target should be even. If not then return -1
 2. Now sum of both the sequences individually should be target/2.
