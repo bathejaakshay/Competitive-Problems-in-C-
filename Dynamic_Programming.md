@@ -559,7 +559,7 @@ If both robots are at same cell then only one can collect the cherries.
 3. We are moving both robots together so that they both be at the end row together.
 4. There can be 9 move combs. for each movement of first robot the second robot can move in three ways.
 
-`TC with Memo : O(3^n * 3^n)`
+`TC without Memo : O(3^n * 3^n) like a tree with order 3`  
 **Top Down: Memo**
 ```
 int cherrypick(vector<vector<int>> &grid, int i, int j, int i2, int j2, vector<vector<vector<int>>> &dp){
