@@ -752,5 +752,21 @@ We need to partition A set into subsets such that their sums have minimum absolu
 6. Then we apply following algo:
 
 ```
-
+int minSubsetSumDifference(vector<int>& arr, int n)
+{
+    int sum=0;
+    for(int &a:arr) sum+=a;
+    vector<vector<bool>> dp(n, vector<bool>(sum+1));
+    subset_bt(arr,0, sum,dp);
+  
+    int mini=1e8;
+    for(int j=0; j<=sum/2; j++){
+        if(dp[n-1][j]){
+            int s1 = j;
+            int s2 = sum-j;
+            mini = min(mini, abs(s1-s2));
+        }
+    }
+    return mini;
+}
 ```
