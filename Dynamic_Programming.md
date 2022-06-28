@@ -597,3 +597,47 @@ int cherrypick(vector<vector<int>> &grid, int i, int j, int i2, int j2, vector<v
 }
 ```
 `TC: O(M*N*N) No of distinct function calls`
+
+**Bottom up: Tabulation with space optimization**
+```
+int cherrypick_spc(vector<vector<int>> &grid, int m, int n){
+    vector<vector<int>> dp(n,vector<int>(n,0));
+    // Base case of Memo
+    for(int i=0; i<n; i++){
+        for(int j=0; j<n ;j++){
+            if(i==j){
+                dp[i][j] = grid[m-1][i];
+            }
+            else dp[i][j] = grid[m-1][i] + grid[m-1][j];
+                
+        }
+    }
+    
+    // Doing all stuff for i:m-2->0
+    
+    for(int i=m-2; i>=0; i--){
+        vector<vector<int>> curr(n, vector<int>(n,0));
+        for(int j1=0; j1<n; j1++){
+            for(int j2=0; j2<n; j2++){
+                int maxi=-1e8;
+                for(int dj1=-1; dj1<=1; dj1++)
+                    for(int dj2=-1; dj2<=1; dj2++){
+                        if(j1==j2){
+                           if(j1+dj1>=0 && j1+dj1<n && j2+dj2>=0 && j2+dj2<n) 
+                           maxi =  max(maxi,grid[i][j1] + dp[j1+dj1][j2+dj2]);
+                        }
+                        else{
+                            if(j1+dj1>=0 && j1+dj1<n && j2+dj2>=0 && j2+dj2<n)
+                         maxi =  max(maxi,grid[i][j1] + grid[i][j2] + dp[j1+dj1][j2+dj2]);   
+                        }
+                    }
+                    curr[j1][j2] = maxi;   
+            }
+        }
+        dp =curr;
+    }
+    
+    return dp[0][n-1];
+}
+```
+---
