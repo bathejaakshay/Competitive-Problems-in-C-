@@ -641,3 +641,101 @@ int cherrypick_spc(vector<vector<int>> &grid, int m, int n){
 }
 ```
 ---
+
+
+## DP on Subsequences
+
+#### [10. Subset sum equal to k](https://www.codingninjas.com/codestudio/problems/subset-sum-equal-to-k_1550954?leftPanelTab=1)
+**Approach**
+1. We follow pick and not pick approach.
+2. For each element in the array we have an option to pick and not pick and the target changes accordingly.
+3. we get TC of 2^n using this.
+4. We use `dp[n][target+1]`, here `dp[i][j] = true` signifies that subset sequqnce whose sum is equal to j includes ith element.
+5. Base Cases are important.
+**TopDown: Memo** 
+```
+bool subset(vector<int> &nums, int i, int target, vector<vector<int>> &dp){
+    if(target==0) return true;
+    if(i==0){
+        if(target == nums[i]) return true;
+        else return false;
+    }
+    
+    if(dp[i][target]!=-1) return dp[i][target];
+    //pick
+    bool left=false, right=false;
+    if(target>=nums[i])
+        left = subset(nums, i-1, target - nums[i], dp);
+    
+    //not pick
+    right = subset(nums, i-1, target, dp);
+    
+    return dp[i][target] = left|right;
+    
+}
+```
+**Bottom Up : Tabulation**
+```
+bool subset_bt(vector<int> &nums, int i, int target, vector<vector<bool>> &dp){
+    
+        for(int x=0; x<nums.size(); x++){
+            dp[x][0] = true;
+            dp[x][nums[x]] = true;
+        }
+        
+        for(int a=1; a<nums.size();a++){
+            for(int b=1; b<=target; b++){
+                //pick
+                bool left=false, right=false;
+                if(b>=nums[a])
+                    left = dp[a-1][b-nums[a]];
+                //not pick
+                right = dp[a-1][b];
+                dp[a][b] = left|right;
+            }
+        }
+    return dp[nums.size()-1][target];
+    
+}
+
+```
+**Space Optimization**
+```
+bool subset_bt_spc(vector<int> &nums, int i, int target){
+    
+        vector<bool> dp(target+1,false);
+        dp[0] = true;
+        for(int x=0; x<nums.size(); x++){
+            dp[nums[x]] = true;
+        }
+        
+        
+        vector<bool> curr(target+1, false);
+        curr[0]=true;
+        for(int a=1; a<nums.size();a++){
+            for(int b=1; b<=target; b++){
+                //pick
+                bool left=false, right=false;
+                if(b>=nums[a])
+                    left = dp[b-nums[a]];
+                //not pick
+                right = dp[b];
+                curr[b] = left|right;
+            }
+            dp=curr;
+        }
+    return dp[target];
+    
+}
+
+```
+
+---
+#### [11. Partition of an array into two subsets such that their sum is equal and total sum is target]
+**Approach**
+1. Intuitively two subsets of same size hence target should be even. If not then return -1
+2. Now sum of both the sequences individually should be target/2.
+3. Now each element will have to options to be considered in first or second.
+4. Now it boils down to previous problem where we want to compute subsequence sum equal to target/2.
+
+---
