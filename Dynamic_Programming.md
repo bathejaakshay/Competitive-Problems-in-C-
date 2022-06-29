@@ -901,3 +901,53 @@ int ks_spc(vector<int> &w, vector<int> &val, int n, int W){
     return dp[W];
 }
 ```
+
+---
+
+#### [15. Coin Change]
+1. Given denominations of infinite number of coins and a target we need to find the minimum number of coins that sum up to target.
+2. Similar as 0/1 knapsack
+3. pick is different, after every pick we have an option of picking the same element up again if possible.
+
+```
+int coin(int n,vector<int> &coins, int amount, vector<vector<int>> &dp){
+    
+    if(n==0){
+        if(amount%coins[0]==0) return amount/coins[0];
+        else return 1e9;
+    }
+    if(dp[n][amount]!=-1) return dp[n][amount];
+    //pick
+    int pi = INT_MAX,npi;
+    if(coins[n]<=amount){
+        pi = 1 + coin(n, coins, amount-coins[n], dp);
+        
+    }
+    npi = coin(n-1, coins, amount, dp);
+   return dp[n][amount] = min(pi,npi);
+    
+}
+int coin_bt(int n,vector<int> &coins, int amount){
+    vector<vector<int>> dp(n, vector<int>(amount+1,0));
+    for(int T=0; T<=amount; T++){
+        if(T%coins[0]==0) dp[0][T] = T/coins[0];
+        else dp[0][T]=1e9;
+    }
+    for(int i=1; i<n; i++){
+        for(int j=0; j<=amount; j++){
+            int pi = INT_MAX,npi;
+    
+            if(j>=coins[i]){
+                pi = 1 + dp[i][j-coins[i]];
+
+            }
+            npi = dp[i-1][j];
+            dp[i][j]=min(pi,npi);        
+        }
+    }
+    
+    return dp[n-1][amount];
+    
+}
+
+```
