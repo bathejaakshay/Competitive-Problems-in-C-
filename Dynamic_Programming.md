@@ -770,3 +770,73 @@ int minSubsetSumDifference(vector<int>& arr, int n)
     return mini;
 }
 ```
+---
+
+#### [13. Count number of subsets in an array with sum target](https://www.codingninjas.com/codestudio/problems/number-of-subsets_3952532?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+**Approach**
+1. Use pick and not pick approach and return 1 if target is zero. Count pick and not pick and add them finally.
+
+**Top Down: Memo**
+```
+int ways(vector<int> &num, int tar, int n,vector<vector<int>>& dp)
+{ 
+    //ways(n,tar) represents number of subsets till n whose sum is tar.
+    if(tar==0){
+        return 1; // No matter where we are if the tar comes out to be zero we can return 1 by not picking that element;
+    }
+    if(n==0){
+        return num[0] == tar;
+    }
+    if(dp[n][tar]!=-1) return dp[n][tar];
+    int pi=0,npi=0;
+    if(tar >= num[n])
+        pi = ways(num, tar-num[n], n-1, dp);
+    npi = ways(num, tar, n-1, dp);
+    return dp[n][tar]=pi+npi;
+}
+```
+**Bottom up: Tabulation**
+```
+int ways_bt(vector<int> &num, int tar){
+    vector<vector<int>> dp(num.size(), vector<int>(tar+1,0));
+    //base case
+    for(int x=0; x<num.size(); x++){
+        dp[x][0] = 1;
+    }
+    if(num[0]<=tar) dp[0][num[0]] = 1;
+    
+    for(int i=1; i<num.size(); i++){
+        for(int x=1; x<=tar; x++){
+            int pi=0,npi=0;
+            if(x >= num[i])
+                pi = dp[i-1][x-num[i]];
+            npi = dp[i-1][x];
+            dp[i][x]=pi+npi;
+        }
+    }
+    return dp[num.size()-1][tar];
+}
+```
+**Space Optimization**
+```
+int ways_spc(vector<int> &num, int tar){
+    vector<int> dp(tar+1,0);
+    //base case
+    dp[0]=1;
+    if(num[0]<=tar) dp[num[0]] = 1;
+    vector<int>curr(tar+1,0);
+    //curr[0] will always be zero
+    curr[0]=1;
+    for(int i=1; i<num.size(); i++){
+        for(int x=1; x<=tar; x++){
+            int pi=0,npi=0;
+            if(x >= num[i])
+                pi = dp[x-num[i]];
+            npi = dp[x];
+            curr[x]=pi+npi;
+        }
+        dp = curr;
+    }
+    return dp[tar];
+}
+```
