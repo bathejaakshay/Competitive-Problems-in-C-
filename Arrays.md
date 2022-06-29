@@ -544,3 +544,45 @@ vector<int> spirallyTraverse(vector<vector<int> > matrix, int r, int c)
         return ans;
     }
 ```
+
+---
+
+#### [14 Number of Subsequences That Satisfy the Given Sum Condition](https://leetcode.com/problems/number-of-subsequences-that-satisfy-the-given-sum-condition/)
+Constraints are very tight so we will learn new tech to compute pow.
+**Approach**
+1. Sort array
+2. Apply 2 sum to find for each num x in array , the largest corresponding y in array st x+y<=target.
+3. now we can compute for each such pairs the number of subsequences: from ind(x)+1 till ind(y) we have 2^(y-x) subseq.
+4. We precompute the power values as the constraint is too tight.
+
+```
+class Solution {
+public:
+    int numSubseq(vector<int>& nums, int target) {
+     // Apply 2 sum first st for each element a[i] we find max a[j] such that a[i] + a[j]<=target
+    
+        sort(nums.begin(), nums.end());
+        // vector<pair<int,int>> v;
+        int i=0, j=nums.size()-1;
+        int res=0;
+        vector<int> pow(nums.size());
+        pow[0]=1;
+        for(int i=1; i<nums.size(); i++){
+            pow[i] = (pow[i-1]*2)%1000000007;
+        }
+        while(i<=j){
+            if(nums[i] + nums[j]<=target){
+                
+                res = (res + pow[j-i])%1000000007;
+                i++;
+            }
+            else{
+                j--;
+            }
+        }
+        
+        
+        return res;
+    }
+};
+```
