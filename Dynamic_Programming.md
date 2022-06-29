@@ -840,3 +840,64 @@ int ways_spc(vector<int> &num, int tar){
     return dp[tar];
 }
 ```
+
+---
+#### [14. 0/1 Knapsack Problem](https://www.codingninjas.com/codestudio/problems/0-1-knapsack_920542?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+**Approach**
+1. Simple Pick / Not Pick problem
+
+```
+//Top Down
+int sack(vector<int> &w, vector<int> &val, int n, int W,vector<vector<int>> & dp){
+    if(W==0) return 0;
+    if(n==0){
+        if(W>=w[n]) return  val[n];
+        else return 0;
+    }
+    if(dp[n][W] != -1) return dp[n][W];
+    // pick
+    int pi = INT_MIN;
+    if(w[n] <= W)
+        pi = val[n] + sack(w, val, n-1, W-w[n], dp);
+    // not pick 
+    int npi = sack(w, val, n-1, W, dp);
+    
+    return dp[n][W] = max(pi,npi);
+    
+}
+
+//Bottom up
+int ks(vector<int> &w, vector<int> &val, int n, int W){
+    vector<vector<int>> dp(n, vector<int>(W+1,0));
+    
+    for(int x=w[0]; x<=W; x++) dp[0][x]=val[0];
+    
+    for(int i=1; i<n; i++){
+        for(int wi=0; wi<=W; wi++){
+            int pi=INT_MIN,npi;
+            if(wi>=w[i]) pi = val[i] + dp[i-1][wi-w[i]];
+            npi = dp[i-1][wi];
+            dp[i][wi] = max(pi, npi);
+        }
+    }
+    return dp[n-1][W];
+}
+
+//Bottom up : spc
+int ks_spc(vector<int> &w, vector<int> &val, int n, int W){
+    vector<int> dp(W+1,0);
+    vector<int> curr(W+1,0);
+    for(int x=w[0]; x<=W; x++) dp[x]=val[0];
+    
+    for(int i=1; i<n; i++){
+        for(int wi=0; wi<=W; wi++){
+            int pi=INT_MIN,npi;
+            if(wi>=w[i]) pi = val[i] + dp[wi-w[i]];
+            npi = dp[wi];
+            curr[wi] = max(pi, npi);
+        }
+        dp=curr;
+    }
+    return dp[W];
+}
+```
