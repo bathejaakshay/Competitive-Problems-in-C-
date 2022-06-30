@@ -1039,3 +1039,6 @@ int ks(int n, int W, vector<int> &val, vector<int> &w, vector<vector<int>> &dp){
     return dp[n][W] = max(npi, pi);
 }
 ```
+`TC : O(N*W)`
+`SC : O(W) + O(N*W) : aux stack space and dp`
+
