@@ -1016,3 +1016,26 @@ long long countways(int *denominations, int n, int value, vector<vector<long lon
 }
 
 ```
+---
+#### [18. Unbounded 0/1 Knapsack](https://www.codingninjas.com/codestudio/problems/unbounded-knapsack_1215029?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+Similar to 0/1 Knapsack with a difference that we have infinite bags with weight w and value v.
+**Note**: In case of infinite supply ques the base cases are different and important
+
+```
+//Top Down
+int ks(int n, int W, vector<int> &val, vector<int> &w, vector<vector<int>> &dp){
+    if(W == 0) return 0;
+    if(n==0){
+        if(w[0] <= W) return (W/w[0])*val[0]; // Base cases in case of infinite supply is important and different.
+        return 0;
+    }
+    if(dp[n][W]!=-1) return dp[n][W];
+    int pi=INT_MIN;
+    int npi;
+    if(W>=w[n]) 
+        pi = val[n] + ks(n, W-w[n], val, w, dp);
+    npi = ks(n-1, W, val, w, dp);
+    
+    return dp[n][W] = max(npi, pi);
+}
+```
