@@ -928,6 +928,7 @@ int coin(int n,vector<int> &coins, int amount, vector<vector<int>> &dp){
    return dp[n][amount] = min(pi,npi);
     
 }
+//Bottom Up
 int coin_bt(int n,vector<int> &coins, int amount){
     vector<vector<int>> dp(n, vector<int>(amount+1,0));
     for(int T=0; T<=amount; T++){
@@ -950,6 +951,31 @@ int coin_bt(int n,vector<int> &coins, int amount){
     return dp[n-1][amount];
     
 }
+//Bottom Up_spc
+int coin_bt_spc(int n,vector<int> &coins, int amount){
+    vector<int> dp(amount+1,0);
+    vector<int> curr(amount+1,0);
+    for(int T=0; T<=amount; T++){
+        if(T%coins[0]==0) dp[T] = T/coins[0];
+        else dp[T]=1e9;
+    }
+    for(int i=1; i<n; i++){
+        for(int j=0; j<=amount; j++){
+            int pi = INT_MAX,npi;
+    
+            if(j>=coins[i]){
+                pi = 1 + curr[j-coins[i]]; // we are using curr as we want to stay at the same ith value instead of going to prev row.
+
+            }
+            npi = dp[j];
+            curr[j]=min(pi,npi);        
+        }
+        dp=curr;
+    }
+    
+    return dp[n-1][amount];
+    
+}
 
 ```
 ---
@@ -961,3 +987,32 @@ int coin_bt(int n,vector<int> &coins, int amount){
 3. Now we can see that the whole array will be partition into two groups one is positive and another negative such that S1 - S2 = Target
 4. we can deduce it to subset sum with target `(totsum-Target)/2` or `(totsum+Target)/2`, but the latter will take more space.
 5. Now we can apply 13th sol.
+---
+#### [17. Coin Change 2](https://www.codingninjas.com/codestudio/problems/ways-to-make-coin-change_630471?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+Given a denomination array with infinite coins supply. Return number of makes to make a change of `target`.
+
+**Approach**
+1. Simple count number of ways problem
+2. return 1 and 0 depending on the base case
+3. sum up pick and not pick
+4. just remember after picking we can pick the same coin again
+
+```
+// Top Down
+long long countways(int *denominations, int n, int value, vector<vector<long long>> &dp){
+    if(value == 0) return 1;
+    if(value<0) return 0;
+    if(n==0) {
+        if(value%denominations[0]==0) return 1;
+        else return 0;
+    }
+    if(dp[n][value]!=-1) return dp[n][value];
+    //pick/notpick
+    long long pi=0, npi=0;
+    if(value>=denominations[n])
+        pi = countways(denominations, n, value-denominations[n], dp);
+    npi = countways(denominations, n-1, value, dp);
+    return dp[n][value] = pi+npi;
+}
+
+```
