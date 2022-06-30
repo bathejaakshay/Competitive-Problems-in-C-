@@ -772,7 +772,8 @@ int minSubsetSumDifference(vector<int>& arr, int n)
 ```
 ---
 
-#### [13. Count number of subsets in an array with sum target](https://www.codingninjas.com/codestudio/problems/number-of-subsets_3952532?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+#### [13. Count number of subsets in an array with sum target VIMP](https://www.codingninjas.com/codestudio/problems/number-of-subsets_3952532?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+Many problems are adaptations of this problem.
 **Approach**
 1. Use pick and not pick approach and return 1 if target is zero. Count pick and not pick and add them finally.
 2. Very important edge cases when array is allowed 0 valued elements. see top down.
@@ -799,47 +800,44 @@ int ways(vector<int> &num, int tar, int n,vector<vector<int>>& dp)
 ```
 **Bottom up: Tabulation**
 ```
-int ways_bt(vector<int> &num, int tar){
-    vector<vector<int>> dp(num.size(), vector<int>(tar+1,0));
-    //base case
-    for(int x=0; x<num.size(); x++){
-        dp[x][0] = 1;
+int ways_bt(vector<int> num,int n, int tgt){
+    vector<vector<int>> dp(n, vector<int>(tgt+1,0));
+    for(int i=0; i<n; i++){
+        if(i==0 && num[0]==0) dp[i][0] = 2;
+        else dp[i][0]=1;
     }
-    if(num[0]<=tar) dp[0][num[0]] = 1;
-    
-    for(int i=1; i<num.size(); i++){
-        for(int x=1; x<=tar; x++){
-            int pi=0,npi=0;
-            if(x >= num[i])
-                pi = dp[i-1][x-num[i]];
-            npi = dp[i-1][x];
-            dp[i][x]=pi+npi;
+    if(num[0]!=0 && num[0]<=tgt) dp[0][num[0]] = 1;
+    for(int i=1; i<n; i++){
+        for(int x=0; x<=tgt; x++){
+             int pi=0,npi=0;
+             if(x >= num[i])
+                 pi = dp[i-1][x-num[i]];
+             npi = dp[i-1][x];
+             dp[i][x]=pi+npi;
         }
     }
-    return dp[num.size()-1][tar];
+    return dp[n-1][tgt];
 }
 ```
 **Space Optimization**
 ```
-int ways_spc(vector<int> &num, int tar){
-    vector<int> dp(tar+1,0);
-    //base case
-    dp[0]=1;
-    if(num[0]<=tar) dp[num[0]] = 1;
-    vector<int>curr(tar+1,0);
-    //curr[0] will always be zero
-    curr[0]=1;
-    for(int i=1; i<num.size(); i++){
-        for(int x=1; x<=tar; x++){
-            int pi=0,npi=0;
-            if(x >= num[i])
-                pi = dp[x-num[i]];
-            npi = dp[x];
-            curr[x]=pi+npi;
+int ways_spc(vector<int> num,int n, int tgt){
+    vector<int> prev(tgt+1,0);
+    if(num[0]==0) prev[0]=2;
+    else prev[0]=1;
+    if(num[0]!=0 && num[0]<=tgt) prev[num[0]] = 1;
+    vector<int> curr(tgt+1,0);
+    for(int i=1; i<n; i++){
+        for(int x=0; x<=tgt; x++){
+             int pi=0,npi=0;
+             if(x >= num[i])
+                 pi = prev[x-num[i]];
+             npi = prev[x];
+             curr[x]=pi+npi;
         }
-        dp = curr;
+        prev = curr;
     }
-    return dp[tar];
+    return prev[tgt];
 }
 ```
 
@@ -960,7 +958,5 @@ int coin_bt(int n,vector<int> &coins, int amount){
 1. One of the approaches is that each element has to options to pick as + or in -.
 2. Another approach is to reduce this problem to partitioning array into two subsets whose sum's diff is D.
 3. Now we can see that the whole array will be partition into two groups one is positive and another negative such that S1 - S2 = Target
-4. Now we can apply Parition solution to it.
-
-```
-```
+4. we can deduce it to subset sum with target `(totsum-Target)/2` or `(totsum+Target)/2`, but the latter will take more space.
+5. Now we can apply 13th sol.
