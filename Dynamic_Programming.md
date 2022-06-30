@@ -904,10 +904,11 @@ int ks_spc(vector<int> &w, vector<int> &val, int n, int W){
 
 ---
 
-#### [15. Coin Change]
+#### [15. Coin Change](https://leetcode.com/problems/coin-change/)
 1. Given denominations of infinite number of coins and a target we need to find the minimum number of coins that sum up to target.
 2. Similar as 0/1 knapsack
 3. pick is different, after every pick we have an option of picking the same element up again if possible.
+4. This problem is interesting becuase we are counting number of coins and not the ways or anything else.
 
 ```
 int coin(int n,vector<int> &coins, int amount, vector<vector<int>> &dp){
@@ -938,7 +939,7 @@ int coin_bt(int n,vector<int> &coins, int amount){
             int pi = INT_MAX,npi;
     
             if(j>=coins[i]){
-                pi = 1 + dp[i][j-coins[i]];
+                pi = 1 + dp[i][j-coins[i]]; // we are counting number of coins hence we add 1
 
             }
             npi = dp[i-1][j];
