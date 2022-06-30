@@ -989,7 +989,7 @@ int coin_bt_spc(int n,vector<int> &coins, int amount){
 5. Now we can apply 13th sol.
 ---
 #### [17. Coin Change 2](https://www.codingninjas.com/codestudio/problems/ways-to-make-coin-change_630471?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
-Given a denomination array with infinite coins supply. Return number of makes to make a change of `target`.
+Given a denomination array with infinite coins supply. Return number of ways to make a change of `target`.
 
 **Approach**
 1. Simple count number of ways problem
