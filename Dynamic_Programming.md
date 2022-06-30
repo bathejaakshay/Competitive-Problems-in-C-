@@ -775,17 +775,19 @@ int minSubsetSumDifference(vector<int>& arr, int n)
 #### [13. Count number of subsets in an array with sum target](https://www.codingninjas.com/codestudio/problems/number-of-subsets_3952532?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
 **Approach**
 1. Use pick and not pick approach and return 1 if target is zero. Count pick and not pick and add them finally.
+2. Very important edge cases when array is allowed 0 valued elements. see top down.
 
 **Top Down: Memo**
 ```
 int ways(vector<int> &num, int tar, int n,vector<vector<int>>& dp)
 { 
     //ways(n,tar) represents number of subsets till n whose sum is tar.
-    if(tar==0){
-        return 1; // No matter where we are if the tar comes out to be zero we can return 1 by not picking that element;
-    }
+    // Edges cases are more when 0 valued element exists in the array
+    //Very Important 
     if(n==0){
-        return num[0] == tar;
+        if(num[0]==0 && tar==0) return 2; // two ways to pick 0 as first element if tgt is 0 , One is by picking 0 and other is by not
+        if(tar==0 || num[0] == tar) return 1; // if either tgt has become zero or last element is tar then there is one way.
+        return 0; // else return 0;
     }
     if(dp[n][tar]!=-1) return dp[n][tar];
     int pi=0,npi=0;
