@@ -1042,3 +1042,89 @@ int ks(int n, int W, vector<int> &val, vector<int> &w, vector<vector<int>> &dp){
 `TC : O(N*W)`
 `SC : O(W) + O(N*W) : aux stack space and dp`
 
+---
+
+#### [19. Rod Cutting problem](https://www.codingninjas.com/codestudio/problems/rod-cutting-problem_800284?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0)
+Given a rod of length l and profit length array representing profit of each cut_length `(ind+1)`. e.g l=5
+`profit_len = [2,1,4]` this means cut of length 1 has profit of 2, length 2 has profit of 1 and length 3 has profit of 4.  
+now we can cut rod of length five as: (1,1,1,1,1) Profit: 10
+or (2,2,1) Profit:4 ... etc.
+Similar to Unbounded 0/1 knapsack.
+
+**Top Down: Memo**  
+`TC : O(n*target)`
+`SC : O(target + n*target)`
+
+
+```
+int cut(vector<int> &price, int target, int n, vector<vector<int>> &dp){
+    if(target==0) return 0;
+    if(n==0){
+        if(target>=n+1) return (target/(n+1))*price[n];
+        return 0;
+    }
+    if(dp[n][target]!=-1) return dp[n][target];
+    int pi=INT_MIN;
+    int npi;
+    
+    if(target>=n+1) pi = price[n] + cut(price, target-(n+1), n, dp);
+    npi = cut(price, target, n-1, dp);
+    return dp[n][target] = max(pi,npi);
+    
+
+```
+
+**Bottom up**
+`TC: O(n*target)`
+`SC: O(n*target)`
+```
+int coin_bt(int n,vector<int> &coins, int amount){
+    vector<vector<int>> dp(n, vector<int>(amount+1,0));
+    for(int T=0; T<=amount; T++){
+        if(T%coins[0]==0) dp[0][T] = T/coins[0];
+        else dp[0][T]=1e9;
+    }
+    for(int i=1; i<n; i++){
+        for(int j=0; j<=amount; j++){
+            int pi = INT_MAX,npi;
+    
+            if(j>=coins[i]){
+                pi = 1 + dp[i][j-coins[i]];
+
+            }
+            npi = dp[i-1][j];
+            dp[i][j]=min(pi,npi);        
+        }
+    }
+```
+
+**Space Optimization**
+`TC: O(n*target)`
+`SC : O(target+1)`
+```
+int cur_bt_spc(vector<int> &price, int target, int n){
+    vector<int> prev(target+1, 0);
+    vector<int> curr(target+1, 0);
+    
+    //base cases
+    for(int i=1; i<=target; i++){
+        prev[i] = i*price[0];
+    }
+    
+   for(int i=1; i<n; i++){
+       for(int j = 0; j<=target; j++){
+           int pi=INT_MIN;
+           int npi;
+           if(j>=i+1) pi = price[i] + curr[j-(i+1)];
+           npi = prev[j];
+           curr[j] = max(pi,npi);
+       }
+       prev=curr;
+   }
+    return curr[target];
+    
+    
+}
+```
+
+---
