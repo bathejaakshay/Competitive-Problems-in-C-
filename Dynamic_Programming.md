@@ -951,3 +951,14 @@ int coin_bt(int n,vector<int> &coins, int amount){
 }
 
 ```
+---
+
+#### [16. Assign +,- to array to get Target Sum](https://www.codingninjas.com/codestudio/problems/target-sum_4127362?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos)
+**Approach**
+1. One of the approaches is that each element has to options to pick as + or in -.
+2. Another approach is to reduce this problem to partitioning array into two subsets whose sum's diff is D.
+3. Now we can see that the whole array will be partition into two groups one is positive and another negative such that S1 - S2 = Target
+4. Now we can apply Parition solution to it.
+
+```
+```
