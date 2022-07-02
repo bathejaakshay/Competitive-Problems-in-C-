@@ -1128,3 +1128,70 @@ int cur_bt_spc(vector<int> &price, int target, int n){
 ```
 
 ---
+
+## DP on Strings
+
+#### [20. Length of longest common subsequence](https://www.codingninjas.com/codestudio/problems/longest-common-subsequence_624879?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+
+**Approaches**
+1. Express the recurrsion in form of (ind1, ind2) of string s and t. Here f(ind1, ind2) represents the length of longest common subsequence for string s[0..ind1] and t[0..ind2]
+2. Explore everything on indices
+3. Take the best among them.
+
+**Top down : Memo**  
+`TC: O(n*m)  SC : O((n+m) + (n*m))`
+
+``` 
+int longcs(int i, int j, string s, string t, vector<vector<int>> &dp){
+    if(i<0 || j<0) return 0;
+    if(dp[i][j]!=-1) return dp[i][j];
+    if(s[i] == t[j]) return dp[i][j] = 1 + longcs(i-1, j-1, s, t, dp);
+    
+    return dp[i][j] = max(longcs(i,j-1,s,t, dp), longcs(i-1,j,s,t, dp));
+    
+}
+```
+
+**Bottom Up:  Tabulation**
+`TC: O((n+1)*(m+1))`  `SC : O((n+1)*(m+1))` (Tricky : requires index shifting)  
+**Approach**
+1. The indices originally traverese from -1 to n-1 & -1 to m-1, so we shift it to 0 to n & 0 to m as we cant express -1 in array index
+```
+int longcs_bt(string s, string t){
+    int n = s.length();
+    int m = t.length();
+    vector<vector<int>> dp (n+1, vector<int>(m+1, 0)); //the indices originally travels from -1 to n-1 & -1 to m-1, so we shift it to 0 to n & 0 to m as we cant express -1 in array index
+    
+    // Base case handled for index -1 i.e 0
+    
+    for(int a = 1; a<=n; a++){
+        for(int b = 1; b<=m; b++){
+            if(s[a-1] == t[b-1]) dp[a][b] = 1 + dp[a-1][b-1];
+            else dp[a][b] = max(dp[a-1][b], dp[a][b-1]);
+        }
+    }
+    return dp[n][m]; 
+}
+
+```
+**Bottom Space Optimization**
+`TC : O((n+1)*(m+1))` `SC: O(m+1)`
+```
+int longcs_spc(string s, string t){
+    int n = s.length();
+    int m = t.length();
+    vector<int> prev (m+1, 0);
+    vector<int> curr (m+1, 0);
+    // Base case handled for index -1 i.e 0
+    
+    for(int a = 1; a<=n; a++){
+        for(int b = 1; b<=m; b++){
+            if(s[a-1] == t[b-1]) curr[b] = 1 + prev[b-1];
+            else curr[b] = max(prev[b], curr[b-1]);
+        }
+        prev = curr;
+    }
+    return prev[m];
+}
+```
+---
