@@ -1195,3 +1195,27 @@ int longcs_spc(string s, string t){
 }
 ```
 ---
+
+#### 21. Printing LCS
+**Approach**
+1. Scan through DP table formed in tabulation.
+```
+string ans = "";
+    int x = s.length(), y= t.length();
+    while(x>0 && y>0){
+    	if(s[x-1] == t[y-1]){
+    		ans = s[x-1] + ans;
+    		x--;
+    		y--;
+    	}
+    	else{
+    		if(dp[x][y-1] > dp[x-1][y]){
+    			y--;
+    		}
+    		else{
+    			x--;
+    		}
+    	}
+    }
+```
+---
