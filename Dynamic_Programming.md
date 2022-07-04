@@ -1219,3 +1219,23 @@ string ans = "";
     }
 ```
 ---
+
+#### 22. Longest Palindromic Subsequence 
+**Approach**
+1. Given a string we can easily find longest palindromic subsequence using DP 
+2. We take the string and its reverse and find the longest common subsequence. 
+3. It will automatically give us the longest palindrome subsequence.
+
+#### 23. Minimum insertions to make string palindrome 
+**Approach**
+1. Its idea is related to longest common palindrome subsequence 
+2. We first find the longest palindrome subsequence.
+3. The remaining chars that are not in longest palindrome subsequence are the number of insertions required to make the string palindrome.
+
+#### 24. Minimum insertions/ deletions to convert string A to B 
+**Approach**
+1. we first find LCS of two strings. 
+2. Sum of the length of two strings - 2* LCS length 
+
+
+
