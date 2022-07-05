@@ -1237,5 +1237,65 @@ string ans = "";
 1. we first find LCS of two strings. 
 2. Sum of the length of two strings - 2* LCS length 
 
+#### [25. Subsequence Counting](https://www.codingninjas.com/codestudio/problems/subsequence-counting_3755256?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0)
+```
+int subseqcount(int i, int j, string &t, string s, vector<vector<int>> &dp){
+    if(j<0){
+        return 1;
+    }
+    if(i<0) return 0;
+    if(dp[i][j]!=-1) return dp[i][j];
+    
+    if(t[i] == s[j]){
+        return dp[i][j] = (subseqcount(i-1, j-1, t, s, dp) + subseqcount(i-1,j,t,s, dp))%(1000000007);
+    }
+    else {
+        return dp[i][j] = (subseqcount(i-1, j, t, s, dp))%(1000000007);
+    }
+}
+int subseqcount_bt(int i, int j, string &t, string s){
+    vector<vector<int>> dp (i+1, vector<int>(j+1,0));
+    for(int x=0;x<i; x++){
+        dp[x][0] = 1;
+    } 
+    for(int x=1; x<=i; x++){
+        for(int y=1; y<=j; y++){
+            if(t[x-1] == s[y-1]){
+                dp[x][y] = (dp[x-1][y-1] + dp[x-1][y])%1000000007;
+            }
+            else{
+                dp[x][y] = dp[x-1][y];
+            }
+        }
+    }
+   return dp[i][j];
+}
+int subseqcount_spc(int i, int j, string &t, string s){
+    vector<int> prev (j+1,0);
+    vector<int> curr (j+1,0);    
+    prev[0]=1;
+    curr[0]=1;
+    for(int x=1; x<=i; x++){
+        for(int y=1; y<=j; y++){
+            if(t[x-1] == s[y-1]){
+                curr[y] = (prev[y-1] + prev[y])%1000000007;
+            }
+            else{
+                curr[y] = prev[y];
+            }
+        }
+        prev = curr;
+    }
+   return curr[j];
+}
 
+int subsequenceCounting(string &t, string &s, int lt, int ls) {
+    // Write your code here.
+//     vector<vector<int>> dp(t.length(), vector<int>(s.length(), -1));
+//     return subseqcount(t.length()-1,s.length()-1,t,s, dp);
+//     return subseqcount_bt(t.length(),s.length(),t,s);
+    return subseqcount_spc(t.length(),s.length(),t,s);
+
+} 
+```
 
