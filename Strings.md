@@ -267,3 +267,58 @@ long long kpalin(int n, int len){
 ```
 
 ---
+
+#### [6. Shortest Common Supersequence](https://www.codingninjas.com/codestudio/problems/shortest-supersequence_4244493?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+
+**Approach**
+1. Shortest Common supersequence is the concatenation of two substrings in which LCS comes only once.
+2. So after creation of LCS table, we can perform following operations
+3. `if (a[i-1] == b[j-1])` then add the char in the result string and do i--, j--
+4. else `if(dp[i-1][j] > dp[i][j-1])` then move to the maximum one of those add the char which we are not observing anymore.
+
+```
+string lcs(string a, string n){
+    
+    vector<vector<int>> dp(a.length()+1, vector<int>(n.length()+1,0));
+    
+    for(int i=1; i<=a.length(); i++){
+        for(int j=1; j<=n.length(); j++){
+            if(a[i-1] == n[j-1]){
+                dp[i][j] = 1 + dp[i-1][j-1];
+            }
+            else {
+                dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+            }
+        }
+    }
+   int i=a.length(), j=n.length();
+   string ans="";
+    while(i>0 && j>0){
+        if(a[i-1] == n[j-1]){
+            ans = ans + a[i-1];
+            i--;j--;
+        }
+        else{
+            if(dp[i-1][j] > dp[i][j-1]){
+                ans = ans+ a[i-1];
+                i--;
+            }
+            else{
+                ans = ans + n[j-1];
+                j--;
+            }
+        }
+    }
+    while(i>0){
+        ans+=(a[i-1]);
+        i--;
+    }
+    while(j>0){
+        ans+=(n[j-1]);
+        j--;
+    }
+    reverse(ans.begin(), ans.end());
+    return ans;
+}
+```
+---
