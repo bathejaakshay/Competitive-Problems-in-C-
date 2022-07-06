@@ -1238,6 +1238,13 @@ string ans = "";
 2. Sum of the length of two strings - 2* LCS length 
 
 #### [25. Subsequence Counting](https://www.codingninjas.com/codestudio/problems/subsequence-counting_3755256?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0)
+Given a string  T and a  string S, find all the subsquences in T that matches S.
+**Approach**
+1. Represent the problem in terms of indices. f(i,j) represents the number of subsequences in string `T[0..i]` that matches `S[0..j]`.
+2. Do all stuff on the indices. Here we perform pick and not pick logic and as we are doing the counting problem we will just return 0 or 1. 
+3. if the last char `T[i]` and `S[j]` matches then there are two options, either to include it in the count or to find another occurence of the same character S[j].
+4. if they dont match then we shrink the T string by length one.
+5. Finally we return the sum of two ways mentioned above. 
 ```
 int subseqcount(int i, int j, string &t, string s, vector<vector<int>> &dp){
     if(j<0){
