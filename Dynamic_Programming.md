@@ -1318,6 +1318,7 @@ int subsequenceCounting(string &t, string &s, int lt, int ls) {
 8. we dont actually perform insertion, replacement or deletion, instead we do recursion.
 
 **Top Down**
+```
 int ed(int i, int j, string &s, string &t, vector<vector<int>> &dp){
     // base case 
     if(i==0){
@@ -1327,27 +1328,20 @@ int ed(int i, int j, string &s, string &t, vector<vector<int>> &dp){
         return i;
     }
      if(dp[i][j]!=-1)  return dp[i][j];  
-    //if the chars matches then we dont have to do anything, no penalty just move back
+    /*if the chars matches then we dont have to do anything, no penalty just move back*/
     
     if(s[i-1] == t[j-1]){
         return dp[i][j] = ed(i-1,j-1,s,t, dp);
     }
-    // If they dont match then we have three options, 
-    // 1. We can insert the char and move jth one back and keep the ith same, 1 Penalty
-    // 2. We can replace the char with the required char of t and move both indices back. 1 penalty
-    // 3. We can delete that char, for this we 1 as penalty and move ith back
-//     int mini = 1e8;
-//     if(s[i-1]!=t[j-1]){
+    /* If they dont match then we have three options, 
+       1. We can insert the char and move jth one back and keep the ith same, 1 Penalty
+       2. We can replace the char with the required char of t and move both indices back. 1 penalty
+       3. We can delete that char, for this we 1 as penalty and move ith back */
     return dp[i][j] = 1 + min(ed(i-1,j, s, t, dp), min(ed(i, j-1, s, t, dp), ed(i-1, j-1 , s, t, dp)));
-//     mini = min(mini, ed(i,j-1, s, t, dp)); // insert
-//         mini = min(mini, ed(i-1, j-1, s, t, dp)); // replace
-//         mini = min(mini, ed(i-1, j , s, t, dp)); //delete
-//         return dp[i][j] = 1 + mini;
-//     }
 }
  ```
   
-**Bottom up : Tabulation**
+**Bottom-up:Tabulation**
  We need to be careful while writing base cases.
   
  ```
@@ -1355,7 +1349,7 @@ int ed(int i, int j, string &s, string &t, vector<vector<int>> &dp){
     int m = s.length();
     int n = t.length();
     vector<vector<int>> dp(m+1, vector<int>(n+1,0));
-    // base case
+    /* base case */
     for(int x=0; x<=m; x++){
         dp[x][0] = x; 
     }
@@ -1385,7 +1379,7 @@ int ed(int i, int j, string &s, string &t, vector<vector<int>> &dp){
     int n = t.length();
     vector<int> dp(n+1,0);
    vector<int> curr(n+1,0);
-    // base case
+    /* base case */
     for(int x=0; x<=n; x++){
         dp[x] = x;
     }
