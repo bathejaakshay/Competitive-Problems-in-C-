@@ -1306,3 +1306,105 @@ int subsequenceCounting(string &t, string &s, int lt, int ls) {
 } 
 ```
 
+#### [26. Edit Distance](https://www.codingninjas.com/codestudio/problems/edit-distance_630420?leftPanelTab=1)
+**Approach**
+1. we start scanning from the end of the two strings s and t
+2. if the chars at two strings matches then no penalty and move backward. i.e `s[i-1] == t[j-1]`
+3. if they donot match then we have three  options for the `s[i-1]` char to make it same  as `t[j-1]`
+4. Either insert, replace or delete. we need to find minimum of them all. 
+5. insertion 1 + f(i,j-1) 
+6. replace 1 + f(i-1,j-1)
+7. deletion 1 + f(i-1, j)
+8. we dont actually perform insertion, replacement or deletion, instead we do recursion.
+
+**Top Down**
+int ed(int i, int j, string &s, string &t, vector<vector<int>> &dp){
+    // base case 
+    if(i==0){
+        return j;
+    }
+    if(j==0){
+        return i;
+    }
+     if(dp[i][j]!=-1)  return dp[i][j];  
+    //if the chars matches then we dont have to do anything, no penalty just move back
+    
+    if(s[i-1] == t[j-1]){
+        return dp[i][j] = ed(i-1,j-1,s,t, dp);
+    }
+    // If they dont match then we have three options, 
+    // 1. We can insert the char and move jth one back and keep the ith same, 1 Penalty
+    // 2. We can replace the char with the required char of t and move both indices back. 1 penalty
+    // 3. We can delete that char, for this we 1 as penalty and move ith back
+//     int mini = 1e8;
+//     if(s[i-1]!=t[j-1]){
+    return dp[i][j] = 1 + min(ed(i-1,j, s, t, dp), min(ed(i, j-1, s, t, dp), ed(i-1, j-1 , s, t, dp)));
+//     mini = min(mini, ed(i,j-1, s, t, dp)); // insert
+//         mini = min(mini, ed(i-1, j-1, s, t, dp)); // replace
+//         mini = min(mini, ed(i-1, j , s, t, dp)); //delete
+//         return dp[i][j] = 1 + mini;
+//     }
+}
+  
+**Bottom up : Tabulation**
+ We need to be careful while writing base cases.
+  
+ ```
+  int ed_bt(int i, int j, string &s, string &t){
+    int m = s.length();
+    int n = t.length();
+    vector<vector<int>> dp(m+1, vector<int>(n+1,0));
+    // base case
+    for(int x=0; x<=m; x++){
+        dp[x][0] = x; 
+    }
+    for(int x=0; x<=n; x++){
+        dp[0][x] = x;
+    }
+
+    for(int x=1; x<=m; x++){
+        for(int y=1; y<=n; y++){
+            if(s[x-1] == t[y-1]){
+            dp[x][y] = dp[x-1][y-1];
+            }
+            else
+               dp[x][y] = 1 + min(dp[x-1][y], min(dp[x][y-1], dp[x-1][y-1]));        
+        }
+    }
+    
+    return dp[m][n];
+}
+  
+ ```
+  
+ **Bottom up - Space optimization**
+ ```
+  int ed_spc(int i, int j, string &s, string &t){
+    int m = s.length();
+    int n = t.length();
+    vector<int> dp(n+1,0);
+   vector<int> curr(n+1,0);
+    // base case
+    for(int x=0; x<=n; x++){
+        dp[x] = x;
+    }
+
+    for(int x=1; x<=m; x++){
+        curr[0] = x;
+        for(int y=1; y<=n; y++){
+            
+            if(s[x-1] == t[y-1]){
+            curr[y] = dp[y-1];
+            }
+            else
+               curr[y] = 1 + min(dp[y], min(curr[y-1], dp[y-1]));        
+        }
+        dp = curr;
+    }
+    
+    return dp[n];
+}
+                          
+ ```
+---
+  
