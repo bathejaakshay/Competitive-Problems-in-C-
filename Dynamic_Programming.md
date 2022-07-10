@@ -1403,7 +1403,7 @@ int ed(int i, int j, string &s, string &t, vector<vector<int>> &dp){
  ```
 ---
  
-####[27. Wildcard pattern matching](https://www.codingninjas.com/codestudio/problems/wildcard-pattern-matching_701650?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+#### [27. Wildcard pattern matching](https://www.codingninjas.com/codestudio/problems/wildcard-pattern-matching_701650?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)  
 `Wild cards :  '*' , '?'`  
 **Approach**
 1. Given a pattern p and string s find if pattern matches s. '*' means 0 or more matches , '?' means 1 char matches
