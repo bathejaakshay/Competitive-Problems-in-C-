@@ -1579,7 +1579,8 @@ long maxprof_bt(long *val, int n){
     return dp[0][1];
 }
 ```
-`TC:O(n*2) SC:O(n*2)`  
+`TC:O(n*2) SC:O(n*2)` 
+
 **Space Optimization**
 ```
 long maxprof_bt_spc(long *val, int n){
@@ -1604,5 +1605,7 @@ long maxprof_bt_spc(long *val, int n){
     return next[1];
 }
 ```
+
 `TC:O(n*2) SC:O(2)`  
+
 ---
