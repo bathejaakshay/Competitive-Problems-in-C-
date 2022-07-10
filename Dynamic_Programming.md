@@ -1609,3 +1609,40 @@ long maxprof_bt_spc(long *val, int n){
 `TC:O(n*2) SC:O(2)`  
 
 ---
+
+####[29. Best time to buy and sell a stock III](https://www.codingninjas.com/codestudio/problems/buy-and-sell-stock_1071012?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)  
+The problem is similar to the previous but here we can buy and sell the stocks only 2 times.
+
+**Approach**
+1. In this case we will have one more parameter `allow` which will tell us if we are allowed the buy or sell the stocks on the particular day.
+2. We call f(0,1,2) initially which means maxprof from 0 till n if we are allowed to buy 2 times.
+3. we update the value of allow only when we sell the stock 
+4. So if allowed and if buy = 1 we can either buy `f(i+1, 0, allow) - val[i]` or not buy `f(i+1, 1, allow)`
+5. if buy=0 the we can either sell `f(i+1, 1 , allow-1) + val[i]` or not sell `f(i+1, 0, allow)`.
+
+```
+int maxprof(int i, int buy, int allow, vector<int> &prices, int n, vector<vector<vector<int>>> &dp){
+    //base case
+    if(i==n){
+        return 0;
+    }
+    
+    if(dp[i][buy][allow]!=-1) return dp[i][buy][allow];
+    //main
+    int profit = 0;
+    if(allow){
+        
+        if(buy){
+            profit = max( maxprof(i+1, 0, allow, prices, n, dp) - prices[i], maxprof(i+1, 1, allow, prices, n, dp));    
+        }
+        else{
+            profit = max(maxprof(i+1, 1, allow-1, prices, n, dp) + prices[i], maxprof(i+1, 0, allow, prices, n, dp));
+        }
+    }
+    return dp[i][buy][allow]  = profit;
+}
+```
+
+---
+
+
