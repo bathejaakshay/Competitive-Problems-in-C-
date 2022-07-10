@@ -1526,3 +1526,83 @@ bool match_bt_spc(string &p, string &t){
 
 **Intuition for recursion**  
 If you are selling a stock on ith day then you must buy it at a minimum price from 1st to i-1th day.
+
+
+####[28. Best time to Buy and Sell stock II](https://www.codingninjas.com/codestudio/problems/selling-stock_630282?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+**Problem Statement**  
+Given an array with the value of stock prices at each day from 1 to N, find the max profit if you are allowed to buy and sell stocks more than once.  
+A buy should always be followed by a sell.  
+**Approach : Top Down**  
+1. Lets first represent the problem in terms of indices. f(i, buy) represents the maxprofit obtained from day ith till last day given we perform buy or sell or nothing based on the keyword 'buy'.
+2. for the first index buy is always possible i.e we call f(0,1)
+3. so if buy is possible we do buy or not buy i.e  max(buying at day i i.e `- val[i] + f(i+1,0)` //once bought we cant buy again, not buying at day i i.e `0 + f(i+1,1)` // maxprof from i+1 to n if buying is allowed. 
+4. if(buying is not allowed i.e buy==0) then we do sell or not sell:  max(selling at day i i.e `val[i] + f(i+1,1)` //once sold we can buy the next shares, not selling at day i i.e `0 + f(i+1,0)`.
+
+```
+long maxprof(int i, int buy, long *val, int n, vector<vector<long>> &dp){
+    //base case
+    if(i==n){
+        return 0;
+    }
+    if(dp[i][buy]!=-1) return dp[i][buy];
+    long profit = 0;
+    if(buy){
+        profit = max(maxprof(i+1, 0, val, n, dp) - val[i], maxprof(i+1, 1, val, n, dp));
+        
+    }
+    else{
+        profit = max(maxprof(i+1, 1, val, n, dp) + val[i], maxprof(i+1, 0, val, n, dp));
+    
+    }
+    return dp[i][buy] = profit; 
+}
+```
+`TC:O(n*2) SC:O(n*2 + (n+2))`  
+**Bottom up**
+```
+long maxprof_bt(long *val, int n){
+    vector<vector<long>> dp(n+1, vector<long>(2,0));
+    // base case already handled
+     for(int i=n-1; i>=0; i--){         
+        for(int buy=0; buy<=1; buy++){
+            long profit = 0;
+            if(buy){
+                profit = max(dp[i+1][0] - val[i], dp[i+1][1]);
+            }
+            else{
+                profit = max(dp[i+1][1] + val[i], dp[i+1][0]);
+            }
+            dp[i][buy] = profit;
+        }    
+    }
+    
+    return dp[0][1];
+}
+```
+`TC:O(n*2) SC:O(n*2)`  
+**Space Optimization**
+```
+long maxprof_bt_spc(long *val, int n){
+    vector<vector<long>> dp(n+1, vector<long>(2,0));
+    vector<long> next(2,0);
+    vector<long> curr(2,0);
+    // base case already handled
+     for(int i=n-1; i>=0; i--){         
+        for(int buy=0; buy<=1; buy++){
+            long profit = 0;
+            if(buy){
+                profit = max(next[0] - val[i], next[1]);
+            }
+            else{
+                profit = max(next[1] + val[i], next[0]);
+            }
+            curr[buy] = profit;
+        }
+         next = curr;
+    }
+    
+    return next[1];
+}
+```
+`TC:O(n*2) SC:O(2)`  
+---
