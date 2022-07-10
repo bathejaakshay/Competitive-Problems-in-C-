@@ -1530,7 +1530,7 @@ If you are selling a stock on ith day then you must buy it at a minimum price fr
 
 ####[28. Best time to Buy and Sell stock II](https://www.codingninjas.com/codestudio/problems/selling-stock_630282?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
 **Problem Statement**  
-Given an array with the value of stock prices at each day from 1 to N, find the max profit if you are allowed to buy and sell stocks more than once.  
+Given an array with the value of stock prices at each day from 1 to N, find the max profit if you are allowed to buy and sell stocks infinite times.  
 A buy should always be followed by a sell.  
 **Approach : Top Down**  
 1. Lets first represent the problem in terms of indices. f(i, buy) represents the maxprofit obtained from day ith till last day given we perform buy or sell or nothing based on the keyword 'buy'.
