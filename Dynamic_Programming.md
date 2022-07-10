@@ -1521,3 +1521,8 @@ bool match_bt_spc(string &p, string &t){
 
 ```
 ---
+
+## DP on Stocks
+
+**Intuition for recursion**  
+If you are selling a stock on ith day then you must buy it at a minimum price from 1st to i-1th day.
