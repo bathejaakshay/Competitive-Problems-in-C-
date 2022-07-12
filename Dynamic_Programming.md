@@ -1849,8 +1849,54 @@ int longestStrChain(vector<string> &arr)
     }
     return maxi;
 }
+```
+---
+
+#### [32. Longest Bitonic Subsequence](https://www.codingninjas.com/codestudio/problems/longest-bitonic-sequence_1062688?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+
+1 2 0 2 1
+longest bitonic seq: 1 2 1
+Longest bitonic seq can be completely increasing or decreasing or (increasing first and then decreasing)
+
+**Approach LIS**
+1. In previous ques dp1[i] represented the length of the LIS from 0 till i
+2. Now if we reverse the array and then apply LIS again we will get to know length of LIS from n-1 till i is `dp2[i]`
+3. Now `final[i] = dp1[i] + dp2[i] - 1` represents the length of longest bitonic sequence with index i.
+4. Now we compute the same for all i and find the max.
+
+```
+int longestBitonicSequence(vector<int>& arr, int n) {
+	  // Write your code here.
+    vector<int> dp1(n, 1);
+    vector<int> dp2(n, 1);
+    //from left to right
+    for(int i=1; i<n; i++){
+        for(int prev=0; prev<i; prev++){
+            if(arr[prev] < arr[i] && dp1[i] < 1 + dp1[prev]){
+                dp1[i] = 1 + dp1[prev];   
+            }
+        }
+    }
+    // from right to left
+    reverse(arr.begin(), arr.end());
+    for(int i=1; i<n; i++){
+        for(int prev=0; prev<i; prev++){
+            if(arr[prev] < arr[i] && dp2[i] < 1 + dp2[prev]){
+                dp2[i] = 1 + dp2[prev];
+                
+            }
+        }
+    }
+    int maxi=1;
+    reverse(dp2.begin(), dp2.end());
+    for(int i=0; i<dp1.size(); i++){
+        dp1[i] = dp1[i] + dp2[i] - 1;
+        maxi = max(maxi, dp1[i]);    
+    }
+    return maxi;
+}
+
+```
 
 ---
 
-
-```
