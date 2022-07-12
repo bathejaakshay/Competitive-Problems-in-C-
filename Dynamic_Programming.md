@@ -1745,3 +1745,48 @@ int lis_bsearch(int arr[], int n){
 }
 ```
 `TC: O(nlogn)` and `SC: O(n)`
+
+
+#### [30. Largest Divisble Set](https://www.codingninjas.com/codestudio/problems/divisible-set_3754960?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0)
+Given a set of numbers find a largest Divisible set. A set is divisible if for each pair (x,y) that belongs of set : either `x%y==0` or `y%x==0`.
+**Approach: LIS**
+1. We first sort the arr
+2. Then we apply the logic of LIS with a modification. We know that the seq is increasing but we want to find if its divisible so instead of checking `arr[i]>arr[j]` we check if `arr[i] % arr[j] == 0` if yes then `arr[i]` is divisible by all the previous elements (pervious to j) in the LIS.
+3. The rest of the logic remains the same. We maintain back array to backtrack the actual longest Divisble set.
+
+```
+vector<int> f_bt(vector<int> &arr){
+    vector<int> dp(arr.size()+1,1);
+    vector<int> back(arr.size()+1);
+    int n =arr.size();
+    int maxi=0;
+    int ind=0;
+    // dp[i] represents the length of LIS from 0 till i
+    //apply LIS
+    for(int i=1; i<n; i++){
+        back[i] = i;
+        for(int prev = 0; prev < i; prev++){
+            if(arr[i]%arr[prev]==0 && dp[i] < 1+dp[prev]){
+                dp[i] = 1 + dp[prev];
+                back[i] = prev;
+            }           
+            if(maxi < dp[i]){
+                maxi = dp[i];
+                ind = i;
+            }
+        }
+    }
+    vector<int> ans;
+    while(ind != back[ind]){
+        ans.push_back(arr[ind]);
+        ind = back[ind];
+    }
+    ans.push_back(arr[ind]);
+    reverse(ans.begin(), ans.end());
+    return ans;
+    
+}
+```
+
+---
+
