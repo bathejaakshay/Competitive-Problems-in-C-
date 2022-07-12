@@ -30,7 +30,7 @@ upper_bound = 5  (num.end())
 ```
 int lower_bound(vector<int> &nums, int i, int j, int item){
     // base case
-    if(i>j) return j;
+    if(i>j) return i; // return if you want to return next or just greater element in case the element doesnt exist, and return j if you want to return previous or just smaller element.
     
     int mid = i+ (j-i)/2;
     if(nums[mid] == item && (mid==0 || nums[mid-1]!=nums[mid])){
@@ -64,7 +64,7 @@ vector<int> searchRange(vector<int>& nums, int target) {
         int i = lower_bound(nums, 0, nums.size()-1, target);
         int j = upper_bound(nums, 0, nums.size()-1, target);
         cout<<i<<" "<<j<<endl;
-        if(i<0 || nums[i]!=target) return {-1,-1};
+        if(i==nums.size() || nums[i]!=target) return {-1,-1};
         return {i, j-1};
     }
 };
