@@ -1790,3 +1790,67 @@ vector<int> f_bt(vector<int> &arr){
 
 ---
 
+#### [31. Longest String Chain](https://www.codingninjas.com/codestudio/problems/longest-string-chain_3752111?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0)
+Given an array of strings, find the length of longest string chain. A chain of strings is one in which for each consecutive pairs (i,j) j has an insertion of one extra char and rest of the string is same.
+This chain can made from arr in any order i.e subsets and not subsequence.
+```
+E.g arr = [xyx x yy xx]
+ans = 3 : x xx xyx
+```
+**Approach**
+1. We think of it in the form of LIS.
+2. We need to find LIS such that each consecutive pair differs by 1 char. So instead of `arr[i] > arr[prev]` , we write `compare(arr[i], arr[prev])`. The rest of the code remains  same.
+3. Also the chain is the subset of arr. So we sort the arr first so that we can apply LIS to get correct output as we are not using `arr[i] > arr[prev]`.
+
+```
+bool compare(string &a, string &b){
+    int i=0,j=0;
+    if(a.length() + 1 != b.length()) return false;
+    int flag=1;
+    while(i<a.length() && j<b.length()){
+        if(a[i]!=b[j]){
+            if(flag==1){
+                j++;
+                flag=0;
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            i++; 
+            j++;
+        }
+    }
+    if(i == a.length() && j == b.length()) return true;
+    
+    if(i==a.length() && j==b.length()-1 && flag) return true;
+    return false;
+}
+bool comp(string &s1, string &s2){
+  return s1.size()<s2.size();  
+} 
+int longestStrChain(vector<string> &arr)
+{
+    // Clearly the difference between the consecutive strings in the longest str chain is 1. Hence we need to find Longest increasing chain where consecutive strings differ by just one char. We need to find subsets here.
+    sort(arr.begin(), arr.end(), comp);
+    int maxi=1;
+    vector<int> dp(arr.size()+1, 1);
+    for(int i=1; i<arr.size(); i++){
+        for(int prev = 0; prev<i; prev++){
+            bool val = compare(arr[prev], arr[i]);
+            if(compare(arr[prev], arr[i]) && dp[i] < dp[prev] + 1){
+                dp[i] = dp[prev] + 1;
+            }
+            if(maxi<dp[i]){
+                maxi = dp[i];
+            }
+        }
+    }
+    return maxi;
+}
+
+---
+
+
+```
