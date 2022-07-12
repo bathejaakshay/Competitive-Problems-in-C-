@@ -1528,7 +1528,7 @@ bool match_bt_spc(string &p, string &t){
 If you are selling a stock on ith day then you must buy it at a minimum price from 1st to i-1th day.
 
 
-####[28. Best time to Buy and Sell stock II](https://www.codingninjas.com/codestudio/problems/selling-stock_630282?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+#### [28. Best time to Buy and Sell stock II](https://www.codingninjas.com/codestudio/problems/selling-stock_630282?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
 **Problem Statement**  
 Given an array with the value of stock prices at each day from 1 to N, find the max profit if you are allowed to buy and sell stocks infinite times.  
 A buy should always be followed by a sell.  
@@ -1645,4 +1645,103 @@ int maxprof(int i, int buy, int allow, vector<int> &prices, int n, vector<vector
 
 ---
 
+#### [29. Length of the LIS](https://www.codingninjas.com/codestudio/problems/longest-increasing-subsequence_630459?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+There are 3 different approaches to it.
+**Approach 1: Dynamic Programming (Take/Not Take)**
+1. In this approach we represent our recurrence using two parameters `f(i,prev)` which means LIS from ind i to n when previous element in LIS was `arr[prev]`
+2. If the prev is smaller than `arr[i]` then we have two options either to take `arr[i]` in our LIS or not take.
+3. If the prev is greater than `arr[i]` then we have only one option i.e to not take `arr[i]`.
 
+```
+int lis(int i, int num, int arr[], int n, vector<vector<int>> &dp){
+    // Gives run time error due to dp space of 10^10 which is not possible
+    //base case
+    if(i==n) return 0;
+    if(dp[i][num+1]!=-1) return dp[i][num+1];
+    int len=0;
+    
+    
+    if(num==-1 || arr[i]>arr[num]){
+        //pick
+        len = 1 + lis(i+1, i, arr, n, dp);
+    }
+     len = max(len,lis(i+1, num, arr, n, dp));
+     return dp[i][num+1] = len;
+}
+```
+`TC:O(n^2)`  
+`SC: O(n^2) + O(n)`  
+
+**Approach 2: Iterative using LIS array**
+1. We use array dp in which `dp[i]` represents the maxlen of LIS from ind 0 till i including `arr[i]`.
+2. We also maintain prev indices to back track the LIS sequence. `back[i]` represents the previous element in LIS whose next element is `arr[i]`.
+3. For each i from 0 to n we iterate prev from 0 till i-1 and check if prev element can be the prev element in LIS containting `arr[i]` i.e `arr[i] > arr[prev]` 
+4. If yes then we check the current value of `dp[i]` if its smaller than `dp[prev] + 1` then we update it and set `back[i] = prev`
+5. The final max element of the dp array is the answer.
+
+```
+int print_lis(int arr [], int n){
+    // In case we want to print LIS we definitely require O(n^2) algo.
+    // assume dp[i] is the length of longest increasing subsequence till i  including i
+   // assume back[i] contains the index of previous element of LIS whose next element is arr[i]
+    
+   vector<int> dp(n, 1);
+   vector<int> back(n);
+    int maxi=0;
+    int ind;
+    for(int i=0; i<n; i++){
+        back[i] = i;
+        for(int j=0; j<i; j++){
+            if(arr[j] < arr[i] && dp[i] < dp[j] + 1){
+                dp[i] = dp[j] + 1;
+                back[i] = j;
+            }
+            if(dp[i] > maxi){
+                maxi = dp[i];
+                ind = i;
+            }
+        }
+        
+    }
+    vector<int> ans;
+    while(ind!=back[ind]){
+        ans.push_back(arr[ind]);
+        ind = back[ind];
+    }
+    ans.push_back(arr[ind]);
+    reverse(ans.begin(), ans.end());
+//     for(auto it: ans) cout<<it<<" ";
+//     cout<<endl;
+    return maxi;   
+}
+```
+`TC: O(n^2)` and `SC : O(n^2)`
+
+
+**Approach 3: Using Binary Search**
+1. This is not intuitive but easy
+2. We mantain a new array say temp which for each element consist of possible lis. (Although as we are continously updating it, it doesnt give the final LIS)
+3. For each ind 0 till n, we check if the last element in temp is smaller then `arr[ind]`
+4. if yes then we just pushback `arr[ind]` to the temp arr
+5. if not then we find the lowerbound of `arr[ind]` representing the element just greater than or equal to `arr[ind]` and we replace it with `arr[ind]`
+6. The final size of temp array gives us the length of LIS.
+
+```
+int lis_bsearch(int arr[], int n){
+    // This is the optimal nlogn solution using lowerbound, not intuitive but easy
+    // inspired from previous solution
+    vector<int> ans;
+    for(int i=0; i<n; i++){
+        if(i==0) ans.push_back(arr[i]);
+        else{
+            if(arr[i] > ans.back()) ans.push_back(arr[i]);
+            else{
+                int it = lower_bound(ans.begin(), ans.end(), arr[i]) - ans.begin();
+                ans[it] = arr[i]; 
+            }
+        }
+    }
+    return ans.size();
+}
+```
+`TC: O(nlogn)` and `SC: O(n)`
