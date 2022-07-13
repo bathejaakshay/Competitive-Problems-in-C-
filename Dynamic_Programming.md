@@ -1996,7 +1996,7 @@ int mcm_bt(vector<int> &arr, int N){
 }
 ```
 ---
-[35. Partition array for max sum](https://leetcode.com/problems/partition-array-for-maximum-sum/)
+[35. Partition array for max sum](https://leetcode.com/problems/partition-array-for-maximum-sum/)  
 Given an array of size N and a value k. You can partition the arrays into subarrays of size atmost k. You can replace all the numbers in the subarray with the max val in that subarray.  
 You need to return max sum of such partitions.
 **Approach**
