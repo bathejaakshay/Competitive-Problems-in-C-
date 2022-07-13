@@ -1900,3 +1900,47 @@ int longestBitonicSequence(vector<int>& arr, int n) {
 
 ---
 
+#### [33. Number of LIS](https://www.codingninjas.com/codestudio/problems/number-of-longest-increasing-subsequence_3751627?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+ We cant simply count the LIS using the `dp[i]` values as `dp[i]` represents length of LIS till i but there can be multiple LIS of length `dp[i]` from 0 till i.   
+ So we maintain a count vector.
+ 
+ **Approach : LIS**
+ 1. While performing the LIS operation we check if the current pair is increasing pair if yes then we check if `dp[i] > 1 + dp[prev]` if yes then we update dp[i] and also update `count[i] = count[prev]`. As number of LIS with len `dp[i]` will be same as `count[prev]`.
+ 2. But if `dp[i] == 1 + dp[prev]`, then we add `count[i]+=(count[prev])`.
+ 3. Now finally we can accumulate all the counts of LIS in one iteration.
+
+```
+int findNumberOfLIS(vector<int> &arr)
+{
+    vector<int> dp(arr.size(), 1);
+    vector<int> count(arr.size(), 1);
+    int maxi=1, ind=0;
+    for(int i = 1;i<arr.size(); i++){
+        for(int prev = 0; prev<i; prev++){
+            if(arr[prev] < arr[i]){
+                if(dp[i] < 1 + dp[prev]){
+                    dp[i] = 1 + dp[prev];
+                    count[i] = count[prev];
+                }
+                else if(dp[i] == 1+dp[prev]){
+                    count[i] += count[prev];
+                    
+                }
+            }
+            if(dp[i] > maxi){
+                maxi = dp[i];
+                ind = i;
+                
+            }
+        }
+    }
+ 
+    int ans=0;
+    for(int i=0; i<dp.size(); i++){
+        if(dp[i] == maxi){
+            ans+=(count[i]);
+        }
+    }
+    return ans;
+}
+```
