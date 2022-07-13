@@ -589,9 +589,10 @@ public:
 ---
 
 #### [Maximum Triplet Sum](https://www.interviewbit.com/old/problems/maximum-sum-triplet/)  
-We need to find a triplet ai, aj ,ak such that ai<aj<ak and i<j<k and their sum is max
+We need to find a triplet ai, aj ,ak such that ai<aj<ak and i<j<k and their sum is max  
 **Approach-Brute Force**
 1. 3 For loops
+
 `TC: O(n^3)`
 
 **Approach-LIS**								  
