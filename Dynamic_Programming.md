@@ -1944,3 +1944,69 @@ int findNumberOfLIS(vector<int> &arr)
     return ans;
 }
 ```
+
+
+## DP on Partitions
+**Rules**  
+1. Start with entire block/array : f(i,j)
+2. Try all partitions (Run a loop to try all partitions)
+3. Return the best possible 2 partitions
+
+#### [34. Matrix Chain Multiplication](https://www.codingninjas.com/codestudio/problems/matrix-chain-multiplication_975344?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+**Approach**
+1. f(i,j) represents minimum number of multiplications to multiply matrices from i till matrix j
+2. Try all partitions: Run a for loop for k : i till j-1 (k will decide the partition). Cost will be : `A[i-1]*A[k]*A[j] + f(i,k) + f(k+1, j)`
+3. return min of all costs
+
+**Top Down**
+```
+int mcm(int i, int j, vector<int> &arr, int N, vector<vector<int>> &dp){
+    if(i==j) return 0; //When only element is in a partition its cost of mul is 0
+    if(dp[i][j]!=-1) return dp[i][j];
+    int cost=INT_MAX;
+    for(int k=i; k<=j-1; k++){
+        cost = min(cost, (arr[i-1]*arr[k]*arr[j]) + mcm(i,k, arr, N, dp) + mcm(k+1,j, arr, N, dp));
+    }
+    return dp[i][j] = cost;
+}
+int matrixMultiplication(vector<int> &arr, int N)
+{
+    vector<vector<int>> dp(N,vector<int>(N,-1));
+    return mcm(1, arr.size() - 1, arr, arr.size(), dp);
+ 
+}
+```
+
+---
+#### [35. Partition array for max sum](https://leetcode.com/problems/partition-array-for-maximum-sum/)
+Given an array of size N and a value k. You can partition the arrays into subarrays of size atmost k. You can replace all the numbers in the subarray with the max val in that subarray.  
+You need to return max sum of such partitions.
+**Approach**
+1. Simple partition approach
+2. F(i) represents the max sum of partitions with size atmost k from index i till end
+3. For x = 1 till K we can partition first subarray, in the loop we also keep record of max value 
+```
+maxi = max(maxi, arr[i+x-1]);
+ans = max(ans, x*maxi + f(i+x, arr, k, dp));
+```
+4. We return the max value.
+
+```
+int f(int i, vector<int> &arr, int k, vector<int> &dp){
+    if(i>=arr.size()) return 0;
+    if(dp[i]!=-1) return dp[i];
+    int ans=INT_MIN;
+    int maxi = arr[i];
+    for(int x=1; x<=k; x++){
+        if(i+x-1 < arr.size()){
+            maxi = max(maxi, arr[i+x-1]);
+            ans = max(ans, x*maxi + f(i+x, arr, k, dp)); 
+        }
+        else{
+            break;
+        }
+        
+    }
+    return dp[i] = ans;
+}
+```
