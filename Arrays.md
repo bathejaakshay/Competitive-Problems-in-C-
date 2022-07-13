@@ -586,3 +586,54 @@ public:
     }
 };
 ```
+---
+
+#### [Maximum Triplet Sum](https://www.interviewbit.com/old/problems/maximum-sum-triplet/)  
+We need to find a triplet ai, aj ,ak such that ai<aj<ak and i<j<k and their sum is max
+**Approach-Brute Force**
+1. 3 For loops
+`TC: O(n^3)`
+
+**Approach-LIS**								  
+1. We find Increasing seq of size 3 with max sum using DP
+`TC : O(n^2)`
+
+**Approach-Non intuitive**
+1. We consider each element to be the middle element of the triplet and try to find the just smaller and the greatest element to the left and right side of it respectively.
+2. For each element if we iteratively look at left and right elements of it then it will give us O(n^2) sol
+								  
+**Approach-Sorting and Binary Search**
+1. This is a little non ituitive approach.
+2. We precompute the max suffix array namely `right`.
+3. Each element `right[i]` denotes the max element in arr `A` to the right of i i.e i+1 till end.
+4. Now we create a set `s`, we keep on inserting each element in A[i] if `right[i]!=0` (meaning it has element greater than itself).
+5. Right after insert we binary searh the element just smaller than A[i] in s and compute max sum : A[i] + element smaller than A[i] + right[i]
+
+`TC: O(nlogn)`
+								  
+```
+int Solution::solve(vector<int> &A) {
+
+int n = A.size();
+vector<int> right(n, 0);
+for(int i=A.size()-2; i>=0; i--){
+    int mx = max(right[i+1], A[i+1]);
+    if(mx > A[i]) right[i] = mx; // This is important we cant have right[i] = A[i] as we need exactly one element after A[i] which is greater than A[i].
+}
+
+set<int> s;
+int maxi  = 0;
+s.insert(A[0]);
+for(int i=1; i<A.size()-1; i++){
+    s.insert(A[i]);
+    if(right[i]!=0){
+        auto itr = s.find(A[i]);
+        if(itr!=s.begin()){
+            maxi = max(maxi , A[i] + (*(--itr)) + right[i]);
+        }
+    }
+}
+
+return maxi;
+}
+```
