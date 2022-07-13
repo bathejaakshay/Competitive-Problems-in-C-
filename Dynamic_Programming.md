@@ -2028,3 +2028,40 @@ int f(int i, vector<int> &arr, int k, vector<int> &dp){
     return dp[i] = ans;
 }
 ```
+
+---
+
+[36. Cost to cut a chocoloate](https://www.codingninjas.com/codestudio/problems/cost-to-cut-a-chocolate_3208460?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0)  
+You are given chocolate of ‘N’ length. The chocolate is labeled from 0 to ‘N’. You are also given an array ‘CUTS’ of size ‘C’, denoting the positions at which you can do a cut. The order of cuts can be changed. The cost of one cut is the length of the chocolate to be cut. Therefore, the total cost is the sum of all the cuts. Print the minimum cost to cut the chocolate.  
+
+**Approach**
+1. This is a partition problem. 
+2. We can choose any cut first then we need to solve the cuts to the left of it and right of it respt.
+3. So we sort the cuts first so that after each cut the left and right cuts are independent
+
+```
+e.g cuts : 2 5 6 3 7
+If we cut at 6 then the two partitions 2,5 and 3,7 are dependent as if we cut 5 next then it will affect the cost of 3
+```
+4. We run a for loop to check for the cost at each cut.
+5. Initially we also add 0 and N at begin and end of the cut arrays to compute cost easily.
+
+```
+int cut(int i, int j, vector<int> &cuts, vector<vector<int>> &dp){
+    if(i>j) return 0;
+    int cost = INT_MAX;
+    if(dp[i][j]!=-1) return dp[i][j];
+    for(int x=i; x<=j; x++){
+        cost = min(cost, cuts[j+1] - cuts[i-1] + cut(i,x-1,cuts, dp) + cut(x+1,j,cuts,dp));
+    }
+    return dp[i][j]=cost;
+}
+
+int cost(int n, int c, vector<int> &cuts){
+    // Write your code here.
+    vector<vector<int>> dp(c+1, vector<int>(c+1, -1));
+    sort(cuts.begin(), cuts.end());
+    cuts.push_back(n);
+    cuts.insert(cuts.begin(), 0);
+    return cut(1,c,cuts, dp);
+```
