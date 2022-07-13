@@ -1977,8 +1977,24 @@ int matrixMultiplication(vector<int> &arr, int N)
 }
 ```
 
-`TC : O(N^3)` and `SC: O(N^2) + O(N)`
+`TC : O(N^3)` and `SC: O(N^2) + O(N)`  
 
+**Bottom up**
+```
+int mcm_bt(vector<int> &arr, int N){
+    vector<vector<int>> dp(N, vector<int> (N,0));
+    for(int i=N-1; i>=1; i--){ // if we start with i=1 then we loose all subprob like f(2,N) so we strictly have to follow opposite of top down
+        for(int j=i+1; j<N; j++){
+            int cost = INT_MAX;
+            for(int k=i; k<=j-1; k++){
+                cost = min(cost, arr[i-1] * arr[k] * arr[j] + dp[i][k] + dp[k+1][j]);
+            }
+            dp[i][j] = cost;
+        }
+    }
+    return dp[1][N-1];
+}
+```
 ---
 #### [35. Partition array for max sum](https://leetcode.com/problems/partition-array-for-maximum-sum/)
 Given an array of size N and a value k. You can partition the arrays into subarrays of size atmost k. You can replace all the numbers in the subarray with the max val in that subarray.  
