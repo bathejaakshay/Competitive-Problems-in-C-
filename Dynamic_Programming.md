@@ -1977,6 +1977,8 @@ int matrixMultiplication(vector<int> &arr, int N)
 }
 ```
 
+`TC : O(N^3)` and `SC: O(N^2) + O(N)`
+
 ---
 #### [35. Partition array for max sum](https://leetcode.com/problems/partition-array-for-maximum-sum/)
 Given an array of size N and a value k. You can partition the arrays into subarrays of size atmost k. You can replace all the numbers in the subarray with the max val in that subarray.  
