@@ -108,3 +108,24 @@ int n = mat[0].size();
 ```
 
 ---
+
+#### [3. Find peak Element](https://leetcode.com/problems/find-peak-element/submissions/)  
+**Approach: Binary Search**
+1. if mid is on down slope then peak exist to the left to it
+2. else to the right of it.
+
+```
+int fp(vector<int> &nums, int i, int j){
+    if(i>j){
+        return i;
+    }
+    int  mid = (i+j)>>1;
+    if(mid == nums.size()-1 || nums[mid+1] < nums[mid]){
+        return fp(nums, i, mid-1);
+    }
+    return fp(nums, mid+1, j);
+}
+
+```
+
+---
