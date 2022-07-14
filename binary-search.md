@@ -71,3 +71,56 @@ vector<int> searchRange(vector<int>& nums, int target) {
 ```
 
 ---
+
+#### [2. Median of a row wise sorted matrix](https://www.interviewbit.com/problems/matrix-median)
+**Approach:Brute Force (O(m*nlog(m*n)))**
+1. convert 2d into 1d , sort and find median
+2. It is given that the number of total elements is odd (So no confusion for find middle)
+
+**Approach : binary search O(log(10^9)*(mlogn))**
+1. This is a little tricky approach.
+2. We set search space as `l=0` and `h=1e9`
+3. We find mid and number of elements <=mid in each row, say k
+4. Now if `K <= (n*m/2)` then that means K is not the median and the median exists right to it. so l=mid+1
+5. else h = mid-1
+
+```
+int upper_bound(vector<int> &arr, int item){
+
+	int i=0, j=arr.size()-1;
+	while(i<=j){
+		int mid = (i+j)>>1;
+		if(arr[mid] <= item){
+			i = mid+1;
+		}
+		else{
+			j = mid-1; 
+		}
+	}
+	return i;
+}
+
+int Solution::findMedian(vector<vector<int> > &mat) {
+long long l=1, h=1e9;
+int m = mat.size();
+int n = mat[0].size();
+	while(l<=h){
+		long long mid = (l+h)>>1;
+
+		long long ele = 0;
+		for(int i=0; i<m; i++){
+			ele+=(upper_bound(mat[i] ,mid));
+		}
+		if(ele <= (m*n)/2){
+			l = mid+1;
+		}
+		else{
+			h = mid-1;
+		}
+	}
+    return l;
+
+}
+```
+
+---
