@@ -129,3 +129,63 @@ int fp(vector<int> &nums, int i, int j){
 ```
 
 ---
+
+#### [4. Finding element in the sorted rotated array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
+**Approach**
+1. Firstly find the element after which the elements are inserted in rotated manner i.e in the array all the elements i> ind -> `a[i]<a[ind]`
+2. This is done using modified bsearch in which we find the down slope.
+3. If no such element exist then the array is not rotated and we can simply apply bsearch to whole array
+4. else we need to check if required item exist in first subarray or second and apply the b_search likewise.
+
+```
+int b_search(vector<int>& nums, int i, int j, int item){
+        if(i > j) return -1; 
+        int mid = (i+j)/2;
+        if(nums[mid] == item) return mid;
+            if(nums[mid]<item){
+                return b_search(nums, mid+1, j, item);
+            }
+            else{
+                return b_search(nums, i, mid-1, item);
+            }
+        
+    }
+    int get_pivot(vector<int> &nums, int i, int j, int item){
+        if(i>j) return -1;
+        int mid = (i+j)/2;
+        if(mid == nums.size()-1){
+            return -1;
+        }
+        if(nums[mid] > nums[mid+1]){
+            return mid; 
+        }
+        else{
+            if(nums[mid] < nums[nums.size()-1]){
+                return get_pivot(nums, i, mid-1, item);
+            }
+            else{
+                return get_pivot(nums, mid+1, j, item);
+            }
+        }
+            
+    }
+    int search(vector<int>& nums, int target) {
+        if(nums.size()==1){
+            if(nums[0]==target) return 0;
+            else return -1;
+        }
+        int pivot = get_pivot(nums, 0, nums.size()-1, target);
+        if (pivot==-1){
+            return b_search(nums, 0, nums.size()-1,target);
+        }
+        else{
+             if(target<=nums[pivot] && target>=nums[0]){
+                return b_search(nums,0,pivot, target);
+            }
+            else{
+                return b_search(nums, pivot+1,nums.size()-1,target);
+            }
+        }
+    }
+};
+```
