@@ -588,7 +588,36 @@ public:
 ```
 ---
 
-#### [Maximum Triplet Sum](https://www.interviewbit.com/old/problems/maximum-sum-triplet/)  
+#### 15. Find an element in row wise and column wise sorted matrix  
+**Approach : O(n)**
+1. Start from the top right element and compare the element to the item.
+2. If the element is equal then return 
+3. if element is greater than item then that means all other elements in that column is greater than that element hence we drop the column by doing `j--`.
+4. If the element is lesser than item then that means all the other elements in that row is smaller to that item hence we drop that row by doing `i++`.
+
+```
+pair<int,int> search(vector<vector<int>> &mat, int item){
+	int i=0, j=mat[0].size()-1;
+	while(i<mat.size() && j>=0){
+		if(mat[i][j] == item){
+			return make_pair(i,j);
+
+		}
+		if(mat[i][j] >  item){
+			j--; // eliminate column
+		}
+		else{
+			i++;
+		}
+	}
+
+	return make_pair(-1,-1); 
+}
+
+```
+---
+
+#### [16. Maximum Triplet Sum](https://www.interviewbit.com/old/problems/maximum-sum-triplet/)  
 We need to find a triplet ai, aj ,ak such that ai<aj<ak and i<j<k and their sum is max  
 **Approach-Brute Force**
 1. 3 For loops
@@ -638,3 +667,6 @@ for(int i=1; i<A.size()-1; i++){
 return maxi;
 }
 ```
+
+			   
+			  
