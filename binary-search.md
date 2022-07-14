@@ -131,7 +131,7 @@ int fp(vector<int> &nums, int i, int j){
 ---
 
 #### [4. Finding element in the sorted rotated array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
-**Approach**
+**Approach - 1**
 1. Firstly find the element after which the elements are inserted in rotated manner i.e in the array all the elements i> ind -> `a[i]<a[ind]`
 2. This is done using modified bsearch in which we find the down slope.
 3. If no such element exist then the array is not rotated and we can simply apply bsearch to whole array
@@ -188,4 +188,47 @@ int b_search(vector<int>& nums, int i, int j, int item){
         }
     }
 };
+
 ```
+
+**Approach 2:**
+1. Instead of finding pivot first and then applying bsearch we can do both side by side in a way
+2. We first find mid and check if first half is sorted : if yes then we check if item lies in first half by comparing item with `a[low]` and `a[mid]`: if yes the we reject second half else we reject first half.
+3. If left half wasn't sorted then it is intuitive that right half will definitely be sorted. Then we check if element lies in the second half if yes then we reject first half else we reject second half.
+
+```
+int rot_bsearch(vector<int> &nums, int item){
+    int l = 0, h = nums.size()-1;
+    while(l<h){
+        int mid = (l+h)/2;
+        if(nums[mid] == item){
+            return mid;
+        }
+        
+        if(nums[l] <= nums[mid]){
+            if(item >= nums[l] && item<nums[mid]){
+                h = mid-1;
+            }
+            else{
+                l = mid+1;
+            }
+        }
+        else{ // if lest half aint sorted then right half is def sorted
+            
+            if(item>nums[mid] && item <= nums[h]){
+                l=mid+1;
+            }
+            else{
+                h=mid-1;
+            }
+           
+        }
+            
+        
+    }
+    if(l==h&& nums[l] == item) return l;
+    return -1;
+}
+```
+
+---
