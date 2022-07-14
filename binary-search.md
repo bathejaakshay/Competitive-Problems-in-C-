@@ -29,35 +29,19 @@ upper_bound = 5  (num.end())
 
 ```
 int lower_bound(vector<int> &nums, int i, int j, int item){
-    // base case
-    if(i>j) return i; // return if you want to return next or just greater element in case the element doesnt exist, and return j if you want to return previous or just smaller element.
-    
-    int mid = i+ (j-i)/2;
-    if(nums[mid] == item && (mid==0 || nums[mid-1]!=nums[mid])){
-        return mid;
-    }
-    if(item <= nums[mid]){
+    if(i>j) return i; // we return i after seeing that a[index] just before than i is just lesser than item. 
+    int mid = (i+j)>>1;
+    if(nums[mid]>=item){
         return lower_bound(nums, i, mid-1, item);
     }
-    else{
-        return lower_bound(nums, mid+1, j, item);
-    }
-        
+    return lower_bound(nums, mid+1, j, item);
+    
 }
 int upper_bound(vector<int> &nums, int i, int j, int item){
-    if(i>j) return i;
-    
-    int mid = i + (j-i)/2;
-    
-    if(item == nums[mid] && (mid == nums.size()-1 || nums[mid]!=nums[mid+1])){
-        return mid+1;
-    }
-    if(item >= nums[mid]){
-        return upper_bound(nums, mid+1, j, item);
-    }
-    else{
-        return upper_bound(nums, i, mid-1, item);
-    }
+    if(i>j) return i; // we return i after seeing that a[index] just before i is the last value <= item.
+    int mid = (i+j)>>1;
+    if(nums[mid]<=item) upper_bound(nums, mid+1, j, item);
+    return upper_bound(nums, i, mid-1, item);
 }
 
 vector<int> searchRange(vector<int>& nums, int target) {
