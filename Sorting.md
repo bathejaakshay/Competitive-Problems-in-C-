@@ -97,3 +97,39 @@ ListNode* sortList(ListNode* head) {
   }
 ```
 ---
+
+#### [3. Sort Colors inplace in O(n)](https://leetcode.com/problems/sort-colors/submissions/)
+We need to sort the array of colors which consists of numbers representing 3 colors: 0 -> red, 1->white, 2->Blue.  
+Quicksort can do it in O(nlogn) but we need something better.
+
+**Approach : Dutch Partitioning**
+1. We know that all red colors will come in starting, then white then blue at the last.
+2. so we initialize index r=0, w=0, b=n-1;
+3. we iterate using w index
+4. Now till `w` <= `b`
+5. We check what w is?
+6. if `nums[w]` is 0 then swap with `nums[r]` and increment r++ and w++
+7. if `nums[w]` is 1 then nothing to do just do w++
+8. if `nums[w]` is 2 then swap with `nums[b]` and do b--
+
+```
+void sortColors(vector<int>& nums) {
+              
+        int r=0,w=0,b=nums.size()-1;
+        while(w<=b){
+            if(nums[w] == 0){
+                swap(nums[r], nums[w]);
+                r++;
+                w++;
+            }
+            else if(nums[w] == 1){
+                w++;
+            }
+            else{
+                swap(nums[w], nums[b]);
+                b--;
+            }
+        }
+    }
+```
+
