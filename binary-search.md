@@ -233,7 +233,100 @@ int rot_bsearch(vector<int> &nums, int item){
 
 ---
 
-#### [5. Median of two sorted arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
+#### [5. Book Allocation](https://www.interviewbit.com/problems/allocate-books/)
+
+Given an array of integers A of size N and an integer B.  
+
+College library has N bags,the ith book has A[i] number of pages.  
+
+You have to allocate books to B number of students so that maximum number of pages alloted to a student is minimum.  
+
+A book will be allocated to exactly one student.  
+Each student has to be allocated at least one book.  
+Allotment should be in contiguous order, for example: A student cannot be allocated book 1 and book 3, skipping book 2.  
+Calculate and return that minimum possible number.  
+
+NOTE: Return -1 if a valid assignment is not possible.  
+
+
+**Approach: Recurrsion**
+`TC: Exponential`
+**Approach: DP**
+`TC : O(n^2)`
+
+**Approach Binary Search - VIMP**
+
+**Binary Search Function:**
+
+1. To apply Binary Search we need to find the search space. 
+2. `Low` : Now the minimum number of books that can be allocated to a student is the min of all books (This is the case when the number of books = number of students.)
+3. `high` : The maximum number of books that can be allocated to a student is the sum of all books. (This is the case only there is only one student)
+4. Now our final ans will lie between low and high.
+5. We compute mid = (low + high)>>1. This mid is our `barrier`. That is we check if the books allocation is possible to `B` students when each student cant be allocated pages more than `barrier`. 
+6. If yes then we know that the allocation will be possible for all pages> barrier, but we need minimum page allocation hence we drop the right half and do `high = mid-1`. We keep track of these barrier by doing `ans = mid`
+7. Else `low = mid+1`
+8. Once `low>high` We have our final answer as `ans` or `low`.
+
+**boolean : Book allocation function given barrier and B students**
+1. We start with `studentsalloted = 1` and `pages = 0`
+2. Now we check for each book
+3. If `pages + book[i] <= barrier` then allocate those pages to the student, `pages+=(book[i])`
+4. Else we increase the students alloted count `studentsalloted++` and allot the `pages = book[i]`.
+5. Finally if the `studentsalloted <= Given B Students` then allocation is possible hence `return true` else `false`   
+
+
+```
+bool allocation(int barrier, vector<int> &A, int students){
+    
+    int stu=1, pages=0;
+    for(int i=0; i<A.size(); i++){
+        if(A[i] > barrier) return false; // If any book size if greater than the barrier then that means it cant be allocate to any student
+        if(pages+A[i] > barrier){
+            stu++;
+            pages = A[i];
+        }
+        else{
+            pages+=(A[i]);
+        }
+    }
+    return stu<=students;
+}
+int bsearch(int i, int j, vector<int> &A, int students, int ans){
+    int mid;
+    while(i<=j){
+        mid = (i+j)>>1;
+        if(allocation(mid, A, students)){
+            ans = mid;
+            j = mid-1;
+        }
+        else{
+            i = mid+1;
+        }
+    }
+    return ans;
+}
+
+int Solution::books(vector<int> &A, int B) {
+
+    int j = accumulate(A.begin(), A.end(),0);
+	int i = *max_element(A.begin(), A.end());
+	// If total no of students is greater than total no of books then atleast one student will remain empty which is not allowed
+    if(B > A.size()){
+		return -1;
+	}
+	int ans = -1;
+	int x = bsearch(i,j,A,B,ans);
+	return x;
+}
+
+```
+
+`TC: O(nlogn)`
+
+
+---
+
+#### [6. Median of two sorted arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
 **Approach Binary Search: O(log(m+n))**  
 Notes to be added
 
