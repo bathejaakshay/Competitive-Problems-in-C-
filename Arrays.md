@@ -501,8 +501,8 @@ int merge(vector<int> &nums, int i, int mid, int j){
 
 ---
 
-#### [10. Subarray with sum 0 in O(N) space and time](https://practice.geeksforgeeks.org/problems/subarray-with-0-sum-1587115621/1)
-
+#### [10.1 Subarray with sum 0 in O(N) space and time](https://practice.geeksforgeeks.org/problems/subarray-with-0-sum-1587115621/1)
+**Prefix Sum property is used IMP** 
 **Main idea:**  
 1. In a single loop maintain a sum , if sum==0 return true  
 2. else if sum is present in the hash then return true :( This means if this sum has been seen in previous subarrays then simply substracting them will give ans without actually substracting them. e.d 4 2 -3 1 6 .. at index = 3 sum = 4 now 4 exists in hash representing there exist a prior subarray with sum 4 which can be removed to simply turn the sum to zero.)  
@@ -523,6 +523,39 @@ bool subArrayExists(int arr[], int n)
     }
 ```
 
+---
+#### [10.2 No of subarrays whose sum is divisible by k](https://leetcode.com/problems/subarray-sums-divisible-by-k/submissions/)
+**Approach**:
+1. Key idea is that given sum `si` from `ind 0 to i` and sum `sj` from `ind 0 to j`.
+2. If `si%k == sj%k` then the sum of subarray i to j is divisble by k
+3. Proof: `si = kn1 + x`, `sj = kn2 + x`, then `sj-si = k(n2-n1)`, hence sum `sj-si` is divisible by k.
+4. Now we use the PrefixSum using unordered_map mp key, val
+5. `key` represents the `(subarraysum%k)` and `val` represents its current frequency.
+6. Now we iterate over the array and find if the current subarraysum%k exists in the map, if it does then how many. We simply increment our ans by that frequency
+7. Finally we increment frequency of current remainder in the map for future.
+8. For negative remainders we do the same process by updating the current remainder as : k + negative_remainder. (This is because 7n - 5 and 7n' + 2 is equivalent where 7 is the k and n' = n-1)  
+
+
+```
+int subarraysDivByK(vector<int>& nums, int k) {
+        int ans=0;
+        int sum=0;
+        unordered_map<int,int> mp;
+        mp[0]=1; 
+        for(int i=0; i<nums.size(); i++){
+            sum+=(nums[i]);
+            int rem =sum%k;
+            if(rem < 0){
+                rem = k + rem;
+            }
+            if(mp.find(rem)!=mp.end()){
+                ans+=(mp[rem]);
+            }
+            mp[rem]++;
+        }
+        return ans;
+    }
+```
 ---
 
 #### [11. Minimum jumps to reach end of the array](https://practice.geeksforgeeks.org/problems/minimum-number-of-jumps-1587115620/1#)
