@@ -375,7 +375,7 @@ public:
 
 ---
 
-#### [9. Counting Inversions in an array in O(nlongn) time](https://practice.geeksforgeeks.org/problems/inversion-of-array-1587115620/1#)
+#### [9 (i). Counting Inversions in an array in O(nlongn) time](https://practice.geeksforgeeks.org/problems/inversion-of-array-1587115620/1#)
 **Main Idea**  
 1. Modify merge sort in a way that you count all inversion pairs while merging.
 
@@ -429,6 +429,74 @@ public:
       return ans;
       
   }
+```
+---
+
+#### [9.(ii) Count Reverse pairs with extra condition](https://leetcode.com/problems/reverse-pairs/submissions/)
+A pair is called reverse is `i < j` and `a[i] >  2* a[j]`
+
+**Approach**  
+1. We use the same merge sort method with a modification that in merge operation. We first count the inversion pairs in o(m+n) time and then run extra loop for actual merging in O(n)
+
+`TC: O((n)log(n))`
+
+```
+int merge(vector<int> &nums, int i, int mid, int j){
+    int first_size = mid-i+1;
+    int second_size = j - mid;
+    int ans=0;
+    vector<int> first(first_size, 0);
+    vector<int> second(second_size, 0);
+    for(int x = 0; x<first_size; x++){
+        first[x] = nums[i+x];
+    }
+    for(int x = 0; x<second_size; x++){
+        second[x] = nums[mid+x+1];
+    }
+    // We divide the merging and counting inversion pairs into two separate tasks
+    int a=0,b=0;
+    while(a<first_size && b<second_size){
+        long long cond = (long long)2*(long long)second[b];
+        
+        if(first[a] <= cond){
+            a++; // if first[a] is <= 2*second[b] then first [a] will also be lesser than 2* all second[m], where m>=b
+            
+        }
+        else{
+            ans+=(first_size - a);
+            b++;
+        }
+    }
+    
+    int x=0,y=0;
+    int k=i;
+    
+    
+    while(x<first_size && y<second_size){
+        if(first[x] <= second[y]){
+            nums[k] = first[x];
+            x++;
+            k++;
+        }
+        else{
+            nums[k] = second[y];
+            y++;
+            k++;
+        }
+    }
+    while(x<first_size){
+        nums[k] = first[x];
+        x++;
+        k++;
+    }
+    while(y<second_size){
+        nums[k] = second[y];
+        k++;
+        y++;
+    }
+    return ans;
+    
+}
 ```
 
 ---
