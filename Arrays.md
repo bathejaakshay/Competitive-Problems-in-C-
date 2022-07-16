@@ -590,12 +590,13 @@ int subarraysDivByK(vector<int>& nums, int k) {
 ####[10.4 Minimum size subarray with sum atleast K](https://leetcode.com/problems/minimum-size-subarray-sum/)
 Given an array of size N with all positive values and a value K, find a minimum length subarray whose sum is atleast K.
 **Approach : Brute Force : O(n^2)** : Go over all possible subarrays and check sum
-**Approach : Sliding Window with Two pointer O(n)**
+**Approach : Sliding Window with Two pointer O(n)** (This approach is only possible when the array doesnt consist negative numbers and the accumulative relation is monotonic)
 1. In this approach we create two pointers at the starting and start maintaining sum using the j pointer.
 2. We keep on moving j in the right direction until sum becomes >= target.
 3. Once it does we know that j-i+1 is the size of subarray with sum atleast target. But is it the shortest?
 4. So we start shrinking this subarray by moving i pointer to the right direction.
 5. We keep on shrinking the subarray till the sum is still >= target. Once it fails we update our `ans = min(ans, j-i+2)` (+1 extra because we come one point ahead after completing the loop)
+
 
 ```
  int minSubArrayLen(int target, vector<int>& nums) {
