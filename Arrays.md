@@ -524,7 +524,36 @@ bool subArrayExists(int arr[], int n)
 ```
 
 ---
-#### [10.2 No of subarrays whose sum is divisible by k](https://leetcode.com/problems/subarray-sums-divisible-by-k/submissions/)
+
+#### [10.2 No of subarrays with sum K](https://leetcode.com/problems/subarray-sum-equals-k/)
+**Approach: Naive : O(n^2)**
+**Appriach : Prefix sum : O(n)**
+1. The crux of prefix sum concept is that for each index i we store the sum from index 0 till i.
+2. Now To find if there exists a subarray whose sum is k. Then for each index i we have current sum `si`  we check if `si-k` exists in the prefix sum unordered map.
+3. The simple concept behind this is that if this sum `si-k` exists say for jth index i.e `a[0]+a[i] .... a[j]` is `si-k` and we also know that `a[0] + a[1] + .. a[i]` is `si`, hence subtracting both gives : `a[j+1] + a[j+2] + .. a[i] = si-si + k = k` hence subarray i+1 till j has sum k.
+4. Now for this particular question we mantain a frequency map of prefix sums.
+5. so `mp[si-k]` will give us the number of subarrays ending at i which sums up to k.
+
+```
+int subarraySum(vector<int>& nums, int k) {
+       
+       unordered_map<int,int> mp;
+       int sum=0;
+        int count=0;
+        mp[sum]=1;
+        for(int i=0; i<nums.size(); i++){
+            sum+=(nums[i]);
+            if(mp.find(sum-k)!=mp.end()) {
+                count+=(mp[sum-k]);
+            }
+            mp[sum]++;
+        }
+        return count;
+    }
+```
+
+---
+#### [10.3 No of subarrays whose sum is divisible by k](https://leetcode.com/problems/subarray-sums-divisible-by-k/submissions/)
 **Approach**:
 1. Key idea is that given sum `si` from `ind 0 to i` and sum `sj` from `ind 0 to j`.
 2. If `si%k == sj%k` then the sum of subarray i to j is divisble by k
