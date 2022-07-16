@@ -624,6 +624,55 @@ Given an array of size N with all positive values and a value K, find a minimum 
         return ans;
     }
 ```
+---
+####[10.5 Shortest Subarray with Sum at Least K HARD](https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/)
+Same as previous ques but this time the array can consist negative elements so we can use the 2 pointer approach
+**Approach: Deque**
+1. We use the same fundamentals for expanding and shrinking. We just need to maintain a deque of monotonically increasing sums.
+2. We create a deque of `pair<int,int>`. 
+3. for each index we add it to sum and check if this sum>=K if yes then check the ans = min(ans, i+1)
+4. Then we check if popping the initial elements of deque increases the sum to match >=k. We keep on doing this till its valid. This is shrinking and allows us get the smaller size subarray with sum atleast K. We are doing this at each step no matter if total sum was >=k because if the intial elements were negative then it can increase the current sum by popping them out of the subarray. (We use prefix sum property).
+5. Then we again calculate the updated ans. 
+6. Then finally at the time of inserting the sum we check if the element at rear of deque has sum keyword < current sum, if not we pop_back. (This is to maintain monotonic dequeue)
+7. finally we insert {sum,i} to the deque.
+
+```
+#include<bits/stdc++.h>
+class Solution {
+public:
+    int shortestSubarray(vector<int>& nums, int k) {
+        deque<pair<long long,int>> dq;
+        
+        long long sum=0;
+        int ans=INT_MAX;
+        
+        for(int i=0; i<nums.size(); i++){
+            // Think it as a form of prefix array
+            sum +=(nums[i]);
+            if(sum >= k){
+                ans = min(ans, i+1);
+            }
+             pair<long long, int> curr = {INT_MIN, INT_MIN};
+               // using prefix sum property to find if the subarray sum >=k
+                while(!dq.empty() && sum-dq.front().first>=k){
+                    curr = dq.front();
+                    dq.pop_front();
+                    
+                }
+            if(curr.second!=INT_MIN)
+                ans = min(ans, i-curr.second);
+            while(!dq.empty() && sum < dq.back().first){
+                dq.pop_back();
+            }
+            dq.push_back(make_pair(sum, i));
+        }
+        
+        return ans==INT_MAX?-1:ans;
+    
+    }
+};
+```
+
 
 ---
 
