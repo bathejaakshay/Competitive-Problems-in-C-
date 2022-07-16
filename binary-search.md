@@ -325,8 +325,61 @@ int Solution::books(vector<int> &A, int B) {
 
 
 ---
+#### [6. Aggressive Cows](https://www.codingninjas.com/codestudio/problems/aggressive-cows_1082559?leftPanelTab=1)
+Given an array of location of Barns `V`, and total number of cows `C`. We need to place the cows on the given barns such the maximum distance between any two cows is minimum.  
+**Approach:**  
+1. Similar to Book allocation we use the same Binary Search approach.
+2. The minimum distance possible in any case is 1 and the maximum is the value of max element. This will be our low and high for the binary search
+3. Now we find the mid and check if cows allocation is possible into the barns with maxi distance (barrier) of `mid`. If yes then it is intuitive that allocation is possible for any value > mid so we do `high = mid-1` and keep track of the possible `ans = mid`.
+4. Else we do `low = mid+1`.
 
-#### [6. Median of two sorted arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
+```
+#include<bits/stdc++.h>
+bool ispos(vector<int> &v, int mini, int c){
+    int i=0;
+    int fin = *max_element(v.begin(), v.end());
+    int prev=0;
+    while(c>0 && i<v.size()){
+        if(i==0 || v[i] - prev >= mini){
+            c--;
+            prev = v[i];
+        }
+        i++;
+    }
+    if(c==0) return true;
+    return false;
+}
+int aggrcow(vector<int> &v, int c){
+    int low = 1;
+    int high = *max_element(v.begin(), v.end());
+    int ans = 0;
+    while(low<=high){
+        int mid = (low+high)>>1;
+        if(ispos(v, mid, c)){
+            ans = mid;
+            low = mid+1;
+        }
+        else{
+            high = mid-1;
+        }
+    }
+    return ans;
+}
+
+int aggressiveCows(vector<int> &v, int k)
+{
+    sort(v.begin(), v.end());
+        // int ans=0;
+    int ans = aggrcow(v,k);
+    return ans;
+    //    Write your code here.
+}
+```
+
+`TC: O(nlogn)`
+---
+
+#### [7. Median of two sorted arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
 **Approach Binary Search: O(log(m+n))**  
 Notes to be added
 
