@@ -501,7 +501,7 @@ int merge(vector<int> &nums, int i, int mid, int j){
 
 ---
 
-#### [10.1 Subarray with sum 0 in O(N) space and time](https://practice.geeksforgeeks.org/problems/subarray-with-0-sum-1587115621/1)
+#### [10.1a Subarray with sum 0 in O(N) space and time](https://practice.geeksforgeeks.org/problems/subarray-with-0-sum-1587115621/1)
 **Prefix Sum property is used IMP** 
 **Main idea:**  
 1. In a single loop maintain a sum , if sum==0 return true  
@@ -522,7 +522,13 @@ bool subArrayExists(int arr[], int n)
         return false;
     }
 ```
-
+---
+####[10. 1b Longest Subarray with sum 0](https://practice.geeksforgeeks.org/problems/largest-subarray-with-0-sum/1)
+**Approach**
+1. We use unordered_map to keep record of the prefix sum and its min index
+2. initially, `mp[0]=-1`, This is because intially without array the sum was 0. This helps in case when sum of 0 to ith element is 0, otherwise it wont consider this case.
+3. Then we maintain sum for each element in the array and search if `sum-0` has already appeared before i.e does it exist in the hashmap, if yes then we calculate the length of current subarray with sum 0 and update our ans.
+4. else we set `mp[sum] = current index`
 ---
 
 #### [10.2 No of subarrays with sum K](https://leetcode.com/problems/subarray-sum-equals-k/)
