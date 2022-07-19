@@ -35,3 +35,88 @@ bool isPalindrome(ListNode* head) {
 
 ---
 
+#### [2. Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
+Two optimal approaches with TC:O(m+n) SC: O(1)
+**Approach 1 : Length difference**
+1. Compute the difference in the length between two. 
+2. This tells us no of extra nodes in the bigger linked list before the intersection part.
+3. Now we traverse those many nodes in the bigger LL
+4. Now we start traversing both LL together and we know they will meet at a common point else they have to meet at NULL
+
+```
+ListNode* lendiff(ListNode *headA, ListNode *headB){
+    int a=0,b=0;
+    ListNode* ptr1 = headA;
+    ListNode* ptr2 = headB;
+    while(ptr1!=NULL){
+        a++;ptr1=ptr1->next;
+        
+    }
+    while(ptr2!=NULL){
+        b++; ptr2 = ptr2->next;
+        
+    }
+    int diff=abs(a-b);
+    ptr1 = headA;
+    ptr2 = headB;
+    if(a>b){
+        while(diff>0)
+        {
+            ptr1 = ptr1->next;
+            diff--;
+        }
+        
+        
+    }
+    else{
+        while(diff>0){
+            ptr2= ptr2->next;
+            diff--;
+        }
+    }
+    
+    while(ptr1!=NULL){
+        if(ptr1 == ptr2){
+            return ptr1;
+        }
+        ptr1=ptr1->next;
+        ptr2 = ptr2->next;
+    }
+    return ptr1;   
+}
+```
+
+**Approach 2: Common Sense not so common though :D**
+1. We start traversing both the lists together. The moment one ends we start it again we the head of another list.
+2. This ensures that in `O(2*m + 2*n)` steps they both will definitely meet at the same point if the intersection point exit
+3. Else they have to meet at NULL
+4. The intuition is that right half of the intersection takes same no of steps to cover by both LL. The difference lies in the former part.
+5. So if we make sure that both traverse the same no of steps in the former part then they will definitely meet at the intersection point.
+
+
+```
+ListNode *commonsense(ListNode *headA, ListNode *headB){
+    ListNode *p1 = headA;
+    ListNode *p2 = headB;
+    while(p1!=p2)
+    {
+        
+        
+        if(p1 == NULL){
+            p1 = headB;
+            
+        }
+        else{
+            p1 = p1->next;
+        }
+        if(p2 == NULL){
+            p2 = headA;
+        }
+        else{
+            p2 = p2->next;
+        }
+        
+    }
+    return p1;
+}
+```
