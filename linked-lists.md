@@ -120,3 +120,12 @@ ListNode *commonsense(ListNode *headA, ListNode *headB){
     return p1;
 }
 ```
+
+---
+#### [3. Find if a cycle exist in the LL given only a head pointer](https://leetcode.com/problems/linked-list-cycle/)
+**Approach**
+1. Quite simple. Using slow and fast pointer approach
+2. Use slow pointer to move by one position and fast to move by two position.
+3. If a cycle exists that they will meet at some point.
+
+`TC: O(N), SC:O(1)`
