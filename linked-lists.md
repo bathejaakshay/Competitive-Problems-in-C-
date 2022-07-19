@@ -1,4 +1,4 @@
-#### [1. Palindromic LL](https://leetcode.com/problems/palindrome-linked-list/)
+#### [1. Palindromic LL](https://leetcode.com/problems/palindrome-linked-list/)  
 **Approach**:
 1. Either reverse first half or second half and compare the two halfs.
 2. Use fast pointer
@@ -35,8 +35,8 @@ bool isPalindrome(ListNode* head) {
 
 ---
 
-#### [2. Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
-Two optimal approaches with TC:O(m+n) SC: O(1)
+#### [2. Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)  
+Two optimal approaches with TC:O(m+n) SC: O(1)  
 **Approach 1 : Length difference**
 1. Compute the difference in the length between two. 
 2. This tells us no of extra nodes in the bigger linked list before the intersection part.
