@@ -129,3 +129,61 @@ ListNode *commonsense(ListNode *headA, ListNode *headB){
 3. If a cycle exists that they will meet at some point.
 
 `TC: O(N), SC:O(1)`
+
+---
+
+#### [4. Flatten a linked list]()
+
+**Approach: Merge**
+1. Approach is easy to use merge but not in a merge sort fashion.
+2. We keep on merging two linked lists into one starting from ending.
+
+```
+Node* merge(Node *p1, Node *p2){
+    Node *t1,*t2;
+    // cout<<"started"<<endl;
+    Node *prev = new Node(0);
+    Node *fin = prev;
+    
+    while(p1!=NULL && p2!=NULL){
+        t1 = p1->bottom; t2 = p2->bottom;
+        if(p1->data <= p2->data){
+            
+            prev->bottom = p1;
+            prev = p1;
+            p1 = t1;
+        }
+        else{
+            if(p1->data > p2->data ){
+                prev->bottom = p2;
+                prev = p2;
+                p2 = t2;
+            }
+            
+        }
+       
+    }
+    while(p1!=NULL){
+        prev->bottom = p1;
+        prev = p1;
+        p1 = p1->bottom;
+    }
+    while(p2 != NULL){
+        prev->bottom = p2;
+        prev = p2;
+        p2 = p2->bottom;
+    }
+    prev->bottom = NULL;
+    
+    return fin->bottom;
+}    
+    
+Node *flatten(Node *root)
+{
+   // Your code here
+   if(root == NULL || root->next == NULL) return root;
+   root->next = flatten(root->next);
+   return merge(root, root->next);
+}
+
+```
