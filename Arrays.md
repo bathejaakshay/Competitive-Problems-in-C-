@@ -850,6 +850,7 @@ Given N numbers `[1..N]` find the k th permutation
 3. Then we find the required k in the subgroup selected i.e k = k%(n-1)!
 4. Now we find the second element in the similar way.. till the vector is not empty
 
+`TC : O(n^2)`
 
 ```
 class Solution {
