@@ -187,3 +187,36 @@ Node *flatten(Node *root)
 }
 
 ```
+
+---
+
+#### [5. Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
+**Approach : O(n)**
+1. Create an unordered_set of given array, `unordered_set(nums.begin(), nums.end())`
+2. After that for each element count and remove all elements that are lesser than the element consecutively in a loop.
+3. After that for each element count and remove all elements that are greater than the element consecutively in a loop.
+4. Remove the current element and update the ans
+
+```
+int longestConsecutive(vector<int>& nums) {
+    unordered_set<int> mp(nums.begin(), nums.end());       
+    int ans=0;
+      for(int i=0; i<nums.size(); i++){
+              if(mp.find(nums[i])==mp.end()) continue;
+              int l=nums[i]-1;
+              while(mp.find(l)!=mp.end()){
+                  mp.erase(l);
+                  l--;
+              }
+              int r = nums[i]+1;
+              while(mp.find(r)!=mp.end()){
+                  mp.erase(r);
+                  r++;
+              }
+              mp.erase(nums[i]);
+              ans = max(ans, r-l-1);
+          }
+      
+        return ans;
+    }
+```
