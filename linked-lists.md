@@ -220,3 +220,56 @@ int longestConsecutive(vector<int>& nums) {
         return ans;
     }
 ```
+
+---
+#### [6. Flatten a multilevel doubly linked list with next, prev, and child pointers](https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/)
+**Approach**
+1. We just need to remember how to apply recurrsions in a Linked List.
+2. We recursively move on till last node and flatten it.
+3. Then we flatten the second last node set its next as last node
+4. We keep on doing it till the start.
+
+```
+pair<Node*,Node*> flat(Node *root){
+    if(root == NULL) return {NULL,NULL};
+    pair<Node*, Node*> pp;
+    if(root->next == NULL){
+        if(root->child!=NULL){
+            pp = flat(root->child);
+            
+            root->next = pp.first;
+            root->next->prev = root;
+            pp.second->next = NULL;
+            root->child = NULL;
+            return {root, pp.second};
+        }
+        else
+            return {root,root};
+    }
+    auto pt = flat(root->next);
+    root->next = pt.first;
+    if(root->child!=NULL){
+        Node *temp = root->next;
+        auto pt2 = flat(root->child);
+        root->next = pt2.first;
+        root->next->prev = root;
+        pt2.second->next = temp;
+        if(temp!=NULL)
+            pt2.second->next->prev = pt2.second;
+        root->child = NULL;
+        
+    }
+    else{
+        root->next->prev = root;
+    }
+    return {root, pt.second};
+    
+}
+class Solution {
+public:
+    Node* flatten(Node* head) {
+        pair<Node*, Node*> nn = flat(head);
+        return nn.first;
+    }
+};
+```
