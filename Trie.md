@@ -126,3 +126,122 @@ public:
     }
 };
 ```
+
+---
+#### [2. Implement Trie II](https://www.codingninjas.com/codestudio/problems/implement-trie_1387095?leftPanelTab=0)
+Same as previous, just need to add few more functionalities
+1. countWordsEqualTo(word)
+2. countStartsWith(word)
+
+**Approach**
+1. The Trie node structure will change.
+2. We need to maintain the count of pref `prefix_count` instead of just bool prefix.
+3. We need to maintain the count of strings ended at a particular char `count_ended` instead of just bool ended
+4. For erase we decrement these counts and count =0 means such pref or word is not there.
+
+```
+class Node{
+    public:
+     Node *ch[26];
+     int end_count=0; //No. of strings that ends here
+     int pref_count=0; //Count of strings with current prefix
+     bool isKey(char c){
+          return ch[c-'a'];
+      }
+      void putChar(char c, Node *nn){
+          ch[c-'a'] = nn;
+      }
+      Node *getChar(char c){
+          return ch[c-'a'];
+      }
+      void inc_pref(){
+          pref_count++;
+      }
+      void ended(){
+          end_count++;
+      }
+      int get_endcount(){
+          return end_count;
+      }
+      int get_prefcount(){
+          return pref_count;
+      }
+      void dec_prefcount(){
+          pref_count--;
+      }
+      void dec_endcount(){
+          end_count--;
+      }
+          
+          
+  
+};
+class Trie{
+    private:
+    Node *root;
+    public:
+
+    Trie(){
+        // Write your code here.
+        root = new Node();
+    }
+
+    void insert(string &word){
+        Node *node = root;
+        // Write your code here.
+        for(int i=0; i<word.size(); i++){
+            if(!node->isKey(word[i])){
+                Node *nn_new = new Node(); // New node with current char
+                node->putChar(word[i], nn_new);    
+            }
+            node = node->getChar(word[i]);
+            node->inc_pref();
+        }
+        node->ended();
+        
+    }
+
+    int countWordsEqualTo(string &word){
+        // Write your code here.
+        Node *node = root;
+        for(int i=0; i<word.length(); i++){
+            if(node->isKey(word[i])){
+                node = node->getChar(word[i]);
+            }
+            else{
+                return 0;
+            }
+        }
+        return node->get_endcount();
+    }
+
+    int countWordsStartingWith(string &word){
+        // Write your code here.
+        Node *node = root;
+        for(int i=0; i<word.length(); i++){
+            if(node->isKey(word[i])){
+                node = node->getChar(word[i]);
+            }
+            else{
+                return 0;
+            }
+        }
+        return node->get_prefcount();
+    }
+
+    void erase(string &word){
+        // Write your code here.
+        Node *node = root;
+        for(int i=0; i<word.length(); i++){
+            node = node->getChar(word[i]);
+            node->dec_prefcount();
+            
+        }
+        node->dec_endcount();
+        
+    }
+};
+
+```
+
+---
