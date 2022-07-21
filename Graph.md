@@ -324,7 +324,8 @@ class Solution
         // code here
         vector<bool> mset(V,false); // To keep record of all the nodes that have been poped out
         priority_queue<pair<int,int>, vector<pair<int,int>>, comparator> q; // Min heap of pairs , remember that the comparator should be a class with operator() as its function. for minheap return greater.
-        int src=0;
+        // Priority queue represents : pair<int,int> where pair.first is the distance of vertex pair.second from the current vertex.
+	int src=0;
         q.push(make_pair(0,src)); // making paris of the next node and the distance to reach there from the current node
         int ans=0;
         while(!q.empty()){ // Simple bfs prims
