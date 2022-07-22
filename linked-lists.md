@@ -273,3 +273,37 @@ public:
     }
 };
 ```
+---
+
+#### [7. Insert Sort Linked List](https://www.interviewbit.com/old/problems/insertion-sort-list/)
+**Approach**
+1. Initalize a new node named sentinal with INT_MIN val. (We call this sorted list)
+2. Now for each node in the given linked list, we find its postition in the sorted list and insert there.
+
+```
+ListNode* Solution::insertionSortList(ListNode* A) {
+    if (A==NULL || A->next == NULL){
+        return A;
+    }
+    
+    ListNode *sent = new ListNode(INT_MIN);
+    
+    ListNode *ptr = A;
+    while(ptr){
+        ListNode *node = ptr;
+        ptr = ptr->next;
+        
+        ListNode *prev = sent;
+        ListNode *curr = prev->next;
+        while(curr && curr->val<node->val){
+            prev = curr;
+            curr = curr->next;
+        }
+        prev->next = node;
+        node->next = curr;
+    }
+    return sent->next;
+   }
+```
+
+---
