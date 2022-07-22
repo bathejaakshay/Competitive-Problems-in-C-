@@ -921,8 +921,34 @@ public:
     }
 };
 ```
+
 ---
-#### [17. Maximum Triplet Sum](https://www.interviewbit.com/old/problems/maximum-sum-triplet/)  
+
+#### [17. Maximum points to obtain from the cards](https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/)
+In an operation we can either take pop and take first element or the right element and add it to our ans;
+Given an array do k such operations such that we have maximum ans. 
+
+**Approach: Sliding window approach**:
+1. Precompte the total lsum till k from left;
+2. Now for each from right till n-k we maintain rsum and obtain lsum for the corresponding window and update our ans.
+```
+public int maxScore(int[] cardPoints, int k) {
+        int n = cardPoints.length, lSum = 0;
+        for(int i = 0; i < k; ++i){
+            lSum += cardPoints[i];
+        }
+        int max = lSum;
+        for(int rSum = 0, i = 0; i < k; ++i){
+            rSum += cardPoints[n-1-i];
+            lSum -= cardPoints[k-1-i];
+            max = Math.max(max,lSum+rSum);
+        }
+        return max;
+    }
+```
+
+---
+#### [18. Maximum Triplet Sum](https://www.interviewbit.com/old/problems/maximum-sum-triplet/)  
 We need to find a triplet ai, aj ,ak such that ai<aj<ak and i<j<k and their sum is max  
 **Approach-Brute Force**
 1. 3 For loops
