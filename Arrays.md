@@ -1,4 +1,4 @@
-#### [1. Trapping Rain Water - **HARD**](https://leetcode.com/problems/trapping-rain-water/)
+#### [1. a Trapping Rain Water - **HARD**](https://leetcode.com/problems/trapping-rain-water/)
 ##### Q. Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
 
 ![Image](https://assets.leetcode.com/uploads/2018/10/22/rainwatertrap.png)
@@ -20,6 +20,67 @@ i.e left[i] represent left_max of i and right[i] is right_max of i (This can be 
 After that iterate over height array and compute water trapped on each index : **min(left[i],right[i]) - height[i]**
 
 ---
+
+#### [1.b Largest rectangle in the histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/)
+
+The logic is that we need to think of each element just like in Rain water trap question.  
+We will think of what is the logic for the right and left boundary for the current element to be included in the area.  
+**Approaches : Brute Force**
+1. for each index we find the element smaller to itself in the left and the right.
+2. Now the element right after and before these left_min and right_min will create the boundary for my current rectangle.
+3. The area would be (right_boundary - left_boundary + 1)*height_of_current_element.
+ `TC: O(n^2)`
+ 
+ 
+**Approaches:**
+1. To precompute the left_min and right_min array for each element.
+2. We use stack for the same. We only keep indices of increasing elements in the stack, otherwise we pop them
+
+`TC: O(N) + O(N)`
+
+```
+int largestRectangleArea(vector<int>& heights) {
+        int n=heights.size();
+        stack<int> st;
+        vector<int> left(n);
+        vector<int> right(n);
+        left[0] = 0;
+        st.push(0);
+        for(int i=1; i<n; i++){
+            while(!st.empty() && heights[st.top()]>=heights[i]) st.pop();
+            if(st.empty()){
+                left[i] = 0;
+                
+            }
+            else{
+                left[i] = st.top()+1;
+            }
+            st.push(i);      
+        }
+        while(!st.empty()) st.pop();
+        right[n-1] = n-1;
+        st.push(n-1);
+        for(int i = n-2; i>=0; i--){
+            while(!st.empty() && heights[st.top()] >= heights[i]) st.pop();
+            if(st.empty()){
+                right[i] = n-1;
+            }
+            else{
+                right[i] = st.top()-1;
+            }
+            st.push(i);
+            
+        }
+        int ans=0;
+        for(int i=0; i<n; i++){
+            ans = max(ans, (right[i] - left[i]+1)*heights[i]);
+        }
+        return ans;
+    }
+```
+
+---
+
 #### 2. Left Rotating Array by k pos.
 Naive Intuitive: Time- O(n) , space O(k) 
 keep first k numbers in a temp[k] array left rotate the rest of the array k places and copying temp[k] after k indices.
