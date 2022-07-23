@@ -909,3 +909,57 @@ int kruskalMST(int n, int m, vector<vector<int>> &graph) {
     
 }
 ```
+---
+
+#### [15. Clone a graph](https://leetcode.com/problems/clone-graph/submissions/)
+**Approach:DFS Efficient**
+1. The efficient approach is to maintain an unordered_map of old nodes to the corresponding new nodes.
+2. Apply dfs on the intial node, check its neighbors
+3. if the neighbor node already created or exist in mp then just add an edge in the new nodes from node to neighbour.
+4. else create a copy of the neighbour node, add an edge to this neighbour node, add it  in map and call dfs on it recursively.
+
+```
+void dfs_cloneg(Node *node, unordered_map<Node*, Node*> &mp){
+    
+    
+    for(int i = 0; i<node->neighbors.size(); i++){
+        if(mp.find(node->neighbors[i])==mp.end()){
+            Node *cl = new Node(node->neighbors[i]->val);
+            mp[node->neighbors[i]] = cl;
+            mp[node]->neighbors.push_back(cl);
+            dfs_cloneg(node->neighbors[i], mp);
+        }
+        else{
+            mp[node] -> neighbors.push_back(mp[node->neighbors[i]]);
+        }
+        
+    }
+    
+    
+    
+}
+
+class Solution {
+public:
+    Node* cloneGraph(Node* node) {
+        if(node == NULL) return NULL;
+        
+        unordered_map<Node*, Node*> mp;
+        
+        
+        Node *root = new Node(node->val);
+        
+        mp[node] = root;
+        dfs_cloneg(node, mp);
+        return root;
+}
+```
+
+**Approach: BFS**
+1. This is another less efficient approach
+2. In this, we start applying bfs on the root node after creating a copy of it and we push them together in the queue (This is the crux that we must put both node and its copy together into the dict.).
+3. Now we go through its neighbors, we also maintain visited array and nodes array which represents what all nodes are already created.
+4. Now if the neighbor is already visited then nothing to do
+5. else if the neighbor's copy has already been created then set neighbors to that else create a copy and push both the node and its copy to queue.
+
+---
