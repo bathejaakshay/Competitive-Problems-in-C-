@@ -54,7 +54,7 @@ public:
 ```
 
 ---
-####[1b. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
+#### [1b. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
 **Approach : Topological Sort**
 1. Will be discussing topo using dfs as topo using bfs is already discussed below.
 2. Now to create adjlist, we are given `prereq:[0,1]` meaning 1 is a prereq of 0 so I have an edge from 1 to 0 in my graph cuz before taking 0 we must take 1.
