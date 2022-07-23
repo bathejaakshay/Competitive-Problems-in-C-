@@ -1,4 +1,4 @@
-#### [1. Find Cycle in Directed Graph/ Course Schedule](https://leetcode.com/problems/course-schedule/)
+#### [1a. Find Cycle in Directed Graph/ Course Schedule](https://leetcode.com/problems/course-schedule/)
 **Main Idea:**  
 1. We will use DFS for the cycle detection. It is not as easy as in the undirected graph in which we just check visited array and parent (if a child is already visited and is not my parent then it is a cycle)
 2. In Directed graph we check for backedge. We do this by maintaining recstk array which is a bool array represented which all vertex are currently in recstk. 
@@ -52,6 +52,60 @@ public:
     }
 };
 ```
+
+---
+####[1b. Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
+**Approach : Topological Sort**
+1. Will be discussing topo using dfs as topo using bfs is already discussed below.
+2. Now to create adjlist, we are given `prereq:[0,1]` meaning 1 is a prereq of 0 so I have an edge from 1 to 0 in my graph cuz before taking 0 we must take 1.
+3. Now we make in_deg vector represent in_deg of each vertex
+4. We also maintain done or visited. Also as there can be a cycle we maintain count of the nodes obtained in our ans.
+5. We apply dfs on each vertex which has in_deg 0 and decrement its in_deg by 1.
+6. Finally if the count matches the numCourses then it means there was no Cycle. return ans. Else return `{}`.
+
+```
+void dfs_toposort(int i,vector<vector<int>> &adjlist, int numCourses, vector<int> &in_coming, int &count, vector<int> &ans, vector<int> &done){
+    
+        done[i]++;
+        count++;
+        ans.push_back(i);
+        for(int &j:adjlist[i]){
+            in_coming[j]--;
+            if(!in_coming[j] && !done[j]){
+                dfs_toposort(j, adjlist, numCourses, in_coming, count, ans, done);
+            }
+        }
+    
+}
+
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prereq) {
+        vector<vector<int>> adjlist(numCourses);
+        for(int i=0; i<prereq.size(); i++){
+            adjlist[prereq[i][1]].push_back(prereq[i][0]);
+        }
+        vector<int> done(numCourses,0);
+        vector<int> in_coming(numCourses,0);
+        for(int i=0; i<adjlist.size(); i++){
+            for(int j=0; j<adjlist[i].size(); j++){
+                in_coming[adjlist[i][j]]+=1;
+            }
+        }
+        // return toposort_bfs(numCourses, adjlist);
+        vector<int> ans;
+        int count=0;
+        for(int i=0; i<numCourses; i++){
+        if(!done[i] && !in_coming[i]){
+            dfs_toposort(i, adjlist, numCourses, in_coming, count, ans, done);
+        }
+    }
+        if(count == numCourses) return ans;
+        return {};
+    }
+};
+```
+
 ---
 
 #### [2. Cycle Detection in UnDirected Graph](https://www.codingninjas.com/codestudio/problems/1062670?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0)
