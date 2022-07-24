@@ -1052,7 +1052,7 @@ int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
 ---
 
 #### [17. Pacific Atlantic Ocean : Hard for me](https://leetcode.com/problems/pacific-atlantic-water-flow/)
-**Approach : O(n^2*m + n*m^2)**
+**Approach : O(n^2*m + n*m^2)**  
 1: We apply dfs from all the boundaries checking what all cells are reachable from the boundary in the defined manner (order of heights)
 2. We check for the boundaries of pacific and atlantic and maintain respective vectors.
 3. finally we find intersection of these vectors as our ans.
@@ -1102,5 +1102,39 @@ public:
     }
 };
 ```
+A slightly better code is to use bit masking with dfs  
+
+```
+class Solution {
+public:
+    vector<vector<int>> res;
+    vector<vector<int>> visited;
+    void dfs(vector<vector<int>>& matrix, int x, int y, int pre, int preval){
+        if (x < 0 || x >= matrix.size() || y < 0 || y >= matrix[0].size()  
+                || matrix[x][y] < pre || (visited[x][y] & preval) == preval) 
+            return;
+        visited[x][y] |= preval;
+        if (visited[x][y] == 3) res.push_back({x, y});
+        dfs(matrix, x + 1, y, matrix[x][y], visited[x][y]); dfs(matrix, x - 1, y, matrix[x][y], visited[x][y]);
+        dfs(matrix, x, y + 1, matrix[x][y], visited[x][y]); dfs(matrix, x, y - 1, matrix[x][y], visited[x][y]);
+    }
+
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& matrix) {
+        if (matrix.empty()) return res;
+        int m = matrix.size(), n = matrix[0].size();
+        visited.resize(m, vector<int>(n, 0));
+        for (int i = 0; i < m; i++) {
+            dfs(matrix, i, 0, INT_MIN, 1);
+            dfs(matrix, i, n - 1, INT_MIN, 2);
+        }
+        for (int i = 0; i < n; i++) {
+            dfs(matrix, 0, i, INT_MIN, 1);
+            dfs(matrix, m - 1, i, INT_MIN, 2);
+        }
+        return res;
+    }
+};
+```
+
 
 ---
