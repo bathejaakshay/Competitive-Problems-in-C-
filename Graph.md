@@ -1050,3 +1050,57 @@ int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
 ```
 
 ---
+
+#### [17. Pacific Atlantic Ocean : Hard for me](https://leetcode.com/problems/pacific-atlantic-water-flow/)
+**Approach : O(n^2*m + n*m^2)**
+1: We apply dfs from all the boundaries checking what all cells are reachable from the boundary in the defined manner (order of heights)
+2. We check for the boundaries of pacific and atlantic and maintain respective vectors.
+3. finally we find intersection of these vectors as our ans.
+
+```
+bool finder(vector<vector<int>> &visit, vector<int> &s){
+    for(int i=0; i<visit.size(); i++) {
+        if(visit[i][0] == s[0] && visit[i][1] == s[1]) return true;
+    }
+    return false;
+}
+void traverse(int i, int j, vector<vector<int>> &visit, vector<vector<int>> &heights, int prevheight, int m,int n){
+    vector<int> s = {i,j};
+    if(finder(visit,s) || i<0 || j<0 || i>=m || j>=n || heights[i][j] < prevheight) return;
+    
+    visit.push_back({i,j});
+    // mp[{i,j}]=1;
+    traverse(i+1, j, visit, heights, heights[i][j], m, n);
+    traverse(i-1, j, visit, heights, heights[i][j], m, n);
+    traverse(i, j+1, visit, heights, heights[i][j], m, n);
+    traverse(i, j-1, visit, heights, heights[i][j], m, n);
+    
+}
+
+class Solution {
+public:
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        vector<vector<int>> ans;
+        int m = heights.size();
+        int n = heights[0].size();
+        vector<vector<int>> pac;
+        vector<vector<int>> atl;
+        for(int j=0; j<n; j++){
+              traverse(0, j, pac, heights, heights[0][j],m,n);
+              traverse(m-1, j,  atl, heights, heights[m-1][j],m,n);   
+         }
+        for(int i=0; i<m; i++){
+              traverse(i, 0, pac, heights, heights[i][0],m,n);
+              traverse(i, n-1,  atl, heights, heights[i][n-1],m,n);   
+         }
+        for(int i=0; i<pac.size(); i++){
+            if(finder(atl, pac[i])){
+                ans.push_back(pac[i]);
+            }
+        }
+        return ans;
+    }
+};
+```
+
+---
