@@ -93,3 +93,43 @@ int MinStack::getMin() {
 ```
 
 ---
+
+#### [3. Next Greater Element](https://leetcode.com/problems/next-greater-element-i/)
+**Approach**
+1. For each element we need to find the next greater element just at its right side.
+2. for this we start from the right side and start maintaining stack which just contains of the elements in the increasing order.
+3. so for each element we pop the elements which are lesser than itself in the stack as they can not be the next greater elements for all the elements left to the current element.
+4. if at any moment stack is empty for an element then that means all the elements right to it are smaller so nge is -1;
+
+```
+vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> nge(nums2.size(), -1);
+        stack<int> st;
+        unordered_map<int,int> mp;
+        for(int i=nums2.size()-1;  i>=0; i--){
+            mp[nums2[i]] = i;
+            while(!st.empty() && st.top() <= nums2[i]) st.pop();
+            if(st.empty()) nge[i] = -1;
+            else{
+                nge[i] = st.top();
+                
+            }
+            st.push(nums2[i]);
+            
+        }
+        vector<int> ans;
+        for(auto &i : nums1) {
+            ans.push_back(nge[mp[i]]);
+        }
+        return ans;
+        
+    }
+```
+`TC: O(n)  + O(n)` it is not O(n^2), surely we are popping elements for each index, but total elements pushed and poped is N so total TC is O(2n)  
+
+**Another ques**  
+1. Another ques that is generally made out of nge is finding nge in a circular list.
+2. The trick is simple we run our for loop for 2n-1 time instead of n, we find nge using `i%n` operator. We apply the same algo.
+3. But we only record our ans for `0<=i<n`.
+
+---
