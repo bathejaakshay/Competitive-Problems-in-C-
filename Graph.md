@@ -963,3 +963,90 @@ public:
 5. else if the neighbor's copy has already been created then set neighbors to that else create a copy and push both the node and its copy to queue.
 
 ---
+
+#### [16. Word Ladder](https://leetcode.com/problems/word-ladder/)
+Given two words, beginWord and endWord, and a dictionary wordList, return the number of words in the shortest transformation sequence from beginWord to endWord, or 0 if no such sequence exists.  
+**Approach - Simple : `TC: (O(n^2*m) + O(n^2*m))` (m is the wordlen and n is the wordlist length)**
+1. Check if the begin word and end word exists in the wordlist and note their indices as src and tgt.
+2. if beginword doesnt exist then add it to the word list, if endword doesnot exist then return 0
+3. Now create adjlist in `O(n^2*m)` checking all the strings for a particular string and matching them and adding them to their neighbors. (Undirected graph)
+4. Now simply apply bfs to get the dist for the tgt node.
+
+**Approach - Smart : `TC: (O(n^2*m) + O(m^2*n))`**
+1. In this we dont create an adjlist but an unordered_map which maps a particular pattern to a vector of indices of wordlist.
+2. for each word in wordlist we mask one char and generate a pattern and add its idx to the corresponding key pattern in map.
+3. This ensures that for a pattern all the corresponding indices differ in atmost 1 char
+4. Now we apply bfs, during find the neighbors of a specific node we again mask its chars one by one and find all the corresponding neighbors. 
+
+```
+int bfs_smart(int src, int tgt, unordered_map<string, vector<int>> &mp, vector<string> &wordList){
+    queue<int> q;
+    vector<int> visited(wordList.size(),0);
+    vector<int> dist(wordList.size(),INT_MAX);
+    dist[src]=1;
+    
+    q.push(src);
+    while(!q.empty()){
+        int x=q.front();
+        q.pop();
+        visited[x]=1;
+        string src_str = wordList[x];
+        for(int j = 0; j<src_str.length(); j++){
+            string temp = src_str;
+            temp[j]='*';
+            for(int k = 0; k<mp[temp].size(); k++){
+                int tar = mp[temp][k];
+                // cout<<" tar = "<<tar<<endl;
+                if(tar!=x){
+                    if(!visited[tar]){
+                        if(dist[tar] > dist[x]+1){
+                            
+                            dist[tar] = dist[x]+1;
+                            // cout<<wordList[tar]<<" = "<<dist[tar]<<endl;
+                            q.push(tar);
+                        }
+
+                    }
+                }
+            }
+        }
+        
+    }
+    return dist[tgt] == INT_MAX? 0: dist[tgt];
+    
+}
+
+int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        // The trick is how you create the adjacency list either in O(n^2*m) or O(n*m^2) where n is len(wordList) and m is len(wordList[i]), The rest is similar
+        int flag=-1, tgt=-1;
+        for(int i=0; i<wordList.size();i++){
+            if(wordList[i] == beginWord){
+                flag=i;
+            }
+            if(wordList[i] == endWord){
+                tgt = i;
+            }
+        }
+        if(tgt == -1){
+            return 0;
+        }
+        if(flag==-1){
+            wordList.push_back(beginWord);
+            flag = wordList.size()-1;
+        }
+        // For smart approach we find all the possible matching patterns of a string and push that in a mp
+        
+        unordered_map<string,vector<int>> mp;
+        for(int i=0; i<wordList.size(); i++){
+            
+            for(int j=0; j<wordList[i].length(); j++){
+                string x = wordList[i];
+                x[j] = '*';
+                mp[x].push_back(i);
+            }
+        }
+        return bfs_smart(flag, tgt, mp, wordList);
+    }
+```
+
+---
