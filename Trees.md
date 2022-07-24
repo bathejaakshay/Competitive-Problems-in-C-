@@ -128,8 +128,52 @@ bool isValidBST(TreeNode *root){
 
 ---
 
+#### [5. Creating Unique BST](https://www.interviewbit.com/old/problems/unique-binary-search-trees/)
+
+**Approach**
+1. We do this recursively.
+2. We maintain two pointers start and end.
+3. We need to make each node a key once.
+4. So we traverse from start to end using curr pointer
+5. Now we know all the nodes left to curr will come as left child to it and right nodes will come as right child to it. We are traversing in sorted order.
+6. As we are returning all possible left and right subtrees in each call. we need to take all `left*right` combination of trees with root node and add to our ans and return. 
+7. In base case we return list with NULL which represent that a node doest has left or right child respt.
+
+```
+vector<TreeNode *> all_BST(int start, int end){
+    if(start>end) return {NULL};    
+    vector<TreeNode *> ans;
+    
+    vector<TreeNode *> l; vector<TreeNode*>r;
+    
+    for(int curr = start; curr<=end; curr++){
+        l = all_BST(start, curr-1);
+        r = all_BST(curr+1, end);
+        for(int x=0; x<l.size(); x++){
+            for(int y =0; y<r.size();y++){
+                    TreeNode* root = new TreeNode(curr);
+                    
+                    root->left = l[x];
+                    root->right = r[y];
+                    ans.push_back(root);
+                }
+            }
+        
+        
+    }
+    return ans;
+   
+} 
 
 
+vector<TreeNode*> Solution::generateTrees(int A) {
+   vector<TreeNode *> ans = all_BST(1, A);
+   return ans;
+    }
+
+```
+
+---
 
 
 
