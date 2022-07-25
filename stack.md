@@ -133,3 +133,46 @@ vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
 3. But we only record our ans for `0<=i<n`.
 
 ---
+
+
+#### [4 Sliding Window Maximum](https://www.interviewbit.com/problems/sliding-window-maximum/)
+Given a window of size B find all the max in each window of size B.  
+**Approach: Dequeue**  
+1. We use dequeue here. Variant of Next Great element, just that we maintain a decreasing order in our dequeue.
+2. Hypothetically think of the dequeue of size B (Window size), so that whenever an element at front is out of the window we need to pop it.
+3. For each element `i` try inserting it in the dequeue.
+4. Check if element at front is still valid in the window.
+5. push element `i` in the back while maintaining decreasing order i.e pop elements smaller than itself as for future windows they cant be the greatest.
+6. now for each window (when i>=B-1) our maximum will always be at front of the dequeue
+
+```
+void insert_dq (deque <int> &dq , const vector<int> &A ,int i,int B){
+    while(!dq.empty() && i - dq.front() >= B){
+        dq.pop_front();
+    }
+    if(dq.empty()){
+        dq.push_back(i);
+    }
+    else{
+        while(!dq.empty() && A[dq.back()] < A[i]){
+            dq.pop_back();
+        }
+        dq.push_back(i);
+    }
+}
+vector<int> Solution::slidingMaximum(const vector<int> &A, int B) {
+    vector<int> C;
+    deque<int> dq;
+    for(int i=0;i<A.size();i++){
+        insert_dq(dq,A,i,B);
+        if(i>B-2)
+            C.push_back(A[dq.front()]);
+    }
+    return C;
+}
+
+```
+
+`TC: O(n) + O(n)`
+---
+
