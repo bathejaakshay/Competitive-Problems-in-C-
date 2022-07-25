@@ -57,3 +57,45 @@ int Solution::solve(vector<int> &A, int B) {
 ```
 
 ---
+
+#### [3. Points on the straight line](https://www.interviewbit.com/old/problems/points-on-the-straight-line/)
+**Approach**  
+1. For each point (x1,y1) we look at each other point (x2,y2), we compute is they are the exact same points (will just add to the ans), or if they lie of the vertical line i.e (x1 = x2 and y1!=y2) (We do this as we can find slope of vertical line)
+2. Else we find the slope and increment its counter in the map and find max points in the same line for the current point (x1,y1)
+3. We also check if vertical points are larger than current max.
+4. After all iterations for current point 
+5. we find final max corresponding to all the points. maxp = max(maxp, curr_max + overlap + 1)
+
+```
+int Solution::maxPoints(vector<int> &A, vector<int> &B) {
+    map<double,int> m;
+    int maxp=0;
+    int cur,overlap,vertical;
+    int n=A.size();
+    for(int i=0;i<n;i++)
+    {   cur=overlap=vertical=0;
+        for(int j=i+1;j<n;j++)
+        {   if(A[i]==A[j] && B[i]==B[j])
+            {   overlap++;
+            }
+            else if(A[i]==A[j])
+            {   vertical++;
+            }
+            else
+            {   double ydif=(double)B[j]-(double)B[i];
+                double xdif=(double)A[j]-(double)A[i];
+                double slope=ydif/xdif;
+                m[slope]++;
+                cur=max(cur,m[slope]);
+            }
+            cur=max(cur,vertical);
+        }
+        maxp=max(maxp,cur+overlap+1);
+        m.clear();
+    }
+    return maxp;
+}
+
+```
+`TC : O(n2logn)`
+---
