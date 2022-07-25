@@ -20,3 +20,40 @@ public:
     }
 };
 ```
+
+---
+
+#### [2. Subarrays with given XOR](https://www.interviewbit.com/old/problems/subarray-with-given-xor/)
+
+**Approach**
+1. Same logic as prefix sum.
+2. intialize xor = 0;
+3. for each element compute the xor : `xor^=A[i]`
+4. Now if this is equal to required Xor B then count++
+5. else we find if `xor^B` exist in map i.e suppose two subarrays 0 to i whose exor is x and i+1 to j whose exor is B, Now currently we have `xor` from say o to j
+6. Now if we do xor^B then exor for i+1 to j zeros out and what remains is x i.e exor 0 to i. So we increment the count by the same.
+
+```
+int Solution::solve(vector<int> &A, int B) {
+
+    unordered_map<int,int> mp;
+    int x = 0, ans=0;
+    for(int i=0;i<A.size();i++){
+            x^=A[i];
+            
+            if(x == B){
+                ans++;
+            }
+            
+            if(mp.find(x^B) != mp.end()){
+                ans+=(mp[x^B]);
+            }
+            mp[x]++;
+        }
+    return ans;
+    
+}
+    
+```
+
+---
