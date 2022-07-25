@@ -97,5 +97,5 @@ int Solution::maxPoints(vector<int> &A, vector<int> &B) {
 }
 
 ```
-`TC : O(n2logn)`
+`TC : O(n^2 logn)`
 ---
