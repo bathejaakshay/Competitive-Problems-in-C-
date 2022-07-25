@@ -68,7 +68,7 @@ int Solution::solve(vector<int> &A, int B) {
 
 ```
 int Solution::maxPoints(vector<int> &A, vector<int> &B) {
-    map<double,int> m;
+    unordered_map<double,int> m;
     int maxp=0;
     int cur,overlap,vertical;
     int n=A.size();
@@ -97,5 +97,5 @@ int Solution::maxPoints(vector<int> &A, vector<int> &B) {
 }
 
 ```
-`TC : O(n^2 logn)`
+`TC : O(n^2)`
 ---
