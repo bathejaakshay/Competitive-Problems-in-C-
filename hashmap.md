@@ -220,3 +220,31 @@ string Solution::minWindow(string a, string b) {
 }
 
 ```
+---
+#### [6. Longest Substr without repeat](https://www.interviewbit.com/old/problems/longest-substring-without-repeat/)  
+**Approach**  
+1. We keep track of the chars and its index
+2. We also mantain the keyword `l` representing the start of the ans string.
+3. whenever a repeating char occurs we find ans and update l if l is lesser than the previous occurence of curr char.
+4. we also update map `mp[A[i]]=i`
+
+```
+int longsubstr(string A){
+    unordered_map<char,int> mp;
+    // int count=0;
+    int maxi=0;
+    int l=0;
+    for(int i=0; i<A.length(); i++){
+        if(mp.find(A[i]) != mp.end()){
+            if(mp[A[i]] >= l){ // We dont want to change l to any index lesser than l itself as if we do so we will loose info of repeating chars that were before l.
+            maxi = max(maxi,i-l);
+            l = mp[A[i]]+1;
+            }
+        }
+        maxi = max(maxi, i-l+1);
+        mp[A[i]] = i;
+    }
+    return maxi;
+}
+
+```
