@@ -156,3 +156,67 @@ unordered_map<int, int> map;
 ```
 
 ---
+
+#### [5. Minimum Window String - HARD](https://www.interviewbit.com/old/problems/window-string/)  
+Given two strings A and B, find the minimum sized substr of A which has all chars of B.  
+**Approach**
+1. We use two pointer approach, i and j
+2. We use i to acquire chars and j to release chars.
+3. We first create a frequency map for the target String B.
+4. Now we start acquiring chars in string A until the match_count is equal to B.len
+5. match_count signifies the length of current matching string that matches string B (in terms of chars and not order).
+6. once we have acquired all required chars in B (represented by match_count), we start releasing chars from the starting using j, to obtain the smallest substr that has matchcount still equal to B.len
+7. We keep on doing these two steps till end and obtain final ans. 
+```
+string minwin(string a, string b){
+    
+    unordered_map<char,int> src;
+    unordered_map<char, int> tgt;
+    
+    for(int i=0; i<b.length(); i++){
+        tgt[b[i]]++;
+    }
+    
+    int i=0,j=0;
+    int match_count=0; // count all the required chars that match b
+    int tgtlen=b.length();
+    int ans=INT_MAX;
+    int ans_i=-1,ans_j=-1;
+    while(i<a.length()){
+        //Step 1: acquire till match_count not equal to strlen
+        while(i<a.length() && match_count<tgtlen){
+            src[a[i]]++;
+            if(src[a[i]] <= tgt[a[i]]){
+                match_count++;
+            }
+            i++;
+            
+        }
+        
+        //Step 2: update ans and release while match_count is same as tgtlen
+        while(j<i && match_count==tgtlen){
+            
+            if(ans > i-j){
+                ans = i-j;
+                ans_j = j;
+            }
+            if(src[a[j]]>0)
+                src[a[j]]--;
+            if(src[a[j]] < tgt[a[j]]){
+                match_count--;
+            }
+            j++;
+        }
+          
+    }
+    return ans==INT_MAX?"":a.substr(ans_j,ans); 
+    
+    
+    
+}
+string Solution::minWindow(string a, string b) {
+    
+    return minwin(a,b);
+}
+
+```
