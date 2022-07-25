@@ -99,3 +99,60 @@ int Solution::maxPoints(vector<int> &A, vector<int> &B) {
 ```
 `TC : O(n^2)`
 ---
+
+#### [4. Subarray with B odd Numbers](https://www.interviewbit.com/old/problems/subarray-with-b-odd-numbers/)
+**Approach**  
+1. Either convert array into binary with 0 representing even and 1 representing odd. Now just find number of subarrays with sum B
+2. Or we can perform prefix directly by counting number of odds within each array. Logic is same as in point 1.
+
+```
+int odd(vector<int> &A, int B){
+    int count =0 ;
+    unordered_map<int,int> mp;
+    int ans=0;
+    for(int i=0; i<A.size(); i++){
+        if(A[i]%2!=0){
+            count++;
+        }
+        if(count == B){
+            ans++;
+        }
+        if(count>=B){
+            if(mp.find(count-B)!=mp.end()){
+                ans+=mp[count-B];
+            }
+        }
+        mp[count]++;
+        
+    }
+    return ans;
+}
+
+```  
+By converting array to binary.
+```
+int odd(vector<int> &A, B){
+unordered_map<int, int> map;
+    int curr_sum = 0; //prefix sum
+    int count = 0; //count of all subarrays
+
+    for(int i = 0; i<A.size(); i++){
+        if(A[i] % 2 == 0) A[i] = 0;
+        else A[i] = 1; // odd nos become 1. Now subarrays with sum = B should be found
+    }
+    
+    for(int i = 0; i<A.size(); i++){
+        curr_sum += A[i];
+        if(curr_sum == B) count += 1;
+        if(map.find(curr_sum - B) != map.end()){
+            count += map[curr_sum - B];
+        }
+        map[curr_sum]++;
+    }
+    return count;
+    
+
+}
+```
+
+---
