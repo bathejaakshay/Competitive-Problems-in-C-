@@ -1223,4 +1223,59 @@ public:
 `TC : O(m*n + 4^(size of island))`
 ---
 
+#### [20. Reorder routes to make all paths lead to zero node]()
 
+Given acyclic graph, we want all nodes to point to zero node i.e all nodes have one direction pointing to 0 and there is path from each node to node 0.  
+Find min no of edges u need to change to do the same.  
+**Approach**  
+1. We will use BFS, we compute two adjlist, one which we currently have and another of the transpose of the graph.
+2. We start by pushing node 0 to the queue. We also maintain visited array as we can be visiting a node twice even though there is no cycle but due to traversing both simple and transpose of the graph.
+3. We pop queue top and mark it as visited.
+4. Then we find its neighbours in the simple graph, these are the edges that should have been pointing towards zero hence we increase the count with number of neighbors and push them to queue.
+5. Then we find its neighbours in the transpose of the graph, these are the neighbors that are valid i.e they are already pointing towards zero, we simply push them also into the queue.
+6. Now we do the same thing for each node in queue.
+
+```
+class Solution {
+public:
+    int minReorder(int n, vector<vector<int>>& connections) {
+        vector<vector<int>> alist1(n);
+        vector<vector<int>> alist2(n);
+        for(int i=0 ;i< connections.size(); i++){
+                alist1[connections[i][0]].push_back(connections[i][1]);
+                alist2[connections[i][1]].push_back(connections[i][0]);
+            
+        }
+        int count=0;
+        queue<int> q;
+        q.push(0);
+        vector<int> visited(n,0);
+        while(!q.empty()){
+            
+            
+            int x = q.front();
+            q.pop();
+            if(!visited[x]){
+                visited[x] = 1;
+                
+                for(int &j : alist2[x]){
+                    if(!visited[j]){
+                        q.push(j);
+                    }    
+                }
+                for(int &k : alist1[x]){
+                    if(!visited[k]){
+                        count++;
+                        q.push(k);
+                    }
+                
+    
+                }
+            }
+        }
+        return count;
+    }
+};
+```
+
+---
