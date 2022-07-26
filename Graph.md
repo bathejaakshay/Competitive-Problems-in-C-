@@ -1220,4 +1220,7 @@ public:
 };
 ```
 
+`TC : O(m*n + 4^(size of island))`
 ---
+
+
