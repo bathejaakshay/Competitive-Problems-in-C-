@@ -1138,3 +1138,42 @@ public:
 
 
 ---
+
+#### [18. Word Search](https://leetcode.com/problems/word-search/)  
+Given an m x n grid of characters board and a string word, return true if word exists in the grid.  
+**Approach**:  
+1. Simple Brute Force, go through each direction and maintain the pos of the currently matched char.
+2. Write separate calls for each direction instead using a direction vector, as the latter gives TLE.
+
+```
+bool dfs(int i, int j, string &word, vector<vector<char>> &board, int pos, int m, int n){
+    
+    if(pos == word.length()) return true;
+    if(i<0 || i==m || j<0 || j==n || board[i][j]!=word[pos]){
+        return false;
+    }
+    bool flag;
+    char temp = board[i][j];
+    board[i][j] = '*';
+    flag = (dfs(i+1, j, word, board, pos+1, m,n) || dfs(i-1, j, word, board, pos+1, m,n) || dfs(i, j+1, word, board, pos+1, m,n) || dfs(i, j-1, word, board, pos+1, m,n)); //Always write separate calls like this.
+    board[i][j] = temp;
+     return flag;   
+}
+
+class Solution {
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        
+        int m = board.size();
+        int n = board[0].size();    
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                    if(dfs(i,j,word,board,0,m,n))
+                        return true;   
+            }
+        }
+        return false;
+    }
+};
+```
+`TC: O(m*n* 4^(len(target))), where tc of dfs is 4^(len(target))`
