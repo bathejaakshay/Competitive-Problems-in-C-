@@ -456,7 +456,7 @@ public:
 #### [8. Dijkstra Using Minheap](https://practice.geeksforgeeks.org/problems/implementing-dijkstra-set-1-adjacency-matrix/1#)
 **Approach:**  
 1. Using BFS approach starting from source, relax each neighbour edge by checking `d[v] > d[u] + w(u,v)` and pushing into priority queue.
-2. We maintain boolean final vector which represents if the vertext is completed or not so that vertex doesnt repeat as we are pushing multiple copies of the vertex.
+2. We maintain boolean final vector which represents if the vertex is completed or not so that vertex doesnt repeat as we are pushing multiple copies of the vertex.
 
 O((V+E)logV)
 
@@ -478,7 +478,7 @@ class Solution
         vector<int> dist(V,INT_MAX);
         vector<bool> final(V, false);
         dist[S]=0;
-        priority_queue<pair<int,int>, vector<pair<int,int>> , Solution::compare> pq;
+        priority_queue<pair<int,int>, vector<pair<int,int>> , Solution::compare> pq; // We can use greater<pair<int,int>> here instead of compare class but greater<>() always sort on first element so make sure first element of pair is the distance.
         // cout<<"pushing"<<endl;
         pq.push(make_pair(0,S));
         // cout<<"S = "<<S<<endl;
