@@ -1177,3 +1177,47 @@ public:
 };
 ```
 `TC: O(m*n* 4^(len(target))), where tc of dfs is 4^(len(target))`
+
+
+#### [19. Island Perimeter](https://leetcode.com/problems/island-perimeter/)  
+Given an island surrounded by water, find its perimeter.  
+
+**Approach:DFS**
+1. Simple logic is that perimeter of each cell in island is equal to the no. of sides it is surrounded by water or final boundary i.e the neighbour cell should be ` i<0 || j<0 || i==m || j==n || grid[i][j] = 0`.
+2. We sum up all the boundries for each cell and return
+3. We also mark the visited cell so that we dont visit it again.
+
+```
+int dfs(int i, int j, vector<vector<int>> &grid, int m, int n){
+    if(i<0 || j<0 || i>=m || j>=n || grid[i][j] == 0) return 1;
+    if(grid[i][j] == -1) return 0;
+    
+    
+    grid[i][j] = -1;
+    
+    return dfs(i+1, j, grid, m, n) + dfs(i-1,j,grid,m,n) + dfs(i,j+1,grid, m, n) + dfs(i, j-1, grid, m, n);
+    
+    
+    
+}
+
+class Solution {
+public:
+    int islandPerimeter(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++)
+            {
+                if(grid[i][j]){
+                    return dfs(i, j, grid, m, n);
+                }
+            }
+        }    
+        return 0;
+    }
+};
+```
+
+---
