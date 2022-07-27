@@ -1279,3 +1279,114 @@ public:
 ```
 
 ---
+
+#### [21. Alien Dictionary - HARD](https://www.lintcode.com/problem/892/)
+Given a list of latin words lexicographically sorted as per some other langauage rules. Find the order of words  
+
+
+**Approach : Topological Sort Kahn's Algo**
+1. Order can be found between adjancent words and finding the first nonmatching char, e.g `[xy,xz]` here we get to know that y is smaller than z. Hence there will be an edge from y to z.
+2. Secondly if `[xyz,xy]` such order appears we need to return "". 
+3. We apply toposort to find the order, there can be more than one components reponsible for multiple ans. (Just lexicographically join the multiple ans)
+4. If after applying kahn's algo there are still some nodes with non zero inorder then that means there existed a cycle for which we return "".
+
+```
+string insert(char x, string final_ans){
+    
+    string ret = "";
+    int flag=0;
+    for(int i=0; i<final_ans.length(); i++){
+        if(x<final_ans[i] && flag==0){
+            flag=1;
+            ret+=x;
+        }
+        else if(x == final_ans[i]) return final_ans;
+
+        ret+=(final_ans[i]);
+    }
+    if(flag==0){
+        ret+=(x);
+
+    }
+    return ret;
+
+}
+
+class Solution {
+public:
+    /**
+     * @param words: a list of words
+     * @return: a string which is correct order
+     */
+    string alienOrder(vector<string> &words) {
+        // Write your code here
+        // cout<<"started"<<endl;
+        vector<int> exist(26,0);
+        vector<vector<int>> adjlist(26);
+        for(int i=0; i<words.size(); i++){
+            exist[words[i][0]-'a'] =1;
+            for(int j=1; j<words[i].size(); j++){
+                exist[words[i][j]-'a']=1;
+            }
+            if(i!=0){
+                int x=0;
+                if(words[i-1]!=words[i])
+                {
+                    while(words[i-1][x] == words[i][x]) x++;
+                    if(x==words[i].length()) return "";
+                    if(x<words[i-1].length()){
+                        adjlist[words[i-1][x]-'a'].push_back(words[i][x]-'a');
+                    }
+                }
+            }
+
+        }
+        vector<int> in_order(26,0);
+        for(int i=0; i<adjlist.size(); i++){
+            for(int j=0; j< adjlist[i].size(); j++){
+                in_order[adjlist[i][j]]++;
+            }
+        }
+        string ans="";
+        int count=0;
+        queue<int> q;
+        vector<int> start;
+        vector<string> an;
+        for(int i=0; i<in_order.size(); i++){
+            if(exist[i] && in_order[i]==0)
+                start.push_back(i);
+            }
+        
+        // cout<<"first element done"<<endl;
+        for(int m=0; m<start.size(); m++){
+            ans = "";
+            q.push(start[m]);
+            while(!q.empty()){
+            int x = q.front();
+            q.pop();
+            char c = 'a' + x;
+            ans+=c;
+            for(int &j : adjlist[x]){
+                c = 'a' + j;    
+                in_order[j]--;
+                if(in_order[j]==0){
+                    q.push(j);
+                }
+            }
+            
+        }
+        an.push_back(ans);
+
+        }
+        for(int &m:in_order) if(m!=0) return "";
+        
+        string final_ans = an[0];
+        for(int x=1; x<an.size();x++) {
+            for(int i=0; i<an[x].length(); i++){
+                final_ans = insert(an[x][i], final_ans);
+            }
+        }
+        return final_ans;
+    }
+};
+```
