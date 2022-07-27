@@ -46,3 +46,57 @@ void Union(int x, int y, vector<int> &parent, vector<int> & rank){
 
 
 ```
+
+---
+
+#### [2 Redundant Connection](https://leetcode.com/problems/redundant-connection/)
+**Approach**  
+1. For each edge find if the two vertices are already connected or not.
+2. If not then union them
+3. If they are then that is our ans.
+
+`TC : O(N)`
+```
+int Find(int u, vector<int> &parent){
+    if(parent[u] == u){
+        return u;
+    }
+    parent[u] = Find(parent[u], parent);
+    return parent[u];
+}
+
+void Union(int a, int b, vector<int> &parent, vector<int> &rank){
+    if(rank[a]<rank[b]){
+        parent[a] = b;
+    }
+    else if(rank[a]>rank[b]){
+        parent[b] = a;
+    }
+    else{
+        parent[b] = a;
+        rank[a]++;
+    }
+}
+
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        vector<int> parent(edges.size()+1);
+        for(int i=1; i<edges.size(); i++){
+            parent[i] = i;
+        }
+        vector<int> rank(edges.size()+1,1);
+        int a,b;
+        for(int i=0; i<edges.size(); i++){
+            a = Find(edges[i][0], parent);
+            b = Find(edges[i][1], parent);
+            if(a==b){
+                return edges[i];
+            }
+            Union(a,b,parent,rank);
+     
+        }
+        return {-1,-1};
+    }
+};
+```
