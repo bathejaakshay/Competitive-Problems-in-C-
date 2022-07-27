@@ -245,3 +245,88 @@ class Trie{
 ```
 
 ---
+
+#### [3. Word Search II : Trie + DFS](https://leetcode.com/problems/word-search-ii/submissions/)
+**Approach : Only DFS**:  
+1. This is similar to wordSearch I in which we were given only one word and we need to find if we can create that word from the grid or not.
+2. But now we are given a list of words, we need to see what all words are possible outta these given words using the 2d grid.
+3. For each cell using DFS algo same as Word Search 1 would given `TC: len(list of words) * M*N * 4^(M*N)`
+
+**Approach: Using Trie and DFS**  
+1. We create a Trie DS for all the given words W.
+2. Now we dont need to check separately for each word in W, instead we can parallelly check for all the words possible at current index (i,j) in the grid using the DFS.
+3. For each cell we start with the root of Trie, if there exist a word at root with value of the current cell then we append it in our current string, if is_end var is true, it means string collected till now is a legit word and hence we append it to the answer.
+4. Else we go in all 4 directions and check for the respective words at next level of Trie.
+
+```
+class Node{
+    public:
+  Node *ch[26];
+  bool is_end=false;
+};
+
+class Trie{
+public:
+    Node *root = new Node();
+    void add_word(string w){
+        Node *ptr = root;
+        for(int i=0; i<w.length(); i++){
+            if(ptr->ch[w[i]-'a'] == NULL){
+                Node *nn = new Node();
+                ptr->ch[w[i]-'a'] = nn;
+            }
+            ptr = ptr->ch[w[i]-'a'];
+        }
+        ptr->is_end=true;
+    }
+};
+
+void dfs(int i, int j, string s,vector<vector<char>> &board, Node *root, vector<string> &ans, unordered_map<string,int> &mp){
+    //base
+    if(i<0 || j<0 || i>=board.size() || j>= board[0].size() || board[i][j] == '*'){
+        return;
+    }
+    Node *n = root->ch[board[i][j]-'a']; 
+    if(n){
+        char temp = board[i][j];
+        board[i][j] = '*';
+        
+        if(n->is_end){
+            if(mp.find(s+temp)==mp.end()){
+                mp[s+temp]=1;
+                ans.push_back(s+temp);
+            }
+                
+        }
+        
+        dfs(i+1,j, s+temp,board,n, ans, mp);
+        dfs(i-1, j,s+temp,board,n, ans, mp);
+        dfs(i,j+1, s+temp,board,n, ans, mp);
+        dfs(i, j-1,s+temp,board,n, ans, mp);
+        board[i][j] = temp;
+        
+    }
+    
+}
+
+class Solution {
+public:
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        Trie *t = new Trie();
+        
+        for(int i=0; i<words.size(); i++){
+            t->add_word(words[i]);
+        }
+        vector<string> ans;
+        string s="";
+        unordered_map<string, int> mp;
+        for(int i=0; i<board.size(); i++)
+            for(int j=0; j<board[0].size(); j++){
+                dfs(i,j,s,board,t->root,ans,mp);
+            }
+        
+        
+        return ans;
+    }
+};
+```
