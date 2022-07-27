@@ -100,3 +100,56 @@ public:
     }
 };
 ```
+---
+#### [3. Graph a valid Tree]()
+**Approach**
+1. Same using union and find if there is a cycle.
+2. and maintain a count of componenets, intializing with n comp and doing n-- when we union two comp.
+3. If Finally n>1 then it is not a tree.
+4. Else it is as it is connected and acyclic.
+
+```
+int find(int a, vector<int> &parent){
+    if(a==parent[a]) return a;
+    parent[a] = find(parent[a], parent);
+    return parent[a];
+}
+void unions(int a, int b, vector<int> &parent, vector<int> &rank){
+    if(rank[a]> rank[b]){
+        parent[b] = a;
+
+    }
+    else if(rank[a]<rank[b]){
+        parent[a] = b;
+    }
+    else {
+        parent[b]=a;
+        rank[a]++;
+    }
+}
+
+bool checkgraph(vector<vector<int>> edges, int n, int m)
+{
+    int comp = n;
+
+        vector<int> parent(n);
+        for(int i=0; i<n; i++){
+            parent[i]=i;
+        }
+        vector<int> rank(n,1);
+        int a,b;
+        for(int i=0; i<edges.size(); i++){
+            a = find(edges[i][0], parent);
+            b = find(edges[i][1], parent);
+            if(a==b) return false;
+            unions(a,b,parent, rank);
+            comp--;
+        }
+        if(comp == 1){
+            return true;
+        }
+        return false;
+    
+    // write your code here
+}
+```
