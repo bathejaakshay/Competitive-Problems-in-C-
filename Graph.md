@@ -1390,3 +1390,93 @@ public:
     }
 };
 ```
+
+---
+
+#### [22. Min Cost to connect all points](https://leetcode.com/problems/min-cost-to-connect-all-points/)
+Conventional Kruskal and Prims gives TLE.  
+
+**Approach: MST using Kruskal with min heap instead of sorting (saves space and memory)**
+
+```
+int mst_Kruskal(vector<vector<int>>& points){
+        int md=0;
+        int n = points.size();
+        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        for(int i=0; i<points.size()-1; i++){
+            for(int j=i+1; j<points.size(); j++){
+                md = abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1]);
+                pq.push({md, i, j});
+            }
+        }
+        
+        // sort(edges.begin(), edges.end(), comparator );
+        
+        // Need to make functions UNION and Find for KrushKal
+        vector<int> parents(n,0);
+        for(int i = 0; i< parents.size(); i++){
+            parents[i] = i;
+        }
+        vector<int> rank(n,1);
+        int ans=0;
+        int u,v,pu,pv;
+        int count=n-1; // Total no of edges required where n is no of vertices
+        while(count>0){
+            vector<int> x = pq.top();
+            pq.pop();
+            u = x[1];
+            v = x[2];
+            pu = find(u, parents);
+            pv = find(v, parents);
+            if(pu != pv){
+                unions(pu,pv,parents,rank);
+                ans+=x[0];
+                count--;
+            }
+            }
+    return ans;
+}
+```
+
+**Approach: Prims more efficient**  
+Instead of precomputing adjlist, we find all the edge weights on the fly  
+We start with vertex 0, push it into priority queue pq.  
+Then we find weight of this vertex with all corresponding vertices and push them to pq.  
+Then we get pq.top and do the same thing again.
+
+
+```
+int mst_prims(vector<vector<int>> &points){
+    vector<vector<vector<int>>> adjlist(points.size());
+        int md=0;
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+        
+        vector<int> visited(points.size(),0);
+        
+        int ans=0;
+        pq.push({0,0});
+        int count=points.size();
+        while(!pq.empty() && count>0){
+            
+            pair<int,int> p = pq.top();
+            pq.pop();
+            if(!visited[p.second]){
+                
+                visited[p.second] =1 ;
+                ans+=(p.first);  
+                count--;
+                for(int j=0; j<points.size(); j++){
+                    if(p.second!=j){
+                        if(!visited[j]){
+                            pq.push({abs(points[p.second][0] - points[j][0])+abs(points[p.second][1] - points[j][1]),j});
+                        }
+                    }
+                }
+                
+            }
+            
+            
+        }
+        return ans;
+}
+```
