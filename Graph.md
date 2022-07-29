@@ -1526,3 +1526,97 @@ int mst_Kruskal_heap(vector<vector<int>>& points){
 ```
 
 ---
+
+#### [23, Swim in Rising Water](https://leetcode.com/problems/swim-in-rising-water/)
+**Approach : Brute Force DFS: 4^(n^2)**  
+1. Can use memoziation here as the function calls are not unique: if we set `dp[i][j]` to something then its possible that a better value exist through some other path.
+
+```
+
+int swim(int i, int j, vector<vector<int>> &grid, vector<vector<int>> &dp, int m, int n){
+    //base case
+    if(i<0 || j<0 || i>=m || j>=n || grid[i][j] == -1) return INT_MAX;
+    if(i==m-1 && j==n-1) return grid[i][j];
+    int temp = grid[i][j];
+    grid[i][j] = -1;
+    int a = swim(i+1,j,grid,dp,m,n);
+    int b = swim(i-1,j,grid,dp,m,n);
+    int c = swim(i,j+1,grid,dp,m,n);
+    int d = swim(i,j-1,grid,dp,m,n);
+    grid[i][j] = temp;
+    
+    return max(grid[i][j],min(min(a,b),min(d,c)));
+    
+}
+```
+
+
+
+**Approach: Modified Dijkstra : O(n^2 logn)**
+1. Key idea is to keep the max value as the dist in any given path say in path src to v, the `dist[v]` is the max value seen in that path
+2. Now say there is another path from src to x, `dist[x]` and both x and v has tgt as neighbour so we would want to follow min `dist[x]` and `dist[v]` to follow.
+3. This is done using priority queue. 
+4. We are ulimately finding the min of max in all paths from src to tgt. Hence we use dijkstra
+
+```
+class compared{
+    public:
+  bool operator() (const vector<int> &a, const vector<int> &b){
+      return a[0]>b[0];
+  }  
+};
+int dij_swim(vector<vector<int>> &grid, vector<vector<int>> &visited){
+    priority_queue<vector<int>, vector<vector<int>>, compared> pq;
+    pq.push({grid[0][0],0,0});  
+    int ans = INT_MIN;
+    vector<vector<int>> dist(grid.size(), vector<int>(grid[0].size(), INT_MIN));
+    dist[0][0] = grid[0][0];
+    while(!pq.empty()){
+        vector<int> p = pq.top();
+        pq.pop();
+        int u = p[0];
+        int i=  p[1];
+        int j=  p[2];
+        if(!visited[i][j]){
+            visited[i][j] = 1;
+            if(i+1<grid.size()){
+                if(!visited[i+1][j]){
+                    dist[i+1][j] = max(u, grid[i+1][j]);
+                    pq.push({dist[i+1][j], i+1, j});    
+                }
+                
+
+            }
+            if(i-1>=0){
+                if(!visited[i-1][j])
+                {
+                    dist[i-1][j] = max(u, grid[i-1][j]);
+                    pq.push({dist[i-1][j], i-1, j});    
+                }
+            }
+            if(j+1<grid[0].size()){
+                if(!visited[i][j+1])
+                {
+                    dist[i][j+1] = max(u, grid[i][j+1]);
+                    pq.push({dist[i][j+1], i, j+1});    
+                }
+            }
+            if(j-1>=0){
+                if(!visited[i][j-1])
+                {
+                    dist[i][j-1] = max(u, grid[i][j-1]);
+                    pq.push({dist[i][j-1], i, j-1});    
+                }
+            }
+
+        }
+    }
+    return dist[grid.size()-1][grid[0].size()-1];
+    
+}
+```
+
+---
+
+
+
