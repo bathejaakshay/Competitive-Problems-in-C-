@@ -307,3 +307,60 @@ ListNode* Solution::insertionSortList(ListNode* A) {
 ```
 
 ---
+
+#### [8. Merge Sort A list](https://leetcode.com/problems/sort-list/)
+
+```
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head==NULL || head->next == NULL){
+            return head;
+        }
+        ListNode* slow = head;
+        ListNode* fast = head;
+        ListNode* temp = NULL;
+        while(fast!=NULL && fast->next != NULL){
+            temp = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        temp->next = NULL; //Ending first half with null
+        ListNode * l1 = sortList(head); //sort left half
+        ListNode * l2 = sortList(slow); //sort right half
+        
+        return merge(l1,l2);
+        
+    }
+  ListNode *merge(ListNode *l1, ListNode *l2){
+      ListNode * curr = new ListNode(0);
+      ListNode *ptr = curr;
+      while(l1!=NULL && l2!=NULL){
+          if(l1->val<=l2->val){
+              curr->next = l1;
+              l1 = l1->next;
+          }
+          else{
+              curr->next = l2;
+              l2 = l2->next;
+          }
+          curr = curr->next;
+      }
+     while(l1!=NULL){
+         curr->next= l1;
+         l1 = l1->next;
+         curr = curr->next;
+         
+     }
+      while(l2!=NULL){
+          curr->next=l2;
+          l2 = l2->next;
+          curr=curr->next;
+          
+              
+      }
+      return ptr->next;
+         
+  }
+};
+```
