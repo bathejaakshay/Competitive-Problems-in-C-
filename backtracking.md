@@ -160,6 +160,42 @@ vector<string> findPermutations(string &s) {
     return ans;
 }
 ```
+---
+#### [2. Permutation II](https://leetcode.com/problems/permutations-ii/)  
+Given an array with repeating elements, find all unique permutations.  
+**Approach**:  
+Sort the elements first.  
+1. It is similar to the previous ques, with a difference that the array has non unique elements and we need unqiue permutations.
+2. One extra idea is needed here as compared to the previous one.
+3. We donot want to find all the permutations again for a number if its previous element was same and it had already been calculated.
+4. So we just add a condition in the for loop that `if(nums[i] == nums[i-1] && !visited[i-1])` then donot do anything.
+5. This condition will only appear when all permuations for pervious element is complete and we are finding the permutations for the current element. But we dont want to do so if they are same.
+6. Hence we do nothing.
+
+```
+void perm(vector<int> &visited, vector<int> &cand, vector<vector<int>> &ans, vector<int> &nums){
+    //base case
+    if(cand.size() == nums.size()){
+        ans.push_back(cand);
+        return;
+    }
+    
+    for(int i=0; i<nums.size(); i++){
+        if(i!=0 && nums[i] == nums[i-1] && !visited[i-1]){
+            continue;
+        }
+        else if(!visited[i]){
+            visited[i] = 1;
+            cand.push_back(nums[i]);
+            perm(visited, cand,ans, nums);
+            cand.pop_back();
+            visited[i] = 0;
+        }
+    }
+    
+    
+}
+```
 
 ---
 
