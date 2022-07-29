@@ -1479,4 +1479,50 @@ int mst_prims(vector<vector<int>> &points){
         }
         return ans;
 }
+```  
+
+**Another Implementation of Kruskal using make_heap (takes 500ms lesser than previous kruskal )**  
+If we do not need to push the nodes into the heap again and again then we can just use make_heap which takes o(n) time to build then keep on popping nodes till its empty.  
+
 ```
+int mst_Kruskal_heap(vector<vector<int>>& points){
+        int md=0;
+        int n = points.size();
+        // priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        vector<vector<int>> hp;
+        for(int i=0; i<points.size()-1; i++){
+            for(int j=i+1; j<points.size(); j++){
+                md = abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1]);
+                hp.push_back({md, i, j});
+            }
+        }
+        make_heap(hp.begin(),hp.end(), greater<vector<int>>());
+        
+        // Need to make functions UNION and Find for KrushKal
+        vector<int> parents(n,0);
+        for(int i = 0; i< parents.size(); i++){
+            parents[i] = i;
+        }
+        vector<int> rank(n,1);
+        int ans=0;
+        int u,v,pu,pv;
+        int count=n-1;
+        while(count>0){
+            pop_heap(hp.begin(), hp.end(), greater<vector<int>>());
+            vector<int> x = hp.back();
+            hp.pop_back();
+            u = x[1];
+            v = x[2];
+            pu = find(u, parents);
+            pv = find(v, parents);
+            if(pu != pv){
+                unions(pu,pv,parents,rank);
+                ans+=x[0];
+                count--;
+            }
+            }
+    return ans;
+}
+```
+
+---
