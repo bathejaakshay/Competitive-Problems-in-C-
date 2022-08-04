@@ -2065,3 +2065,28 @@ int cost(int n, int c, vector<int> &cuts){
     cuts.insert(cuts.begin(), 0);
     return cut(1,c,cuts, dp);
 ```
+
+---
+
+#### [37. ArmChairs](https://codeforces.com/contest/1525/problem/D)
+Given a  binary array representing if the ith seat is occupied or not. We need to make all the seats currently occupied empty as shift them to free. Find the min cost to do so where cost of moving a person from ith chair to jth char is its abs(i-j).   
+**Approach : DP**
+1. We first separate the array into two parts i.e free and occupied/ones.
+2. Then we apply 2d dp by recursively moving over each element if occupied for the corresponding free element. i.e 1st occupied to 1st free, 2nd occupied to 2nd free
+3. We need to notice that for an element k>i if i is already placed at free ind j then k should be placed after j for mincost.
+4. so `min(abs(ones[i] - free[j]) + minCost(i+1,j+1), minCost(i, j+1))` for each occupied we have two choices from free either to take it or leave it.
+
+```
+int minimum_switch(int i, int j , vector<int> &ones, vector<int> &free, vector<vector<int>> &dp){
+	//base
+	if(i>=ones.size()) return 0;
+	if(j>= free.size()) return 1e7;
+	
+	if(dp[i][j]!=-1) return dp[i][j];
+	dp[i][j] = min(abs(ones[i] - free[j]) + minimum_switch(i+1, j+1, ones, free, dp), minimum_switch(i, j+1, ones, free, dp));
+	return dp[i][j];
+
+}
+```
+
+`TC: O(n2)`
