@@ -1619,4 +1619,51 @@ int dij_swim(vector<vector<int>> &grid, vector<vector<int>> &visited){
 ---
 
 
+#### [24. Surrounded Regions](https://leetcode.com/problems/surrounded-regions/)
+Given an m x n matrix board containing 'X' and 'O', capture all regions that are 4-directionally surrounded by 'X'. A region is captured by flipping all 'O's into 'X's in that surrounded region.  
+**Approach : DFS**  
+1. We do reverse engineering here i.e instead of find surrounded components and flipping them, we instead find all the non surrounded elements and mark them and then finally we flip the rest "O" and unmark the previously marked components.
+2. For each "O" element in the grid border apply DFS and mark them temporarily.
+3. Then finally flip the remaining "O" and unmark the temp components.
+
+```
+void flip(int i, int j, vector<vector<char>> &board){
+    
+    if(i<0 || i>=board.size() || j<0  || j>=board[0].size() || board[i][j] == 'X' || board[i][j] == '-') return;
+    
+    board[i][j] = '-';
+    flip(i+1,j,board);
+    flip(i-1,j,board);
+    flip(i,j+1,board);
+    flip(i,j-1,board);
+    return;
+}
+
+class Solution {
+public:
+    void solve(vector<vector<char>>& board) {
+        
+        for(int i=0; i<board.size(); i++){
+            if(board[i][0] == 'O') flip(i,0,board);
+            if(board[i][board[0].size()-1] == 'O') flip(i,board[0].size()-1,board);
+            
+        }
+        
+        for(int j=0; j<board[0].size(); j++){
+            if(board[0][j] == 'O') flip(0,j,board);
+            if(board[board.size()-1][j]=='O') flip(board.size()-1,j,board); 
+        }
+        for(int i=0;i<board.size() ;i++){
+            for(int j=0; j<board[0].size(); j++){
+                if(board[i][j] == 'O') board[i][j] = 'X';
+                if(board[i][j] == '-') board[i][j] = 'O';
+            }
+        }
+        
+        return;
+    }
+};
+```
+`TC: O((m+n)*(m*n))`
+---
 
