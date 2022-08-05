@@ -1667,3 +1667,28 @@ public:
 `TC: O((m+n)*(m*n))`
 ---
 
+#### [25. Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/)
+**Bellman Ford with K+1 relaxes**  
+1. The implementation of Bellmand ford is not conventional. This is the proper implementation as the actual algo.
+2. At each step i  we have a smallest dist d from the src with atmost i-1 steps.
+
+```
+ int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<int> dist(n, 1e8);
+        dist[src] = 0;
+        vector<int> dg(n, 1e8);
+        for(int i=0; i<=k; i++){     
+            for(int j=0; j<flights.size(); j++){
+                if(dg[flights[j][1]] > dist[flights[j][0]] + flights[j][2]){
+                dg[flights[j][1]] = dist[flights[j][0]] + flights[j][2];       
+                }
+                
+            }
+            dist = dg;
+
+        }
+        if(dist[dst] >= 1e8) return -1;
+        return dist[dst];
+    }
+```
+---
