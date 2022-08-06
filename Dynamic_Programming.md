@@ -15,7 +15,7 @@ int fibbo(n){
   if(n<=1) return 1;
   if(dp[n]!=-1) return dp[n];
   
-  dp[n] = dp[n-1] + dp[n-2];
+  dp[n] = fibbo(n-1) + fibbo(n-2);
   return dp[n];
   
 }
