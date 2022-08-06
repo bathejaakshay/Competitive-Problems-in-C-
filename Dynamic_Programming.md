@@ -53,7 +53,11 @@ SC: O(1)
 
 ---
 
-#### [2. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
+#### [2. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)  
+You are climbing a staircase. It takes n steps to reach the top.
+
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?  
+
 **Approach**
 1. Given n stairs we can represent in index from 1 to n where 0 means floor and 1 to n are stairs.
 2. Secondly we need to find all the ways so we return 1 in base case.
