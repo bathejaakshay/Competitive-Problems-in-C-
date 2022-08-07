@@ -1997,11 +1997,52 @@ int longestStrChain(vector<string> &arr)
 
 #### [32. Longest Bitonic Subsequence](https://www.codingninjas.com/codestudio/problems/longest-bitonic-sequence_1062688?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
 
-1 2 0 2 1
-longest bitonic seq: 1 2 1
-Longest bitonic seq can be completely increasing or decreasing or (increasing first and then decreasing)
+1 2 0 2 1  
+longest bitonic seq: 1 2 1  
+Longest bitonic seq can be completely increasing or decreasing or (increasing first and then decreasing)  
 
-**Approach LIS**
+
+**Approach a. Longest increasing + longest  decreasing subsequence**
+1. For each index i we find longest increaing from 0 till i and longest decreasing from i till n
+2. then we add both up to give final ans, `final[i] = lis[i] + lds[i] - 1`.
+
+```
+int Solution::longestSubsequenceLength(const vector<int> &A) {
+    //first find LIS from 0 till i, then find LDS from i till n, then do lis[i] + lds[i] - 1;
+    if(A.size()==0) return 0;
+    vector<int> lis(A.size(),1);
+    
+    //LIS from 0 till i
+    for(int i=1; i<A.size(); i++){
+        for(int j=0; j<i; j++){
+            if(A[i] > A[j]){
+                lis[i] = max(lis[i], 1 + lis[j]);
+            } 
+        }
+    }
+    
+    //LDS from i till N
+    vector<int> lds(A.size(),1);
+    for(int i = A.size()-2; i>=0; i--){
+        for(int j=A.size()-1; j>i; j--){
+            if(A[i] > A[j]){
+                lds[i] = max(lds[i], 1+lds[j]);
+            }
+        }
+    }
+    
+    int ans = 1;
+    for(int i=0; i<A.size(); i++){
+        ans = max(ans, lis[i] + lds[i] - 1);
+    }
+    
+    return ans;
+}
+```
+
+---
+
+**Approach b. LIS**
 1. In previous ques dp1[i] represented the length of the LIS from 0 till i
 2. Now if we reverse the array and then apply LIS again we will get to know length of LIS from n-1 till i is `dp2[i]`
 3. Now `final[i] = dp1[i] + dp2[i] - 1` represents the length of longest bitonic sequence with index i.
@@ -2040,6 +2081,8 @@ int longestBitonicSequence(vector<int>& arr, int n) {
 }
 
 ```
+
+
 
 ---
 
