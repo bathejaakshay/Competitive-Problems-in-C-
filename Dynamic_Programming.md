@@ -1180,7 +1180,40 @@ bool partition(int index, vector<int> &nums, vector<int> &dp){
 }
 ```
 ---
+#### [2. Scramble String - HARD](https://www.interviewbit.com/old/problems/scramble-string/)
+**Approach: Divide and Conquer with DP**
+1. Similar to MCM, at each call we set the root node by iterating over the whole string 
+2. After setting the root node we divide the string into two parts say string A = "great" and String B = "rgtae".
+3. We set i=2 , so we need to find either (gr,rg) && (eat&&tae) are scrambled strings or at i=2 it could be scrambled itself so, is (gr,ae) and (eat,rgt) scrambled strings of each other?
+4. we use an unordered_map of strings to bool as dp in which key is `A + ' ' + B`. This represents if string A and B are scrambled.
 
+```
+bool part(int index, int end, string A, string B,unordered_map<string,bool> &mp){
+    //base
+    if(index>end) return false;
+    if(index==end){
+        return A[index] == B[index];
+    }
+    if(mp.find(A+' '+B)!=mp.end()) return mp[A+' '+B];
+    bool hap = false;
+    for(int j=index; j<end; j++){
+        hap|=(part(0, j-index, A.substr(index, j-index+1), B.substr(end-j, j-index+1), mp) && part(0, end-j-1, A.substr(j+1, end-j), B.substr(index, end-j),mp));
+        hap|=(part(0, j-index, A.substr(index, j-index+1), B.substr(index, j-index+1), mp) && part(0,end-j-1, A.substr(j+1,end-j), B.substr(j+1,end-j),mp));
+    }
+    
+    return mp[A+' '+B] = hap;
+}
+
+int Solution::isScramble(const string A, const string B) {
+    unordered_map<string, bool> mp;
+    return part(0,A.length()-1, A,B, mp);
+}
+```
+`TC: Number of different substrings combination, n2*n2 * (n for substring operation)`
+---
+
+
+---
 ## DP on Strings
 
 #### [20. Length of longest common subsequence](https://www.codingninjas.com/codestudio/problems/longest-common-subsequence_624879?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
