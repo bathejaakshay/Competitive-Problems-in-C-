@@ -1650,32 +1650,56 @@ int maxprof(int i, int buy, int allow, vector<int> &prices, int n, vector<vector
 
 ---
 
-#### [29. Length of the LIS](https://www.codingninjas.com/codestudio/problems/longest-increasing-subsequence_630459?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
+#### [29.a Length of the LIS](https://www.codingninjas.com/codestudio/problems/longest-increasing-subsequence_630459?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)  
+and [MAX Length of LIS](https://leetcode.com/problems/longest-increasing-subsequence/submissions/)  
 There are 3 different approaches to it.
-**Approach 1: Dynamic Programming (Take/Not Take)**
-1. In this approach we represent our recurrence using two parameters `f(i,prev)` which means LIS from ind i to n when previous element in LIS was `arr[prev]`
-2. If the prev is smaller than `arr[i]` then we have two options either to take `arr[i]` in our LIS or not take.
-3. If the prev is greater than `arr[i]` then we have only one option i.e to not take `arr[i]`.
+**Approach 0 : Simple Iterative , Remember only this approach and the binary approach**
+1. This is similary to approach 2 but more iterative.
+2. We maintain a `dp[0..n]` where `dp[i]` represent LIS starting from index i.
+3. In this we calculate LIS starting from n-1 till 0. i.e first we find the lis starting from n-1 then from n-2, then n-3..
+4. To find lis starting from a particular index i we can all the elements to its right and check if i<j , if so then we do `dp[i] = max(dp[i],dp[j]+1)`.
+```
+int lengthOfLIS(vector<int>& nums) {
+        vector<int> dp(nums.size(),1);
+        
+        for(int i=nums.size()-2; i>=0; i--){
+            for(int j = i+1; j<nums.size(); j++){
+                if(nums[i]<nums[j]){
+                    dp[i] = max(dp[i], 1+dp[j]);
+                }
+            }
+        }
+        return *max_element(dp.begin(), dp.end());
+        
+    }
+```
+**Approach 1: Using Binary Search**
+1. This is not intuitive but easy
+2. We mantain a new array say temp which for each element consist of possible lis. (Although as we are continously updating it, it doesnt give the final LIS)
+3. For each ind 0 till n, we check if the last element in temp is smaller then `arr[ind]`
+4. if yes then we just pushback `arr[ind]` to the temp arr
+5. if not then we find the lowerbound of `arr[ind]` representing the element just greater than or equal to `arr[ind]` and we replace it with `arr[ind]`
+6. The final size of temp array gives us the length of LIS.
 
 ```
-int lis(int i, int num, int arr[], int n, vector<vector<int>> &dp){
-    // Gives run time error due to dp space of 10^10 which is not possible
-    //base case
-    if(i==n) return 0;
-    if(dp[i][num+1]!=-1) return dp[i][num+1];
-    int len=0;
-    
-    
-    if(num==-1 || arr[i]>arr[num]){
-        //pick
-        len = 1 + lis(i+1, i, arr, n, dp);
+int lis_bsearch(int arr[], int n){
+    // This is the optimal nlogn solution using lowerbound, not intuitive but easy
+    // inspired from previous solution
+    vector<int> ans;
+    for(int i=0; i<n; i++){
+        if(i==0) ans.push_back(arr[i]);
+        else{
+            if(arr[i] > ans.back()) ans.push_back(arr[i]);
+            else{
+                int it = lower_bound(ans.begin(), ans.end(), arr[i]) - ans.begin();
+                ans[it] = arr[i]; 
+            }
+        }
     }
-     len = max(len,lis(i+1, num, arr, n, dp));
-     return dp[i][num+1] = len;
+    return ans.size();
 }
 ```
-`TC:O(n^2)`  
-`SC: O(n^2) + O(n)`  
+`TC: O(nlogn)` and `SC: O(n)`
 
 **Approach 2: Iterative using LIS array**
 1. We use array dp in which `dp[i]` represents the maxlen of LIS from ind 0 till i including `arr[i]`.
@@ -1723,35 +1747,69 @@ int print_lis(int arr [], int n){
 `TC: O(n^2)` and `SC : O(n^2)`
 
 
-**Approach 3: Using Binary Search**
-1. This is not intuitive but easy
-2. We mantain a new array say temp which for each element consist of possible lis. (Although as we are continously updating it, it doesnt give the final LIS)
-3. For each ind 0 till n, we check if the last element in temp is smaller then `arr[ind]`
-4. if yes then we just pushback `arr[ind]` to the temp arr
-5. if not then we find the lowerbound of `arr[ind]` representing the element just greater than or equal to `arr[ind]` and we replace it with `arr[ind]`
-6. The final size of temp array gives us the length of LIS.
+
+**Approach 3: Dynamic Programming (Take/Not Take)**
+1. In this approach we represent our recurrence using two parameters `f(i,prev)` which means LIS from ind i to n when previous element in LIS was `arr[prev]`
+2. If the prev is smaller than `arr[i]` then we have two options either to take `arr[i]` in our LIS or not take.
+3. If the prev is greater than `arr[i]` then we have only one option i.e to not take `arr[i]`.
 
 ```
-int lis_bsearch(int arr[], int n){
-    // This is the optimal nlogn solution using lowerbound, not intuitive but easy
-    // inspired from previous solution
-    vector<int> ans;
-    for(int i=0; i<n; i++){
-        if(i==0) ans.push_back(arr[i]);
-        else{
-            if(arr[i] > ans.back()) ans.push_back(arr[i]);
-            else{
-                int it = lower_bound(ans.begin(), ans.end(), arr[i]) - ans.begin();
-                ans[it] = arr[i]; 
-            }
-        }
+int lis(int i, int num, int arr[], int n, vector<vector<int>> &dp){
+    // Gives run time error due to dp space of 10^10 which is not possible
+    //base case
+    if(i==n) return 0;
+    if(dp[i][num+1]!=-1) return dp[i][num+1];
+    int len=0;
+    
+    
+    if(num==-1 || arr[i]>arr[num]){
+        //pick
+        len = 1 + lis(i+1, i, arr, n, dp);
     }
-    return ans.size();
+     len = max(len,lis(i+1, num, arr, n, dp));
+     return dp[i][num+1] = len;
 }
 ```
-`TC: O(nlogn)` and `SC: O(n)`
+`TC:O(n^2)`  
+`SC: O(n^2) + O(n)`  
 
+#### [29b. Longest Ideal subsequence](https://leetcode.com/contest/weekly-contest-305/problems/longest-ideal-subsequence/)  
+In this we need to find the length of longest ideal subsequence of string s.
+An ideal subsequence is one in which abs-diff of every consecutive pair is less than equal to k. 
 
+**Approach : Iterative**  
+1. In this we apply the same approach as above in approach 0. 
+2. We start from the end and find LIS starting from index i by looking at all LIS ahead of it.
+3. e.g For i = n-3 we go through j = n-2 to n and check if `abs(s[i]-s[j])<=k` then `dp[i] = max(dp[i], 1+dp[j])`
+4. But this would require O(n^2) TC. we need lesser than that.
+5. Here's the catch! Do we really need to check all the indices after index i to check LIS ahead of it?
+6. Not really! we know that there can be at max 26 unqiue chars ahead of it which can have 26 LIS. We just need to iterate over these 26 chars and find the chars that are in the range (i.e `s[i] - k to s[i] + k`).
+7. Only these chars will update the LIS of `dp[i]`. 
+8. Also we need to maintain the lis vector for all 26 chars seen till now.
+
+`TC:O(26*N)`
+
+```
+int lis2(string &s, int k ){
+    vector<int> dp(s.length());
+    vector<int> alpha(26,0);
+    dp[s.length()-1] = 1;
+    alpha[s[s.length()-1]-'a']=1;
+    int f_max=1;
+    for(int i = s.length()-2; i>=0; i--){
+        int maxi=0;
+        for(int j=0; j<26; j++){
+            if(abs((s[i]-'a') -j)<=k){
+                maxi = max(maxi, alpha[j]);
+            }
+        }
+        dp[i] = maxi + 1;
+        alpha[s[i]-'a'] = maxi + 1;
+        f_max=max(f_max, dp[i]);
+    }
+    return f_max;
+}
+```
 #### [30. Largest Divisble Set](https://www.codingninjas.com/codestudio/problems/divisible-set_3754960?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0)
 Given a set of numbers find a largest Divisible set. A set is divisible if for each pair (x,y) that belongs of set : either `x%y==0` or `y%x==0`.
 **Approach: LIS**
