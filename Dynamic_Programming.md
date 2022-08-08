@@ -1212,6 +1212,48 @@ int Solution::isScramble(const string A, const string B) {
 `TC: Number of different substrings combination, n2*n2 * (n for substring operation)`
 ---
 
+#### [3. Merge Elements - Hard]()
+Given an integer array A of size N. You have to merge all the elements of the array into one with the minimum possible cost.  
+
+The rule for merging is as follows:  
+
+1. Choose any two adjacent elements of the array with values say X and Y and merge them into a single element with value `(X + Y)` paying a total cost of `(X + Y)`.
+Return the minimum possible cost of merging all elements.  
+
+<figure>
+<center><img src="https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/gfg-acp.png?raw=True" alt="drawing" width="400"/></center>
+</figure>
+
+**Approach:DP**  
+1. `merge(i,j)` represents the cost of merging arrays starting from i and ending at j.
+2. Now what matters is the order of merges in the array. But at final stage no matter what was the order of merges we will be left with two elements whose sum is the total sum of elements from i to j.
+3. so we need to iterate through all possible final pairs of array using k=i to j-1 and find the min of all (merge(i,k) + merge(k+1,j). Lets say it is mini.
+4. Our final cost of merge(i,j) is mini + sum of total elements from i to j.
+
+```
+
+int merge2(int i, int j, vector<int> &A, vector<vector<int>> &dp){
+    //base case
+    if(dp[i][j]!=-1) return dp[i][j];
+    if(i == j) return dp[i][j] = 0;
+    
+    if(i == j-1) return dp[i][j] = A[i] + A[j];
+    
+    int mini = INT_MAX;
+    int sum=0;
+    for(int k = i; k<j; k++){
+        sum+=A[k];
+        mini = min(mini, merge2(i,k,A,dp) + merge2(k+1,j,A,dp));
+    }
+    sum+=A[j];
+    
+    return dp[i][j] = sum + mini;
+    
+    
+    
+}
+
+```
 
 ---
 ## DP on Strings
