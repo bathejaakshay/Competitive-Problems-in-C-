@@ -1221,7 +1221,7 @@ The rule for merging is as follows:
 Return the minimum possible cost of merging all elements.  
 
 <figure>
-<center><img src="https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/gfg-acp.png?raw=True" alt="drawing" width="400"/></center>
+<center><img src="https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/IMG_20220808_233835.jpg?raw=True" alt="drawing" width="400"/></center>
 </figure>
 
 **Approach:DP**  
