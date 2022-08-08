@@ -739,8 +739,42 @@ public:
     }
 };
 ```
+---
+#### [10.6 (Trick Prefix) Count Number of Bad Pairs](https://leetcode.com/contest/biweekly-contest-84/problems/count-number-of-bad-pairs/)
+You are given a 0-indexed integer array nums. A pair of indices `(i, j)` is a `bad pair` if `i < j` and `j - i != nums[j] - nums[i]`.   
+
+Return the total number of bad pairs in nums  
 
 
+**Approach : Using prefix property unordered map**
+1. Try playing with the equations.
+2. Bad pairs = Total pairs - Good Pairs
+3. Good pairs are ones where `i<j` and `j-i == nums[j] - nums[i]`.
+4. Now using prefix this equation is not possible to handle and is not intuitive. So lets modify the equation
+5. We can change the equation to good pair are ones where `i<j` and `nums[j] - j == nums[i] - i`.
+6. Now this is intuitive and simple to calculate.
+7. Starting from index i = 0, we count number of indices k < i where `nums[i] - i == nums[k] - k` by using unordered_map.
+8. Increment` mp[nums[i]-i]` by 1 at each iteration.
+9. Finally we substract this count from total pairs `(n*(n-1))/2` to get final bad pairs.
+
+```
+long long countBadPairs(vector<int>& nums) {
+        unordered_map<long long, long long> mp;
+        
+        long long tot = ((long long )nums.size() * (long long) (nums.size()-1))>>1;
+        
+        long long valid=0;
+        for(int i=0; i<nums.size(); i++){
+            if(mp.find(nums[i] - i)!=mp.end()){
+                valid+=(mp[nums[i]-i]);
+                
+            }
+            mp[nums[i]-i]++;
+        }
+        
+        return tot - valid;
+    }
+```
 ---
 
 ####[11. Minimum jumps to reach end of the array](https://practice.geeksforgeeks.org/problems/minimum-number-of-jumps-1587115620/1#)
