@@ -1254,6 +1254,125 @@ int merge2(int i, int j, vector<int> &A, vector<vector<int>> &dp){
 }
 
 ```
+---
+
+#### [4. Flip Array](https://www.interviewbit.com/old/problems/flip-array/)  
+Given an array of `positive` elements, you have to flip the sign of some of its elements such that the resultant sum of the elements of array should be `minimum non-negative`(as close to zero as possible). Return the `minimum` no. of elements whose sign needs to be flipped such that the resultant sum is  `minimum non-negative`.  
+
+**Approach : Similar to Coin change**  
+1. F(i, sum) gives a pair representing the minimum no. of flips and the corresponding minimum non negative sum that is obtained from index i till end when started with `sum`.
+2. Now at each index i we have two choices either to the flip that element if the `sum > 2*A[i]` or not flip and move forward.
+3. We need to return the min flips with the minimum corresponding non-negative sum.
+
+`TC: O(N^2), SC:O(2*N*SUM) with spcopt, SC: O(2*SUM) with spc optimization`
+
+```
+#include<bits/stdc++.h>
+vector<int> minflip(int i, int sum, const vector<int>& A){
+    if(sum < 0) return {10000000, 10000000};
+    if(i>=A.size()) return {0,sum};
+    vector<int> left = {10000000,10000000},right = {10000000,10000000};
+    //flip
+    if(sum>=2*A[i])
+        left = minflip(i+1, sum-2*A[i],A);
+    //not flip
+    right = minflip(i+1, sum,A);
+    if(left[1] < right[1]){
+        
+        return {1+left[0], left[1]};
+    }
+    else if(left[1] > right[1]){
+        
+        return right;
+    }
+    
+    return {min(1+left[0],right[0]), left[1]};
+}
+
+//minflip bt
+
+vector<int> minflip_bt(int sum, const vector<int> &A){
+    
+    
+    vector<vector<vector<int>>> dp(A.size()+1, vector<vector<int>> (sum+1, vector<int>(2,0)));
+    for(int j=0; j<=sum; j++){
+        dp[A.size()][j] = {0, j};
+    }
+    
+    for(int i=A.size()-1; i>=0; i--){
+        for(int j=sum; j>=0; j--){
+            vector<int> left = {10000000,10000000},right = {10000000,10000000};
+            if(j>=2*A[i]){
+                left = dp[i+1][j-2*A[i]];
+                
+            }
+            right = dp[i+1][j];
+            
+            if(left[1] < right[1]){
+        
+                dp[i][j] =  {1+left[0], left[1]};
+            }
+            else if(left[1] > right[1]){
+                
+                dp[i][j] =  right;
+            }
+            
+            else
+                dp[i][j] = {min(1+left[0],right[0]), left[1]};
+                
+            
+        }
+    }
+    return dp[0][sum];
+}
+
+//bt_spaceop
+vector<int> minflip_bt_spc(int sum, const vector<int> &A){
+    
+    
+    vector<vector<int>> prev(sum+1, vector<int>(2,0));
+    vector<vector<int>> curr(sum+1, vector<int>(2,0));
+    for(int j=0; j<=sum; j++){
+        prev[j] = {0, j};
+    }
+    
+    for(int i=A.size()-1; i>=0; i--){
+        for(int j=sum; j>=0; j--){
+            vector<int> left = {10000000,10000000},right = {10000000,10000000};
+            if(j>=2*A[i]){
+                left = prev[j-2*A[i]];
+                
+            }
+            right = prev[j];
+            
+            if(left[1] < right[1]){
+        
+                curr[j] =  {1+left[0], left[1]};
+            }
+            else if(left[1] > right[1]){
+                
+                curr[j] =  right;
+            }
+            
+            else
+                curr[j] = {min(1+left[0],right[0]), left[1]};
+                
+            
+        }
+        prev = curr;
+    }
+    return prev[sum];
+}
+
+
+int Solution::solve(const vector<int> &A) {
+    int sum = accumulate(A.begin(), A.end(), 0);
+    // vector<int> ans = minflip(0,sum, A);
+    vector<int> ans = minflip_bt_spc(sum, A);
+    return ans[0]==INT_MAX?0:ans[0];
+}
+
+```
 
 ---
 ## DP on Strings
