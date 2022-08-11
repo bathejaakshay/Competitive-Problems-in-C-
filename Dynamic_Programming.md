@@ -647,6 +647,68 @@ int cherrypick_spc(vector<vector<int>> &grid, int m, int n){
 ```
 ---
 
+## Extra DP on Grids
+
+####[1. Dungeon Game HARD](https://leetcode.com/problems/dungeon-game/)
+**Problem**
+The demons had captured the princess and imprisoned her in the bottom-right corner of a dungeon. The dungeon consists of m x n rooms laid out in a 2D grid. Our valiant knight was initially positioned in the top-left room and must fight his way through dungeon to rescue the princess.  
+
+The knight has an initial health point represented by a positive integer. If at any point his health point drops to 0 or below, he dies immediately.  
+
+Some of the rooms are guarded by demons (represented by negative integers), so the knight loses health upon entering these rooms; other rooms are either empty (represented as 0) or contain magic orbs that increase the knight's health (represented by positive integers).  
+
+To reach the princess as quickly as possible, the knight decides to move only rightward or downward in each step.  
+
+Return the knight's minimum initial health so that he can rescue the princess.  
+
+
+**Approach:**
+1. Recursively go to M-1.N-1 and see what power is required to i.e if val is -ve then -val+1 hp is required else 1 hp is required set `dp[i][j]` to the same.
+2. Now for each other cell like M-2 N-1 we have two options either to move down or right so we cal min hp required at m-2 n-1 to move to final path. This is `dp[i][j] = min(dp[down], dp[right]) - val[i][j]`. Now if `dp[i][j] <= 0` then that means player can just start with minimum possible hp i.e 1 
+3. We do same for every cell and return value of `dp[0][0]`. `dp[i][j]` represents minimum hp to reach m-1,n-1.
+
+
+```
+int minCost_td(int i, int j, vector<vector<int>> &nums, int mini, vector<vector<int>> &dp){
+	
+	//base
+	if(i==nums.size()-1 && j==nums[0].size()-1){
+		if(nums[i][j] < 0 ) return -nums[i][j]+1;
+		return 1;
+	}
+	if(i>=nums.size() || j>= nums[0].size()) return 100000000;
+	
+    if(dp[i][j] != 100000000) return dp[i][j];
+	
+    int left = minCost(i, j+1, nums, mini, dp);
+	int right = minCost(i+1, j, nums, mini, dp);
+	
+    dp[i][j] = min(left, right) - nums[i][j];
+	if(dp[i][j]<=0) dp[i][j]=1;
+	
+    return dp[i][j];
+}
+```
+
+Bottom Up  
+```
+int calculateMinimumHP(vector<vector<int>>& nums) {
+        int m = nums.size();
+        int n = nums[0].size();
+        vector<vector<int>> dp(m+1,vector<int> (n+1,100000000));
+        // return minCost(0,0,nums, 0, dp);
+	    //bottom up
+        dp[m][n-1] = 1;
+        dp[m-1][n] = 1;
+        for(int i=m-1; i>=0; i--){
+            for(int j=n-1; j>=0; j--){
+                dp[i][j] = min(dp[i+1][j], dp[i][j+1]) - nums[i][j]; 
+                dp[i][j] = dp[i][j]<=0?1:dp[i][j];
+            }
+        }
+        return dp[0][0];
+    }
+```
 
 ## DP on Subsequences
 
