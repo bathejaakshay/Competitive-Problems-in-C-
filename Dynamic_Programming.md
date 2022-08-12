@@ -710,6 +710,70 @@ int calculateMinimumHP(vector<vector<int>>& nums) {
     }
 ```
 
+---
+
+#### [2. Cherry pickup HARD](https://leetcode.com/problems/cherry-pickup/)
+We have `N*N` grid filled with 1 representing cherries , 0 i.e no cherries, -1 i.e no path. Starting from `0,0` we need to go n,n and return back to 0,0 with maximum cherries collected.  
+While moving from 0,0 to n,n we can either move to the right or down and while going from n,n to 0,0 we can move left and up.  
+**Approach - 1. Backtracking**  
+1. First approach that comes to mind is find max cherries path from 0,0 to n,n and then choose another max cherries path from n,n to 0,0 and sum up the two ans.
+2. This is an incorrect approach as we need to consider 0,0 to n,n back to 0,0 a single path which can have a different maximum. 
+3. A backtracking approach would be for each path from 0,0 to n,n we search each possible path from n,n to 0,0 and retain the maximum cherries picked up. But this is very costly.
+
+**Approach 2: DP Optimal** 
+1. Now we cannot apply dp in the proposed backtracking approach because we will be calling two different funcitons for 0,0 to n,n and n,n to 0,0.
+2. So Instead we apply brains!! Why not take two robots moving from 0,0 to n,n simultaneously. This will consider max cherries taken by robot 1 given each path taken by robot 2.
+3. We would have four parameters i1,j1 for robot1 and i2,j2 for robot2. Now at each position we will have four possible movements. i.e
+4. r1: down, r2: down
+5. r1: right, r2:down
+6. r1: down, r2:right
+7. r1: right, r2: right
+8. Now beacuse we are moving them simulatenously 1 step at a time, they will always end up at n,n at the same time as the no of movements by r1 and r2 are equal and both just have two directions individually.at max `r1 can move no.of rows + no. of columns steps, r2 also has equal moves.`
+
+```
+int cpk_fr(int i1, int j1, int i2, int j2, vector<vector<int>> &grid, vector<vector<vector<vector<int>>>> &dp){
+    
+    //base 
+    if(i1>=grid.size() || i2>=grid.size() || j1>=grid[0].size() || j2>=grid[0].size() || grid[i1][j1] == -1 || grid[i2][j2] == -1) return -1e7;
+    
+    if(i1==grid.size()-1 && j1 == grid[0].size()-1){
+        return grid[i1][j1];
+    }
+    if(dp[i1][j1][i2][j2]!=-1) return dp[i1][j1][i2][j2];
+    int cherries=0;
+    int temp1 = grid[i1][j1];
+    int temp2 = grid[i2][j2];
+    if(i1 == i2 && j1 == j2){
+        cherries = grid[i1][j1];
+        grid[i1][j1] = 0;
+    }
+    else{
+        cherries = grid[i1][j1] + grid[i2][j2];
+        grid[i1][j1] = 0;
+        grid[i2][j2] = 0;
+    }
+    
+    
+    int f1 = cpk_fr(i1+1, j1, i2+1, j2, grid, dp);
+    int f2 = cpk_fr(i1+1, j1, i2, j2+1, grid, dp);
+    int f3 = cpk_fr(i1, j1+1, i2+1, j2, grid, dp);
+    int f4 = cpk_fr(i1, j1+1, i2, j2+1, grid, dp);
+    grid[i1][j1] = temp1; grid[i2][j2] =temp2;
+   
+    return dp[i1][j1][i2][j2] =  cherries + max(max(f1,f2), max(f3, f4));
+    
+    
+    
+    
+}
+```
+
+---
+
+
+
+---
+
 ## DP on Subsequences
 
 #### [10. Subset sum equal to k](https://www.codingninjas.com/codestudio/problems/subset-sum-equal-to-k_1550954?leftPanelTab=1)
