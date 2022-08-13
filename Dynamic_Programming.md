@@ -1893,7 +1893,34 @@ bool match_bt_spc(string &p, string &t){
 
 ```
 ---
+## Dp on Strings extra
 
+#### [1. Interleaving strings]()
+
+**Approach**
+1. We do not need three parameteres here. Suppose i represent current idx of A, and j represent the index of current pos in B.
+2. `i+j+1` will represent the current char in string C.
+3. Now start matching from the end.
+4. Handle negative index cases carefully 
+
+```
+bool ileave(int i, int j, string A, string B, string C, vector<vector<int>> &dp){
+    
+    if(i==-1 && j==-1) return true;
+    if(dp[i+1][j+1]!=-1 ) return dp[i+1][j+1];
+    bool left = false, right = false;
+    if(i>=0 && A[i] == C[i+j+1]){
+        left =  ileave(i-1,j,A,B,C,dp);
+        
+    }
+    if(j>=0 && B[j] == C[i+j+1]){
+        right =  ileave(i,j-1,A,B,C,dp);
+    }
+    
+    return dp[i+1][j+1] = left|right; 
+        
+}
+```
 ## DP on Stocks
 
 **Intuition for recursion**  
