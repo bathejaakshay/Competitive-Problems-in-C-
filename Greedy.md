@@ -442,3 +442,39 @@ int eraseOverlapIntervals(vector<vector<int>>& intervals) {
         return count;
     }
 ```
+---
+#### [10. Goodland electricity](https://www.hackerrank.com/challenges/pylons/problem)
+Given n cities, we need to distribute electricity to every city. Given an array arr representing the possiblilty of setting up a powerplant in ith city as {0 or 1}. Find the minimum no. of powerplant required if distribution range of each power plant is i-k+1 to i+k-1.
+
+**Approach Greedy : Tricky**
+1. Always try to fit the powerplant in the last possible location.
+2. Starting from i=0 and loc = i+k-1 i.e the last idx of current window.
+3. `if(arr[loc] == 1)` i.e a powerplant needs to be setup here. 
+4. So count++ and now we know this plant will further cover k-1 cities ahead of it.
+5. So we directly jump the i to loc + k. and loc = i+k-1 and we repeat step 3.
+6. In step 3 if `arr[loc] == 0` then we need to traverse back in the current window i.e `[ loc to i -k +1]` by doing loc-- and repeat step 3.
+7. If in step 6 we do not find any 1 in the window  `[ loc to loc -k +1]` then that means powerplant allocation is not possible. i.e if loc < i -k + 1 (previous wind reached) or loc<0 then we return -1;
+ 
+```
+int pylon (int k, vector<int> &arr){
+    
+    int i=0, count=0;
+    int loc = i+k-1;
+    while(i<arr.size()){
+        if(arr[loc] == 1){
+            count+=1;
+            i = loc+k;
+            loc = i+k-1;
+            if(loc>arr.size()){
+                loc = arr.size()-1;
+            }
+        }
+        else{
+            loc--;
+            if(loc < i - k  + 1 || loc<0) // gone into previous area as no 1 was found 
+                return -1;
+        }
+    }
+
+```
+`TC: O(N)`
