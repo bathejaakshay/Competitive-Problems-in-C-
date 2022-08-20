@@ -1043,22 +1043,46 @@ public int maxScore(int[] cardPoints, int k) {
 ```
 
 ---
+## Beautiful Tricky Concepts
+
+### [1. Shifting Letters II](https://leetcode.com/contest/biweekly-contest-85/problems/shifting-letters-ii/)
+`Variation of Prefix Sum`  
+
+Q. ou are given a string s of lowercase English letters and a 2D integer array shifts where `shifts[i] = [start_i, end_i, direction_i]`. For every i, shift the characters in s from the index starti to the index endi (inclusive) forward if directioni = 1, or shift the characters backward if `direction_i = 0`.  
+
+Shifting a character forward means replacing it with the next letter in the alphabet (wrapping around so that 'z' becomes 'a'). Similarly, shifting a character backward means replacing it with the previous letter in the alphabet (wrapping around so that 'a' becomes 'z').
+
+Return the final string after all such shifts to s are applied.
+
+**Approach : Brute Force**  
+1. For each shift operation perform the operation from start_i to end_i 
+2. Takes `O(N*K)` where k is the size of shift array. But it will give TLE
+3. Now We cannot compromise on K as we have to Traverse K but we have to reduce the shifting operation from start_i till end_i. Hence Follow the next approach
+
+**Approach : Prefix sum**
+1. Given start and end index for the shifting how can you do it in O(1)
+2. Ans is by accumulating all the required operations on a particular index and performing the update only once 
+3. For e.g as in the fig.
+---
 #### [18. Maximum Triplet Sum](https://www.interviewbit.com/old/problems/maximum-sum-triplet/)  
-We need to find a triplet ai, aj ,ak such that ai<aj<ak and i<j<k and their sum is max  
-**Approach-Brute Force**
+We need to find a triplet ai, aj ,ak such that ai<aj<ak and i<j<k and their sum is max   
+								  
+**Approach-Brute Force**  
+								  
 1. 3 For loops
 
 `TC: O(n^3)`
 
-**Approach-LIS**								  
+**Approach-LIS**  
+								  
 1. We find Increasing seq of size 3 with max sum using DP
 `TC : O(n^2)`
 
-**Approach-Non intuitive**
+**Approach-Non intuitive**  
 1. We consider each element to be the middle element of the triplet and try to find the just smaller and the greatest element to the left and right side of it respectively.
 2. For each element if we iteratively look at left and right elements of it then it will give us O(n^2) sol
 								  
-**Approach-Sorting and Binary Search**
+**Approach-Sorting and Binary Search**  
 1. This is a little non ituitive approach.
 2. We precompute the max suffix array namely `right`.
 3. Each element `right[i]` denotes the max element in arr `A` to the right of i i.e i+1 till end.
@@ -1093,7 +1117,3 @@ for(int i=1; i<A.size()-1; i++){
 return maxi;
 }
 ```
-
-			  
-			   
-			  
