@@ -1065,7 +1065,47 @@ Return the final string after all such shifts to s are applied.
 **Approach : Prefix sum**
 1. Given start and end index for the shifting how can you do it in O(1)
 2. Ans is by accumulating all the required operations on a particular index and performing the update only once 
-3. For e.g as in the fig.
+3. For e.g as in the above fig. if we want to increment all the chars by 1 from index 3 to index 6, there are two ways
+4. Either we mark all the elements from 3 to 6 as 1 and finally while traversing for each index we will have the offset or final increment or decrement value. 
+5. But to mark all the elements we would have to traverse all elements between 3 and 6 so it will take O(N) time and TC remains O(N\*K)
+6. Another efficient way is to mark only the beginning index i.e 3 by +1 (because we need increment from index 3 onwards) and ending + 1 (because we dont want this increment from index 7 onwards) index i.e 7 by -1. 
+7. So instead of marking all the indices we just mark the start and end+1 to keep record for future.
+8. Now while computing offset value for index i in string s we will keep a prefix sum till i which will represent its offset value.
+9. Now the algo is simple:
+	- Initialize an array `arr` of the size of String A + 1.
+	- Now for each query in shift array, increment the `arr[start_ind]` and decrement `arr[end_ind+1]` if `shift[2] = 1` else decrement the `arr[start_ind]` and increment ` arr[end_ind+1]`.
+	- Initialize count=0
+	- Now for each idx i in string A 
+	- do `count+=arr[i]` //Prefix sum till i
+	- if count is negative then we need to bring it to positive by adding 26 till it becomes positive
+	- e.g if count = -5 and char at i is a representing 0 so if we move `5 backward` or `(26-5 = 21 forward) = ` we will get the same char.
+	- while(count<0) count+=26 (its like taking a mod for the negative numbers and bringing them to positive, same cycle concept add the total cycle size and it will end up at the same location)
+	- Now we add this count to our char at i and take mod 26 to obtain final char at i
+	- `s[i] = 'a' + (s[i] -'a'+ count)%26`
+
+`TC : O(N+K)`
+```
+string shiftingLetters(string s, vector<vector<int>>& shifts) {
+        vector<int> dp(s.length()+1,0);
+        for(auto vec: shifts){
+            int x = vec[2]==0?-1:1;
+            dp[vec[0]] +=(x);
+            dp[vec[1]+1] -=(x); 
+       }
+        
+        int count=0;
+       for(int i=0; i<s.length(); i++){
+           
+           count+=dp[i];
+            
+           while(count<0) count+=26;
+           
+           s[i] = 'a' + (s[i] -'a'+ count)%26;
+       }   
+        return s;
+    }
+```
+
 ---
 #### [18. Maximum Triplet Sum](https://www.interviewbit.com/old/problems/maximum-sum-triplet/)  
 We need to find a triplet ai, aj ,ak such that ai<aj<ak and i<j<k and their sum is max   
