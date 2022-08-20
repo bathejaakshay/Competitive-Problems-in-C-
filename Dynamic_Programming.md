@@ -2607,7 +2607,7 @@ Given A chords or 2\*A points in a circle, find the total no of ways these chord
 	- So C_0 = 1 (1 way when no chords) and C_1 = 1 (There is only one way to join one chord)
 	- `C_2  = C_0 (ways of arranging 0 chords in the left set) * C_1 (ways of arranging 1 chord in the right set) + C_1*C_0` =  1+1 = 2
 	- `C_3  = C_0*C_2 (zero in the left and remaining i.e 2-0 (Total are 3 but current we have select one and arranging remaining 2 chords) in right) + C_1*C_1 + C_2*C_0`  = 2 + 1 + 2 = 5
-	- `C_n = C_0*C_(n-1) + C_1*C_(n-2) + ... + C_(n-1)*C(0)
+	- `C_n = C_0*C_(n-1) + C_1*C_(n-2) + ... + C_(n-1)*C(0)`
 
 ```
 #define ll long long
