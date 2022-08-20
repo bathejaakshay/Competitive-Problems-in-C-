@@ -2590,3 +2590,38 @@ int minimum_switch(int i, int j , vector<int> &ones, vector<int> &free, vector<v
 ```
 
 `TC: O(n2)`
+
+
+## Application of Catalan Numbers in DP
+
+#### [38. Intersecting Chords in a Circle](https://www.interviewbit.com/old/problems/intersecting-chords-in-a-circle/)
+
+Given A chords or 2\*A points in a circle, find the total no of ways these chords can be joined without two 2 chords intersecting each other. 
+
+**Approach**
+1. Think of the points 1 to 2\*A in clockwise order in a circle.
+2. Now we can join the point 1 with 2 so we left with n-1 chords in the left and 0 to the right, if we join point 1 with 4 then we have 1 chord at right and n-2 chords at left. Now total ways to join point 1 with 2  =  no.of ways to join(n-1 chords) * no of ways to join(0 chord)
+3. Similarly No of ways to join point 1 with 4 is = `ways(n-2)*ways(1)`. Remember that after joining a chord it divides the rest of the points into 2 sets S1 and S2 such that chords from S1 and S2 shouldnt join each other otherwise they will intersect the current chord.
+4. So making use of Catalan concept:
+	- Let C_n represent no of ways to join `n` non intersecting chords.
+	- So C_0 = 1 (1 way when no chords) and C_1 = 1 (There is only one way to join one chord)
+	- `C_2  = C_0 (ways of arranging 0 chords in the left set) * C_1 (ways of arranging 1 chord in the right set) + C_1*C_0` =  1+1 = 2
+	- `C_3  = C_0*C_2 (zero in the left and remaining i.e 2-0 (Total are 3 but current we have select one and arranging remaining 2 chords) in right) + C_1*C_1 + C_2*C_0`  = 2 + 1 + 2 = 5
+	- `C_n = C_0*C_(n-1) + C_1*C_(n-2) + ... + C_(n-1)*C(0)
+
+```
+#define ll long long
+#define MOD 1000000007
+int Solution::chordCnt(int A) {
+    vector<ll> dp(A+1);
+    dp[0] = 1;
+    for(int i=1;i<=A;i++){
+        for(int j=0;j<i;j++) // i-1 Chords to be arranged when selected 1 chord (We are looking at all ways to arrange i chords such that no two chords intersect each other)
+            dp[i] = (dp[i]+(dp[j]*dp[i-j-1])%MOD)%MOD;
+    }
+    return dp.back();
+}
+
+```
+
+---
