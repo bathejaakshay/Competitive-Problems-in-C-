@@ -1060,7 +1060,7 @@ Return the final string after all such shifts to s are applied.
 2. Takes `O(N*K)` where k is the size of shift array. But it will give TLE
 3. Now We cannot compromise on K as we have to Traverse K but we have to reduce the shifting operation from start_i till end_i. Hence Follow the next approach
 
-![Image](https://assets.leetcode.com/uploads/2018/10/22/rainwatertrap.png)
+![Image]([https://assets.leetcode.com/uploads/2018/10/22/r](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/shifting%20letters%202.png))
 
 **Approach : Prefix sum**
 1. Given start and end index for the shifting how can you do it in O(1)
@@ -1119,4 +1119,5 @@ for(int i=1; i<A.size()-1; i++){
 
 return maxi;
 }
+			 
 ```
