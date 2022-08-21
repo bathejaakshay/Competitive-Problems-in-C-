@@ -478,3 +478,45 @@ int pylon (int k, vector<int> &arr){
 
 ```
 `TC: O(N)`
+
+---
+
+## Looks DP But is Greedy Pattern
+
+#### Find the lexicographically smallest order of N numbers such that the total of N numbers <= Threshold value
+
+#### [11. Tushar's Birthday Bombs](https://www.interviewbit.com/old/problems/tushars-birthday-bombs/)  
+Given an arr of strength of n friends of tushar and tushar capacity to  bear kicks. Find the lexicographically smallest indices of friends such that no. of kicks is maximum within tushar's capacity.  
+**Approach : Greedy**
+1. Firstly compute the size of ans then we will look for the lexicographically smallest ans
+2. We can compute the size of the ans by dividing the Capacity by the min element in the strength arr and values will be the index of this strength
+3. Now lets say the min element was at ith index.
+4. `Curr capacity = A[i] * cap/A[i]`
+5. Now we know that if there exist lexicographically smaller ans then its indices must be from 0 to i-1
+6. Now start from index 0 we will check how many index 0 can replace ith index in the ans.
+7. It can replace index i at loc 0 of ans if `curr_cap - A[i] + A[replacer or 0] <= cap`. Remember A friend can kick infinite number of times.
+8. Simiarly we do this for rest of the elements till i-1
+
+```
+
+vector<int> Solution::solve(int A, vector<int> &B) {
+
+    
+    int x = min_element(B.begin(), B.end()) - B.begin();
+    int si = A/B[x];
+    vector<int> ans(si, x);
+    int k=0;
+    int capi = B[x]*si;
+    // cout<<capi<<endl;
+    for(int i=0; i<=x-1; i++){
+        while(capi - B[x] + B[i] <= A && k<ans.size()){
+            ans[k] = i;
+            capi = capi - B[x] + B[i];
+            k++;
+        }
+        
+    }
+    return ans;
+}
+
+```
