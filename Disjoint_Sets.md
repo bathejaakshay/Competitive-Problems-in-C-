@@ -324,3 +324,92 @@ public:
     }
 };
 ```
+
+#### [7. Accounts Merge](https://leetcode.com/problems/accounts-merge/)
+
+Given a list of accounts where each element accounts[i] is a list of strings, where the first element accounts[i][0] is a name, and the rest of the elements are emails representing emails of the account.  
+
+Now, we would like to merge these accounts. Two accounts definitely belong to the same person if there is some common email to both accounts. Note that even if two accounts have the same name, they may belong to different people as people could have the same name. A person can have any number of accounts initially, but all of their accounts definitely have the same name.  
+
+After merging the accounts, return the accounts in the following format: the first element of each account is the name, and the rest of the elements are emails in sorted order. The accounts themselves can be returned in any order.  
+
+ 
+```
+Example 1:
+
+Input: accounts = [["John","johnsmith@mail.com","john_newyork@mail.com"],["John","johnsmith@mail.com","john00@mail.com"],["Mary","mary@mail.com"],["John","johnnybravo@mail.com"]]
+Output: [["John","john00@mail.com","john_newyork@mail.com","johnsmith@mail.com"],["Mary","mary@mail.com"],["John","johnnybravo@mail.com"]]
+```
+
+**Approach : Union Find** 
+- Two things to understand about Union find pattern
+- Is it a question of grouping? or finding cycle or finding connected components
+- Once you have identified the pattern then look for, what will be the nodes and what will be its parent or representative
+- For e.g the nodes in this question are all the email ids and the representative will also be an email string which will represent them all.
+
+1. Firstly intialize all the parents of each mail to itself and keep record of the owner of each mail.
+2. For each email of a particular user make the first email parent of all other emails. This will allow the mails to serialize and have one single parent for all emails corresponding to the user.
+3. Now Create another hashmap representing the parent email as key as all its child emails as values (sorted)
+4. Now just create the final ans using the hashmap created in the previous step and the owner hashmap.
+
+```
+string find(string x, unordered_map<string, string> &mp);
+class Solution {
+public:
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        // Two things to understand about Union find pattern
+        // Is it a question of grouping? or finding cycle or finding connected components
+        // Once you have identified the pattern then look for, what will be the nodes and what will be its parent or representative
+        // For e.g the nodes in this question are all the email ids and the representative will also be an email string which will represent them all.
+        
+        
+        unordered_map<string, string> parent; // To keep record of the representative of a particular email.
+        unordered_map<string, string> owner; // To keep record of the owner/user of a particular email.
+        
+        unordered_map<string, set<string>> unions; // This will be our final email hashmap representing the representative email of a user and its correspong all emails.
+          
+        vector<vector<string>> ans;
+        // Initialize parent and owner     
+        for(int i=0; i<accounts.size(); i++){
+            for(int j=1; j<accounts[i].size(); j++){
+                parent[accounts[i][j]] = accounts[i][j];
+                owner[accounts[i][j]] = accounts[i][0];
+            }
+        }
+        
+        // Union each mail in each account
+        for(int i=0; i<accounts.size(); i++){
+            for(int j=2;j<accounts[i].size(); j++){
+                string x = find(accounts[i][j-1], parent);
+                string y = find(accounts[i][j], parent);
+                if(x!=y)
+                    parent[y] = x;
+            }
+        }
+        
+        // Now I want a single ds which consists of all temp/child emails related to the primary/parent one
+        for(int i=0; i<accounts.size(); i++){
+            for(int j=1; j<accounts[i].size(); j++){
+                unions[find(accounts[i][j], parent)].insert(accounts[i][j]);
+            }
+        }
+        
+        // Now I want to obtain the final ans in the required format using the owner ds.
+        
+        for(auto it = unions.begin(); it!=unions.end(); it++){
+            vector<string> cand(it->second.begin(), it->second.end());
+            
+            cand.insert(cand.begin(), owner[it->first]);
+            
+            ans.push_back(cand);
+        }
+        return ans;
+    }
+};
+
+string find(string x, unordered_map<string, string> &mp){
+    return (x == mp[x])? x : mp[x] = find(mp[x],mp);
+}
+```
+
+---
