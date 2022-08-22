@@ -271,3 +271,56 @@ public:
 ```
 
 ---
+
+#### [6. Satisfiability of Equality Equations](https://leetcode.com/problems/satisfiability-of-equality-equations/)
+You are given an array of strings equations that represent relationships between variables where each string `equations[i]` is of length 4 and takes one of two different forms: `"xi==yi" or "xi!=yi"`.Here, xi and yi are lowercase letters (not necessarily different) that represent one-letter variable names.  
+
+Return true if it is possible to assign integers to variable names so as to satisfy all the given equations, or false otherwise.
+
+**Approach : Union Find**
+
+1. We will have 26 nodes or connected components initially.
+2. Firstly go over each equality equations "==" and put the left and right variables in the same component.
+3. Then go over all inequality equation "!=" and check if left and right variable belong to different component.
+4. If not then return false.
+
+```
+int find(int i, vector<int> &parent){
+    return (parent[i] == i)?i:parent[i] = find(parent[i], parent);
+}
+
+void uni(int u, int v, vector<int> &parent){
+    u = find(u, parent);
+    v = find(v, parent);
+    
+    if(u!=v){
+        parent[v] = u; 
+    }
+}
+class Solution {
+public:
+    bool equationsPossible(vector<string>& equations) {
+        vector<int>parent(26);
+        for(int i=0; i<26; i++){
+            parent[i] = i;
+        }
+        
+        for(int i=0; i<equations.size(); i++){
+            int u = equations[i][0]-'a';
+            int v = equations[i][3] - 'a';
+            if(equations[i][1] == '='){
+                uni(u,v, parent);
+            }
+        }
+        
+        for(int i=0; i<equations.size(); i++){
+            int u = equations[i][0]-'a';
+            int v = equations[i][3] - 'a';
+            if(equations[i][1] == '!'){
+                if(find(u,parent)==find(v, parent)) return false;
+            }
+        }
+     return true;   
+    }
+};
+```
