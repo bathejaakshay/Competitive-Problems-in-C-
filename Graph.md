@@ -1692,3 +1692,66 @@ public:
     }
 ```
 ---
+
+#### [26. Most Stones Removed with Same Row or Column VV.IMP Google](https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/)
+On a 2D plane, we place n stones at some integer coordinate points. Each coordinate point may have at most one stone.  
+
+A stone can be removed if it shares either the same row or the same column as another stone that has not been removed.  
+
+Given an array stones of length n where stones[i] = [xi, yi] represents the location of the ith stone, return the largest possible number of stones that can be removed.  
+
+**Approach Union Find**
+1. We need to find total number of connected components.  Our ans will be total stones - no.of components.
+2. All the points which has common row_index or column_index comes under one component.
+3. Now It is a little different Union-Find from what we have seen as we dont apply it in the conventional way
+4. We use unordered_map for the parent data structure and we dont use rank.
+5. Also all the x-coordinate and y-coordinate represent a different node in our graph and shall be identified differently while doing union that is why we add 100001 to y-coordinate before UNION.
+6. In the find function, while find the parent of node u if node is not present in the unordered map parent then we add it mark it as a new component
+7. We do this for x and y-coordnate
+8. Now if parent of x and parent of y are different then it means they belong to two different components but they need to be unionized hence we decrement the connected componenets by 1 and do `parent[parent[y]] = parent[x]` 
+9. Final ans is total stones - no. of connected components.
+
+```
+int find(int u, unordered_map<int,int> &parent,int &ans){
+    if(parent.find(u)==parent.end()) {
+        parent[u] = u;
+        ans++;
+        return u;
+    }
+    return (u==parent[u])? u: parent[u]=find(parent[u], parent, ans);
+}
+void uni(int u, int v, unordered_map<int,int> &parent,int &ans){
+    u = find(u, parent, ans);
+    v = find(v, parent, ans);
+    if(u!=v){
+        parent[v] = u;
+        ans--;
+    }
+    return;
+}
+
+class Solution {
+public:
+    int removeStones(vector<vector<int>>& stones) {
+
+        int n = stones.size();
+        int ans=0;
+        unordered_map<int,int> parent;
+        for(int i=0; i<n; i++){
+            int x = stones[i][0];
+            
+            int y = stones[i][1] + 100001;
+            uni(x,y,parent, ans);
+            
+        }
+        
+        return n - ans;
+        
+        
+    }
+};
+```
+
+TC: O(N), SC: O(N)
+
+---
