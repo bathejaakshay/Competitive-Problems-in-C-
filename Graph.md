@@ -1760,6 +1760,7 @@ TC: O(N), SC: O(N)
 
 #### [27. (Tricky) Shortest path in a complement of a graph](https://www.geeksforgeeks.org/shortest-path-in-a-complement-graph/) 
 Given edge cost =1 for each edge.  
+[Hackerrank Ques](https://www.hackerrank.com/challenges/rust-murderer/problem)  
 **Naive**
 1. Naive approach is to generate a complement adjlist from the given graph which takes O(n^2) time and then find shortest path using BFS O(V+E)
 2. So total O(V^2 + (V+E)). This is too much
