@@ -1757,3 +1757,61 @@ public:
 TC: O(N), SC: O(N)
 
 ---
+
+#### [27. (Tricky) Shortest path in a complement of a graph](https://www.geeksforgeeks.org/shortest-path-in-a-complement-graph/) 
+Given edge cost =1 for each edge.  
+**Naive**
+1. Naive approach is to generate a complement adjlist from the given graph which takes O(n^2) time and then find shortest path using BFS O(V+E)
+2. So total O(V^2 + (V+E)). This is too much
+
+**Efficient Approach**
+1. Explore (Relax) the unvisited node only once and see if it a complement vertex and then remove it. Saves us from creating complement adjlist.
+2. For each vertex or node, reduce the distance of a vertex which is a complement to the current vertex and has not been discovered yet.
+3. For the problem, we have to observe that if the Graph is Sparse then the undiscovered nodes will be visited very fast
+
+```
+vector<int> rustMurderer(int n, vector<vector<int>> roads, int src) {
+    /*
+     * Write your code here.
+     */
+     
+    vector<vector<int>> adjlist(n);
+    map<pair<int,int>, int> adj;
+    for(int i=0; i<roads.size(); i++){
+        adj[{roads[i][0]-1, roads[i][1]-1}] = 1;
+        adj[{roads[i][1]-1, roads[i][0]-1}] = 1;
+        
+    }
+    
+    vector<int> dist(n, INT_MAX);
+    dist[src-1] = 0;
+    set <int> unvisited;
+    for(int i=0; i<n; i++) {
+        if(i!=src-1) unvisited.insert(i);
+    } 
+    queue<int> q;
+    q.push(src-1);
+    while(unvisited.size()>0 && !q.empty()){ // O(V + E)log(E+V) it will only run for till all the nodes are visited 
+        int u = q.front();
+        q.pop();
+        vector<int> comp;
+        for(int x : unvisited){ // for each unvisited vertices I am checking if it is a complement vertex of vertex u
+            if(adj[{u,x}] == 0 && adj[{x,u}] == 0) comp.push_back(x);
+        }
+        for(int x: comp){
+                dist[x] = min(dist[x], dist[u] + 1);
+                q.push(x);
+                unvisited.erase(x);
+        }
+           
+    }
+    vector<int> ans;
+    for(int i=0; i<n; i++){
+        if(i!=src-1){
+            ans.push_back(dist[i]);
+        }
+    }
+    return ans;
+
+}
+```
