@@ -62,6 +62,7 @@ public:
 4. We also maintain done or visited. Also as there can be a cycle we maintain count of the nodes obtained in our ans.
 5. We apply dfs on each vertex which has in_deg 0 and decrement its in_deg by 1.
 6. Finally if the count matches the numCourses then it means there was no Cycle. return ans. Else return `{}`.
+7. If there is a cycle then count will never be equal to the numCourses as the cyclic vertices will never have indegree 0 and will never be traversered
 
 ```
 void dfs_toposort(int i,vector<vector<int>> &adjlist, int numCourses, vector<int> &in_coming, int &count, vector<int> &ans, vector<int> &done){
