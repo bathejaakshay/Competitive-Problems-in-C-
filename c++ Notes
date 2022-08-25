@@ -201,4 +201,18 @@ e.d for the tree
 link: https://www.interviewbit.com/old/problems/postorder-traversal/
 
 
+==============================================================================================================
+
+Strings Coversion from integer to string
+
+Say you have loop in which you are appending to string ans , a digit each time 
+int dig
+So never ever do this in q loop ans+=(to_string(d)); (string takes 32 bytes minimum)
+
+instead do this : ans+=('0' + dig)
+Also never do ans+=((char)('0' + dig)) this will result in a wrong ans
+
+only use to_String() when you have to convert a big number to string
+=======================================================================================================
+
 
