@@ -180,3 +180,29 @@ vector<int> Solution::slidingMaximum(const vector<int> &A, int B) {
 `TC: O(n) + O(n)`
 ---
 
+#### [5. Next Greater Element 2](https://leetcode.com/problems/next-greater-element-ii/)
+Find next greater element of each element in a circular array i.e `next element of A[n-1] is A[0]`
+
+**Approach**
+1. Use the same logic as NGE1 but we need to traverse the array twice.
+2. Once the monotonic stack is mantained after one traversal we use the same stack for the next traversal.
+3. We do not need to mind about traversing through the same index in the second iteration as we will pop the same value as current index.
+```
+vector<int> nge2(vector<int> &nums){
+stack<int> st;
+    // 5 elements 5 * 2 = 10 9%5 = 4
+    vector<int> ans(nums.size(), -1);
+    int n = nums.size();
+    for(int i=nums.size()*2-1; i>=0; i--){
+        while(!st.empty() && st.top()<=nums[i%n]) st.pop();
+        if(!st.empty()){
+            ans[i%n] = st.top();
+        }
+        st.push(nums[i%n]);
+        
+    }
+return ans;
+}
+
+```
+
