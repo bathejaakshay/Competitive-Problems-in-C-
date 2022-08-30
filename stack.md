@@ -94,6 +94,10 @@ int MinStack::getMin() {
 
 ---
 
+## Monotonic Stack
+
+---
+
 #### [3. Next Greater Element](https://leetcode.com/problems/next-greater-element-i/)
 **Approach**
 1. For each element we need to find the next greater element just at its right side.
