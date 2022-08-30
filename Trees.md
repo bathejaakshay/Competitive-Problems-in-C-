@@ -176,4 +176,64 @@ vector<TreeNode*> Solution::generateTrees(int A) {
 ---
 
 
+#### [6. Minimum Distance between any two nodes in BST](https://leetcode.com/problems/minimum-distance-between-bst-nodes/discuss/114834/C%2B%2BJavaPython-Inorder-Traversal-O(N)-time-Recursion)
+**Approach**
+1. Maintain Min and Max at each node and for a root node the min distance will be between the min(abs(left child's max - root), abs(right child's min - root))
 
+```
+pair<int,int> minD(TreeNode *root, int &diff){
+    if(root->left == NULL && root->right == NULL){
+        return {root->val, root->val};
+    } 
+    int left = INT_MIN, right = INT_MAX;
+    pair<int,int> x = {left, right},y = {left, right};
+    pair<int,int> ret = {INT_MIN,INT_MAX};
+    if(root->left!=NULL){
+        x = minD(root->left, diff);
+        diff = min(diff, abs(root->val-x.second));
+        
+    }
+    if(root->right!=NULL){
+        y = minD(root->right, diff);
+        diff = min(diff, abs(root->val-y.first));
+    }
+    if(root->left!=NULL && root->right!=NULL){
+        ret = {x.first, y.second};
+    }
+    else if(root->left!=NULL && root->right == NULL){
+        ret = {x.first, root->val};
+    }
+    else if(root->left == NULL && root->right!=NULL){
+        ret = {root->val, y.second};
+    }
+    return ret;
+    
+}
+class Solution {
+public:
+    int minDiffInBST(TreeNode* root) {
+        int diff = INT_MAX;
+        minD(root, diff);
+        return diff;
+    }
+};
+```
+
+**Approach : (lin's)**
+1. Maintain  min diff during in order traversal
+
+```
+class Solution {
+  public:
+    int res = INT_MAX, pre = -1;
+    int minDiffInBST(TreeNode* root) {
+        if (root->left != NULL) minDiffInBST(root->left);
+        if (pre >= 0) res = min(res, root->val - pre);
+        pre = root->val;
+        if (root->right != NULL) minDiffInBST(root->right);
+        return res;
+    }
+};
+```
+
+---
