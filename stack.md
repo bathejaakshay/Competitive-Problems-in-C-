@@ -206,3 +206,62 @@ return ans;
 
 ```
 
+#### [6. 907. Sum of Subarray Minimums - HARD](https://leetcode.com/problems/sum-of-subarray-minimums/)
+
+**Approach PLE and NLE**: 
+```
+class Solution {
+public:
+    int sumSubarrayMins(vector<int>& arr) {
+    // We maintain two arrays 
+    // left and right where left[i] represents of i from previous less element and right[i] represents distance of i from next less element.
+    // The total no of subarrays with ith element as min is equal to left[i] * right[i] ans their total cost is A[i] * left[i] *right[i], we find this for all elements and sum them up.
+    int n = arr.size();
+     vector<long long> left(n); // For what distance is the ith element is minimum in the left distance, so if there is no other element smaller than i in lhs then that means all the subarrays possible at lhs that includes i has smallest element as i. So we keep distance i by default;
+        
+        
+    vector<long long> right(n); // similar for right we keep dist of i from end by default
+        
+    for(int i=0; i<n; i++){
+        left[i] = i+1;
+        right[i] = n-i;
+    }
+        
+    stack<int> st1,st2;
+    for(int i=0; i<arr.size(); i++){
+        while(!st1.empty() && arr[st1.top()] > arr[i]){
+            st1.pop();
+        }
+        if(!st1.empty()){
+
+            left[i] = i - st1.top(); 
+        }
+        st1.push(i);
+        
+        
+    }
+        for(int i=arr.size()-1; i>=0; i--){
+        // cout<<" i = "<<i<<endl;
+        while(!st2.empty() && arr[st2.top()] >=arr[i]){
+            st2.pop();
+        }
+        if(!st2.empty()){
+        // cout<<" i = "<<i<<" "<<arr[i]<<" nxt lesser = "<<arr[st2.top()]<<endl;
+            right[i] = st2.top()-i; 
+        }
+        st2.push(i);
+    }
+    // for(int i=0; i<n; i++){
+    //     cout<<" i = "<<i<<" left[ i ]= "<<left[i]<<" right[i] = "<<right[i]<<endl;
+    // }
+    int ans = 0;
+    int mod = 1e9 +7;
+    for(int i=0; i<n; i++){
+        ans = (ans + (arr[i] * left[i] *right[i])%mod)%mod;
+    }  
+    return ans;
+        
+    
+    }
+};
+```
