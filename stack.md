@@ -242,7 +242,7 @@ public:
     }
         for(int i=arr.size()-1; i>=0; i--){
         // cout<<" i = "<<i<<endl;
-        while(!st2.empty() && arr[st2.top()] >=arr[i]){
+        while(!st2.empty() && arr[st2.top()] >=arr[i]){ // Always remember to keep one bound to be tight and other to be loose, here bound for finding right is loose and for left is tight
             st2.pop();
         }
         if(!st2.empty()){
