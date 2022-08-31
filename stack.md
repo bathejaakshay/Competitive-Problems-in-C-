@@ -331,7 +331,8 @@ Instead of finding difference of max and min in each subarray and then accumulat
 
 Σ(max-min) = Σ(max) - Σ(min)
 
-
+**Note: **  
+While applying this code always remember to keep one bound to be loose (e.g <=) and other to be tight (e.g <) for computing left and right from stack.
 ```
 long long usingstack(vector<int> &nums){
     stack<int> st1, st2;
@@ -342,7 +343,7 @@ long long usingstack(vector<int> &nums){
         right[i] = nums.size()-i;
     }
     for(int i=0; i<nums.size(); i++){
-        while(!st1.empty() && nums[st1.top()]>=nums[i] ){
+        while(!st1.empty() && nums[st1.top()]>=nums[i] ){ 
             st1.pop();
         }
         if(!st1.empty()){
