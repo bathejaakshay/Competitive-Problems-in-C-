@@ -317,3 +317,75 @@ class Solution {
 public:
     vector<int> asteroidCollision(vector<int>& ast) 
 ```
+
+
+---
+
+#### [8. Sum of Subarray Ranges](https://leetcode.com/problems/sum-of-subarray-ranges/)  
+**Approach : monotonic stack O(n)**  
+Using the idea of following ques:
+[Sum of subarray minimums](https://leetcode.com/problems/sum-of-subarray-minimums/)
+
+We apply the same code twice, first to find `x =  sum of subarray minimums`  and then to find `y = sum of subarray maximums` then we get the final `result = y-x`.  
+Instead of finding difference of max and min in each subarray and then accumulating that for each subarray, we sum up all the maximums and minimums and substract minimums from the maximums.  
+
+`summation(max-min) = summation(max) - summation(min)`
+
+
+```
+long long usingstack(vector<int> &nums){
+    stack<int> st1, st2;
+    vector<long long> left(nums.size()), right(nums.size());
+    long long res=0;
+    for(int i=0; i<nums.size(); i++){
+        left[i] = i+1;
+        right[i] = nums.size()-i;
+    }
+    for(int i=0; i<nums.size(); i++){
+        while(!st1.empty() && nums[st1.top()]>=nums[i] ){
+            st1.pop();
+        }
+        if(!st1.empty()){
+            left[i] = (long long) i-st1.top();
+        }
+        st1.push(i);
+        
+    }
+    for(int i=nums.size()-1; i>=0; i--){
+        while(!st2.empty() && nums[st2.top()]> nums[i]) st2.pop();
+        if(!st2.empty()){
+            right[i] = st2.top()-i;
+        }
+        st2.push(i);
+    }
+    
+    for(int i=0; i<nums.size(); i++){
+        res-=((long long)(nums[i] * left[i] * right[i]));
+    }
+    st1 = stack<int>();
+    st2 = stack<int>();
+    for(int i=0; i<nums.size(); i+=1){
+        left[i] = i+1;
+        right[i] = nums.size()-i;
+    }
+    
+    for(int i=0; i<nums.size(); i++){
+        while(!st1.empty()&& nums[st1.top()] <= nums[i]) st1.pop();
+        if(!st1.empty()) left[i] = i-st1.top();
+        st1.push(i);
+    }   
+    
+    for(int i=nums.size()-1 ; i>=0; i--){
+        while(!st2.empty() && nums[st2.top()] < nums[i]) st2.pop();
+        if(!st2.empty()) right[i] = st2.top() - i;
+        st2.push(i);
+    }
+    
+    for(int i=0; i<nums.size(); i+=1){
+        res+=((long long)(nums[i]*left[i]*right[i]));
+    }
+    return res;
+    
+}
+```
+
