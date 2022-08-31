@@ -265,3 +265,55 @@ public:
     }
 };
 ```
+---
+#### [7. Asteroid Collision](https://leetcode.com/problems/asteroid-collision/)
+
+We are given an array asteroids of integers representing asteroids in a row.  
+
+For each asteroid, the absolute value represents its size, and the sign represents its direction (positive meaning right, negative meaning left). Each asteroid moves at the same speed.  
+
+Find out the state of the asteroids after all collisions. If two asteroids meet, the smaller one will explode. If both are the same size, both will explode. Two asteroids moving in the same direction will never meet.  
+
+```
+Example
+Input: asteroids = [10,2,-5]
+Output: [10]
+Explanation: The 2 and -5 collide resulting in -5. The 10 and -5 collide resulting in 10.
+```
+
+**Approach : Stack**
+1. Push all the positive elements to the stack one by one
+2. if the current element has a negative value then pop all the elements from the stack that are lesser than current one's magnitude
+3. if the stack becomes empty then push current negative value to the answer vector. because for this particular element there will be no more collisions
+4. Similairly do for the rest.
+
+```
+vector<int> astcoll(vector<int> &ast){
+    stack<int> st;
+    vector<int> ans;
+    for(int i=0; i<ast.size(); i++){
+        if(ast[i]<0){
+        while(!st.empty() && ast[st.top()] < -ast[i]) {
+            st.pop();
+        }
+        if(st.empty())
+            ans.push_back(ast[i]);
+        else if(ast[st.top()] == -ast[i]) st.pop();
+        }
+        else{
+            st.push(i);
+        }
+    }
+    int x = ans.size();
+    while(!st.empty()){
+        ans.push_back(ast[st.top()]);
+        st.pop();
+    }
+    reverse(ans.begin()+x, ans.end());
+    return ans;
+}
+
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& ast) 
+```
