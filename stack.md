@@ -329,7 +329,7 @@ Using the idea of following ques:
 We apply the same code twice, first to find `x =  sum of subarray minimums`  and then to find `y = sum of subarray maximums` then we get the final `result = y-x`.  
 Instead of finding difference of max and min in each subarray and then accumulating that for each subarray, we sum up all the maximums and minimums and substract minimums from the maximums.  
 
-_&sigma(max-min);_ = &sigma(max)_ - &sigma(min);_
+Σ(max-min) = Σ(max) - Σ(min)
 
 
 ```
