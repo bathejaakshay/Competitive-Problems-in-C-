@@ -215,4 +215,14 @@ Also never do ans+=((char)('0' + dig)) this will result in a wrong ans
 only use to_String() when you have to convert a big number to string
 =======================================================================================================
 
+Memory Limit Exceeded in strings
 
+instead of doing
+string ans="";
+for(i to n)
+  ans = some char  + ans; // This sometimes give MLE
+  
+ we should simply do
+ 
+ for(i to n) ans+=(some char)
+ reverse(ans);
