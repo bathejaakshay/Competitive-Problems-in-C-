@@ -51,3 +51,61 @@ void subseq(string &s, vector<string> &ans){
 **TC**=O((2^n)*n)
 
 ---
+
+
+#### [3. Longest Nice Subarray](https://leetcode.com/contest/weekly-contest-309/problems/longest-nice-subarray/)
+
+You are given an array nums consisting of positive integers.  
+
+We call a subarray of nums nice if the bitwise AND of every pair of elements that are in different positions in the subarray is equal to 0.  
+
+Return the length of the longest nice subarray.  
+
+A subarray is a contiguous part of an array.  
+
+Note that subarrays of length 1 are always considered nice.  
+
+ 
+```
+Example 1:
+
+Input: nums = [1,3,8,48,10]
+Output: 3
+Explanation: The longest nice subarray is [3,8,48]. This subarray satisfies the conditions:
+- 3 AND 8 = 0.
+- 3 AND 48 = 0.
+- 8 AND 48 = 0.
+It can be proven that no longer nice subarray can be obtained, so we return 3.
+```
+
+**Approach : Sliding Window O(N)**  
+1. Things to remember: longest subarray say x1, x2, x3 has pairwise `&` equal to zero if `x1&x2&x3 = 0` simply, do not complicate.
+2. maintain a window from i to j which is currently nice. Now how do we maintain the windows bits?. By using `wind |= nums[j]` i.e collecting all the bits of all the nums in the window.( Just for future me Remember 6|6 is 6 and not 12, sum is different than bitwise or :P)
+3. Also we are not using xor to collect bits of wind because 1 ^ 1 is 0 and it wont collect all the ones as we want that the next nice number should have 0 at that bit.
+4. Now once we encounter an new element which doent make the window nice anymore that is `wind | new num != 0` then we compress the window till we do not get the nice window with new element  i.e `wind | new num == 0`. How do we compress?
+5. This is something to remember the most. In the collection `wind (|) ` of bits of all nums in the window we remove the contribution of head elements (i.e elements at index i) of the window by exoring them i.e `wind^=nums[i]`. The concept is `(A | B ^ A) = B`. **Remember this**
+
+```
+class Solution {
+public:
+    int longestNiceSubarray(vector<int>& nums) {
+
+        int wind=nums[0];
+        int res=1;
+        int i=0;
+        for(int j=1; j<nums.size(); j++){
+                while(i<j && ( (wind & nums[j]) != 0)){
+                    wind^=nums[i];
+                    i++;
+                }
+            
+                wind|=nums[j];
+            res = max(res, j-i+1 );
+        }
+        return res;
+    
+    }
+};
+```
+
+---
