@@ -111,3 +111,56 @@ public:
 ```
 
 ---
+
+#### [3. Find All Lonely Numbers in the Array](https://leetcode.com/problems/find-all-lonely-numbers-in-the-array/)
+**Approach: Sliding Window O(n), O(1)**
+1. We maintain a window of equal and strictly increasing sequence with common diff 1.
+2. Once we encounter a new element which doest fit in the seq then we check if the window size is just one we append it to our ans and contiue doing the same for next elements.
+
+```
+vector<int> find(vector<int> &nums){
+    // maintain a window of increasing and equal elements
+    
+    sort(nums.begin(), nums.end());
+    if(nums.size() == 1) return nums;
+    if(nums.size() == 2){
+        if(nums[0]+1 < nums[1]) return nums;
+        return {};
+    } 
+    int i=0,j=0;
+    vector<int> ans;
+    for(;j<nums.size()-1; ){
+        while(j<nums.size()-1 && nums[j]+1 >= nums[j+1]) j++;
+        if(j<nums.size()-1 && nums[j] + 1 < nums[j+1]){
+            if(i==j) {
+                ans.push_back(nums[i]);
+                
+            }
+                j++;
+                i=j;
+            
+        }
+        else j++;
+    }
+    if(j==nums.size()-1 && nums[j-1] + 1 < nums[j]) ans.push_back(nums[j]);
+    return ans;
+}
+```
+
+**Approach: Unordered_map O(n), O(n)**  
+1. Put all elements in the unordered map
+2. Now check for each element if occurence is 1 and occurence of previous and next element is 0 then append it to our ans;
+
+```
+vector<int> findLonely(vector<int>& nums) {
+    unordered_map<int, int> m;
+    vector<int> res;
+    for (int n : nums)
+        ++m[n];
+    for (const auto [n, cnt] : m)
+        if (cnt == 1 && m.count(n + 1) == 0 && m.count(n - 1) == 0)
+            res.push_back(n);
+    return res;
+}
+```
+---
