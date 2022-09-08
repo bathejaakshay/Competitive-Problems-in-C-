@@ -1816,3 +1816,48 @@ vector<int> rustMurderer(int n, vector<vector<int>> roads, int src) {
 
 }
 ```
+
+## Multisource BFS
+
+#### [28. Distance of nearest cell having 1](https://practice.geeksforgeeks.org/problems/distance-of-nearest-cell-having-1-1587115620/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=distance-of-nearest-cell-having-1)  
+**Approach**
+- Multisource BFS just means we push multiple nodes in the queue at the starting and then start popping,  this is generally when we have multiple source nodes to start with.
+- Like in this question we have multiple pos where `grid[i][j] = 1` we push all of them into queue and traverse their neighbours level wise and increment their distance from the current node. (No need of separate visited array as we are using dist array to represent the dist of each node and only traverse to neighbour node if neighbour node dist is INT_MAX i.e not visited yet.)
+
+```
+vector<vector<int>> dist(vector<vector<int>>(grid.size(), vector<int>(grid[0].size(),INT_MAX)));
+	
+	    int n=grid.size(), m=grid[0].size();
+	    queue<pair<int,int>> q;
+	    for(int i=0; i<n; i++)
+	    {
+	        for(int j=0; j<m; j++){
+	            if(grid[i][j] == 1){
+	                q.push({i,j});
+	                dist[i][j] = 0;
+	            }
+	        }
+	    }
+	    
+	    while(!q.empty()){
+	        pair<int,int> p = q.front();
+	        q.pop();
+	        int i = p.first;
+	        int j = p.second;
+	        int grad_i[] = {-1,0,1,0};
+	        int grad_j[] = {0,-1,0,1};
+	        
+	        for(int x=0; x<4; x++){
+	            int x_i = i + grad_i[x], x_j = j+grad_j[x];
+	            if(x_i<grid.size() && x_j < grid[0].size() && x_i>=0 && x_j>=0 && dist[x_i][x_j] == INT_MAX){
+	                dist[x_i][x_j] = dist[i][j]+1;
+	                q.push({x_i,x_j});
+	            }
+	        }
+	       
+	    }
+	    return dist;
+	}
+};
+```
+`TC:O(n*m) SC:O(n*m)`
