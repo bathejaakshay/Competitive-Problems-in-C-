@@ -1940,3 +1940,71 @@ public:
     }
 };
 ```
+---
+#### [30. Count Distinct Islands](https://practice.geeksforgeeks.org/problems/number-of-distinct-islands/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=number-of-distinct-islands)
+Given a boolean 2D matrix grid of size n * m. You have to find the number of distinct islands where a group of connected 1s (horizontally or vertically) forms an island. Two islands are considered to be distinct if and only if one island is equal to another (not rotated or reflected).  
+
+```
+Example 1:
+
+Input:
+grid[][] = {{1, 1, 0, 0, 0},
+            {1, 1, 0, 0, 0},
+            {0, 0, 0, 1, 1},
+            {0, 0, 0, 1, 1}}
+Output:
+1
+Explanation:
+Island 1, 1 at the top left corner is same as island
+1, 1 at the bottom right corner.
+```  
+
+**Approach : DFS**  
+- BFS version of following algo gives TLE
+- Simply apply dfs to each node marking visited nodes and use a set to keep all the unique set of nodes of an islands. 
+- How do we make sure the ordering and the values of the same looking islands is same. The ordering will we same as it is taken care by the DFS itself.
+- For the values to be same, always substract the base island coordinates from all of its other coordinates which makes that island.
+- The base island is the one which is travelled the first in that island.
+
+```
+void countdfs(int i, int j, int bi, int bj, vector<vector<int>> &grid, vector<pair<int,int>> &cand){
+    grid[i][j]=0;
+    cand.push_back({i-bi, j-bj});
+    int n = grid.size(), m = grid[0].size();
+    int grad_i[] = {0,-1,0,1};
+    int grad_j[] = {-1,0,1,0};
+    for(int x=0; x<4; x++){
+        int gi = i+grad_i[x] , gj = j+grad_j[x];
+        if(gi<n && gj<m && gi>=0 && gj>=0 && grid[gi][gj] == 1){
+                    
+            countdfs(gi,gj,bi,bj, grid, cand);
+        }
+    }
+    
+}
+class Solution {
+  public:
+    int countDistinctIslands(vector<vector<int>>& grid) {
+        // code here
+        set<vector<pair<int,int>>> st;
+        int n=grid.size(), m = grid[0].size();
+        // vector<vector<int>> visited(n, vector<int>(m, -1));
+        queue<vector<int>> q;
+        
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m ; j++){
+                if(grid[i][j] == 1){
+                    vector<pair<int,int>> cand;
+                    countdfs(i,j,i,j,grid,cand);
+                    st.insert(cand);
+                }
+                
+            }
+        }
+        return st.size();
+        
+    }
+};
+```
+`SC : O(m*n) TC: O(m*n log (m*n))`
+---
