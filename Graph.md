@@ -1861,3 +1861,82 @@ vector<vector<int>> dist(vector<vector<int>>(grid.size(), vector<int>(grid[0].si
 };
 ```
 `TC:O(n*m) SC:O(n*m)`
+
+
+---
+
+#### [29. Replace O's with X's](https://practice.geeksforgeeks.org/problems/replace-os-with-xs0052/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=replace-os-with-xs)
+Given a matrix mat of size N x M where every element is either ‘O’ or ‘X’.  
+Replace all ‘O’ with ‘X’ that are surrounded by ‘X’.  
+A ‘O’ (or a set of ‘O’) is considered to be by surrounded by ‘X’ if there are ‘X’ at locations just below, just above, just left and just right of it.  
+```
+Example:
+Input: n = 5, m = 4
+mat = {{'X', 'X', 'X', 'X'}, 
+       {'X', 'O', 'X', 'X'}, 
+       {'X', 'O', 'O', 'X'}, 
+       {'X', 'O', 'X', 'X'}, 
+       {'X', 'X', 'O', 'O'}}
+Output: ans = {{'X', 'X', 'X', 'X'}, 
+               {'X', 'X', 'X', 'X'}, 
+               {'X', 'X', 'X', 'X'}, 
+               {'X', 'X', 'X', 'X'}, 
+               {'X', 'X', 'O', 'O'}}
+Explanation: Following the rule the above 
+matrix is the resultant matrix. 
+```
+**Approach**:
+1. Just like no of provinces, this a multisource dfs.
+2. We check at all the boundary elements if there exist `O` then we dfs to all its neighbours and mark them as visited.
+3. Now after we have traversed all the boundary elements, traverse throught the whole matrix and check if there is `O` which is unvisited and replace it with `X`
+
+```
+void dfs(int i, int j, vector<vector<char>> &mat, vector<vector<int>> &visited){
+    visited[i][j] = 1;
+    
+    int grad_i[] = {0,-1,0,1};
+    int grad_j[] = {-1,0,1,0};
+    int g_i, g_j;
+    for(int x=0; x<4; x++){
+        g_i = i+grad_i[x];
+        g_j = j+grad_j[x];
+        if(g_i < mat.size() && g_j < mat[0].size() && g_i>=0 && g_j >=0 && mat[g_i][g_j] == 'O' && visited[g_i][g_j]==-1){
+            dfs(g_i, g_j, mat, visited);
+        }
+    }
+    
+}
+class Solution{
+public:
+    vector<vector<char>> fill(int n, int m, vector<vector<char>> mat)
+    {
+        // code here
+        vector<vector<int>> visited(n, vector<int>(m, -1));
+        
+        for(int i=0; i<mat.size(); i++){
+            if(mat[i][0] == 'O' && visited[i][0]==-1) {
+                dfs(i,0,mat, visited);
+            }
+            if(mat[i][m-1] == 'O' && visited[i][m-1]==-1){
+                dfs(i, m-1, mat, visited);
+            }
+        }
+        for(int j=0; j<m; j++){
+            if(mat[0][j] == 'O' && visited[0][j] == -1){
+                dfs(0,j, mat, visited);
+            }
+            if(mat[n-1][j] == 'O' && visited[n-1][j] == -1){
+                dfs(n-1, j, mat, visited);
+            }
+        }
+        for(int i=0; i<n; i++){
+            for(int j=0; j<m; j++){
+                if(mat[i][j] == 'O' && visited[i][j] == -1){
+                    mat[i][j] = 'X';
+                }
+            }
+        }
+        return mat;
+    }
+};
+```
