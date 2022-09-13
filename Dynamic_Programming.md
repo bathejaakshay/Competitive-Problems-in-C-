@@ -2625,3 +2625,32 @@ int Solution::chordCnt(int A) {
 ```
 
 ---
+## MIN-MAX DP
+#### [39. Maximum Non-Negative Product in a Matrix](https://leetcode.com/problems/maximum-non-negative-product-in-a-matrix/)
+**Approach**
+- As the numbers can be negative and positive, so we cant just keep track of maximum by always taking positive numbers
+- As even number of negative numbers in our product can also give us maximum
+- Hence at each step say f(i,j) we maintain maximum product till i,j and minimum product till (i,j).
+- So that if the number `grid[i-1][j]` or `grid[i][j-1]` is negative then its maxi will be `grid[i-1][j] * min produc till (i,j)` else `grid[i-1][j] * max prod till (i,j)`.
+
+```
+int mp2(vector<vector<int>> &grid){
+    vector<vector<vector<long long int>>> dp;
+    int m = grid.size(), n = grid[0].size();
+    dp.assign(m, vector<vector<long long>>(n, vector<long long>(2,0)));
+    dp[m-1][n-1] = {grid[m-1][n-1],grid[m-1][n-1]};
+    
+    // Firstly find the result of last row and last col as they have only one way to go i.e right ans down rept.
+    for(int j=n-2; j>=0; j--) dp[m-1][j] = {max((long long)grid[m-1][j] * dp[m-1][j+1][0], (long long)grid[m-1][j] * dp[m-1][j+1][1]), min((long long)grid[m-1][j] * dp[m-1][j+1][0], (long long)grid[m-1][j] * dp[m-1][j+1][1])};
+    for(int i=m-2; i>=0; i--) dp[i][n-1] = {max((long long)grid[i][n-1] * dp[i+1][n-1][0], (long long)grid[i][n-1] * dp[i+1][n-1][1]), min((long long)grid[i][n-1] * dp[i+1][n-1][0], (long long)grid[i][n-1] * dp[i+1][n-1][1])};
+    
+    for(int i=m-2; i>=0; i--){
+        for(int j=n-2; j>=0; j--){
+                long long mini = min(dp[i+1][j][1],dp[i][j+1][1]);
+                long long maxi = max(dp[i+1][j][0], dp[i][j+1][0]);
+                dp[i][j] = {max((long long)grid[i][j]*maxi, (long long)grid[i][j]*mini), min((long long)grid[i][j]*maxi, (long long)grid[i][j]*mini)};
+        }
+    }
+    return dp[0][0][0]<0?-1:dp[0][0][0]%1000000007;
+}
+```
