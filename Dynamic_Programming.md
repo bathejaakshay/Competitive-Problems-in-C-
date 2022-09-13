@@ -2654,3 +2654,28 @@ int mp2(vector<vector<int>> &grid){
     return dp[0][0][0]<0?-1:dp[0][0][0]%1000000007;
 }
 ```
+
+---
+
+#### [40. Max Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)
+**Approach**
+1. Similar approach as previous ques. 
+2. Mantain max and min for each ind and multiply corresponding the value of current element i.e if curr element is <0 then multiply it with the min else with max
+
+```
+int maxp(vector<int> &nums){
+    vector<vector<int>> dp(nums.size(), vector<int>(2,0));
+    dp[nums.size()-1] = {nums[nums.size()-1],nums[nums.size()-1]};
+    int maxi=nums[nums.size()-1];
+    for(int i=nums.size()-2; i>=0; i--){
+        if(nums[i]<0){
+            dp[i] = {max(nums[i], nums[i]*dp[i+1][1]), min(nums[i], nums[i]*dp[i+1][0])};
+        }
+        else{
+            dp[i]= {max(nums[i], nums[i]*dp[i+1][0]), min(nums[i], nums[i]*dp[i+1][1])};
+        }
+        maxi = max(maxi, dp[i][0]);
+    }
+    return maxi;
+}
+```
