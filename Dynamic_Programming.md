@@ -1921,6 +1921,39 @@ bool ileave(int i, int j, string A, string B, string C, vector<vector<int>> &dp)
         
 }
 ```
+
+---
+
+#### [2. Longest Common Substring](https://practice.geeksforgeeks.org/problems/longest-common-substring1452/1)  
+**Approach : Top Down O(m\*n^2)**
+**Approach : Bottom Up O(m\*n)**
+- Tabulation is similar to longest common subsequence. `when a[i] == a[j] then lcs[i][j] = 1+lcs[i][j] else lcs[i][j]=0`.
+- That's because we are talking about the sustring and not subsequence.
+- We can easily find the substring as well by keeping note of the max val and its coordinate.
+
+```
+ int longestCommonSubstr (string a, string b, int n, int m)
+    {
+        // your code here
+        int max_len=0;
+        vector<vector<int>> lcs(a.length()+1, vector<int>(b.length()+1,0));
+        for(int i=1; i<=n; i++){
+            for(int j=1; j<=m; j++){
+                if(a[i-1] == b[j-1]){
+                    lcs[i][j] = 1 + lcs[i-1][j-1];
+                    max_len = max(max_len, lcs[i][j]);
+                }
+                else lcs[i][j] = 0;
+            }
+        }
+        return max_len;
+    }
+```
+
+
+
+
+
 ## DP on Stocks
 
 **Intuition for recursion**  
