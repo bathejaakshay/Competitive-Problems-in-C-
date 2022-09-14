@@ -3,7 +3,55 @@
 Naive Approach:  
 1.We will go through all index pairs O(n^2) * see if those are palindrome and keep only largest palindrome O(n) = O(n^3)
 
-DP:  
+**DP: Intuitive**
+- What is a better approach to tackle if a string is palindrom? 
+- Either to start at the ends and keep match till middle
+- or start at middle and keep matching till end. In this case starting at middle helps reduce the Time complexity.
+- For each index in a string we consider it as the center of the palindromic substring and expand outwards to find maxlen with the current index as center in the palindromic substring. 
+- This takes O(n^2) time in total. 
+- Although there is a little catch for even palindromic substring, the centre are two indices. and then we expand outwards.
+- This approach is much better.
+
+```
+string longestpalin(string &s){
+    // take a string and its reverse and find the LCS - this will not work in case of substring
+    string a = s;
+    
+    
+    //traverse through each char in string and consider it as center of the palindromic string
+    // we need to take two cases even length palindrome and odd length
+    int max_len=0,len=0, start=0;
+    for(int i =0; i<s.length(); i++){
+        //odd length
+        int l=i, r=i;
+        while(l>=0 && r<s.length() && s[l] == s[r]) {
+            len = r-l+1;
+            if(len>max_len){
+                max_len = len;
+                start = l;
+            }
+            l--;
+            r++;
+            
+        }
+        
+        //even length
+        
+        l = i; r=i+1;
+        while(l>=0 && r<s.length() && s[l] == s[r]){
+            len = r-l+1;
+            if(len>max_len){
+                max_len = len;
+                start = l;
+            }
+            l--; r++;
+        }
+    }
+    return s.substr(start, max_len);
+}
+```
+
+DP tough:  
 1. Create a 2-D bool Dp array to represent indices i&j of the string where j>i and dp[i][j] is true if substring (i to j) is palindrome else false;
 2. Now go through pairs by traversing substrs of length 1 , then length 2 ... length n
 3. For each pair check if s[i] == s[j] and dp[i+1][j-1] is true. i,e current i and j are same and remaining substring is palindrome. if current palindrome length is greater than the maximum then store current index pairs in var a,b;
