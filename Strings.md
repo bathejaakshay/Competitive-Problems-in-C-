@@ -3,7 +3,7 @@
 Naive Approach:  
 1.We will go through all index pairs O(n^2) * see if those are palindrome and keep only largest palindrome O(n) = O(n^3)
 
-**DP: Intuitive**
+**Iterative: Intuitive**
 - What is a better approach to tackle if a string is palindrom? 
 - Either to start at the ends and keep match till middle
 - or start at middle and keep matching till end. In this case starting at middle helps reduce the Time complexity.
