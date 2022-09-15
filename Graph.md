@@ -2008,3 +2008,69 @@ class Solution {
 ```
 `SC : O(m*n) TC: O(m*n log (m*n))`
 ---
+
+#### [31. Find eventual safe states](https://practice.geeksforgeeks.org/problems/eventual-safe-states/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=eventual-safe-states) 
+A directed graph of V vertices and E edges is given in the form of an adjacency list adj. Each node of the graph is labelled with a distinct integer in the range 0 to V - 1.  
+
+A node is a terminal node if there are no outgoing edges. A node is a safe node if every possible path starting from that node leads to a terminal node.  
+
+You have to return an array containing all the safe nodes of the graph. The answer should be sorted in ascending order.  
+**Approach**
+- Two points to note is that all the vertices present in a cycle cannot be a safe node and vertices that have a path to any cycle cant be safe node.
+- We use inans array to mark if the node is safe.
+- Remember we use recstack when detecting cycle in a directed graph. Now if there is a cycle then recstack wont be updated back to zero for the nodes in cycle and simply return false. So only when program counter is able to reach `recstk[i] = 0` statement then only we can be sure that node i is safe.
+- it also takes care of second point that is if a node has a path to cycle that the node in cycle will be present in recstk and will be visited so it will return false.
+
+```
+bool dfs(int i, vector<int> adj[], vector<int> &recstack, vector<int> &visited,vector<int> &inans){
+    visited[i] = 1;
+    recstack[i] = 1;
+    // cout<<"i = "<<i<<endl;
+    for(int &x : adj[i]){
+        // cout<<"x = "<<x<<endl;
+        if(!visited[x]){
+            if(dfs(x, adj, recstack, visited, inans) == false) return false;
+        }
+        else{
+            
+            if(recstack[x]==1){
+                // cout<<" i = "<<i<<" x = "<<x<<endl;
+                return false;
+            }
+        }
+    }
+    // cout<<" i = "<<i<<endl;
+    inans[i]=1;
+    recstack[i] =0;
+    return true;
+}
+
+class Solution {
+  public:
+    vector<int> eventualSafeNodes(int V, vector<int> adj[]) {
+        // code here
+        
+        vector<int> ans;
+        vector<int> recstack(V,0);
+        vector<int> inans(V, 0);
+        vector<int> visited(V,0);
+        for(int i=0; i<V; i++){
+            if(!visited[i]){
+                if(dfs(i, adj,  recstack, visited, inans) == true)
+                {
+                      inans[i]=1; 
+                }
+                
+            }
+        }
+            
+        
+        for(int i=0; i<V; i++){
+            if(inans[i]) ans.push_back(i);
+        }
+        return ans;
+    }
+};
+
+```
+- 
