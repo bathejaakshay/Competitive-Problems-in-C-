@@ -262,11 +262,49 @@ vector<int> topoSort(int V, vector<int> adj[])
 	    return ans;
 	}
 ```
- **Using DFS**:  
+ **Using DFS : Easier Comparatively**:  
  1. Finding Topological Sort using DFS is also easy.
  2. We just maintain an extra stack and visited array
  3. Simple Call the DFS for all edges.
  4. The moment DFS for that particular node is over add its value into the stack. That way they will be topologicaly sorted in the stack.
+
+```
+void dfs(int i, stack<int> &st, vector<int> adj[], vector<int> &visited){
+    visited[i] = 1;
+    for(int &x: adj[i]){
+        if(!visited[x]){
+            dfs(x,st, adj, visited);
+        }
+    }
+    
+    st.push(i);
+}
+class Solution
+{
+	public:
+	//Function to return list containing vertices in Topological order. 
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    // code here
+	    
+	    vector<int> ans;
+	    stack<int> st;
+	    
+	    vector<int> visited(V,0);
+	    for(int i=0 ; i<V; i++){
+	        if(!visited[i]){
+	            dfs(i, st, adj, visited);
+	        }
+	    }
+	    
+	    while(!st.empty()) {
+	        ans.push_back(st.top());
+	        st.pop();
+	    }
+	    return ans;
+	}
+};
+```
 ---
 
 #### [4. Number of Islands](https://leetcode.com/problems/number-of-islands/submissions/)
