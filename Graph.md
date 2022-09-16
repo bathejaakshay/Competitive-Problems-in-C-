@@ -713,6 +713,9 @@ We first construct a directed DFS tree. For root node we know if there exist mor
 16. We see if u is a root node, if it is then if it had more than one unvisited child (during traversing just maintain count) then its an articulation point.
 17. If it is a non root and non leaf node and  `disc[u] == low[u]` then `u` is an articulation point.
 
+We donot set `low[u] = min(low[u], low[v]` when `parent[u] == v` because if we do then we are saying that as there is a back edge from u to its parent so u cant be articulation point but its not true as if there are two nodes v and u where v is the direct parent of u and u also has back edge to v and u is not a leaf node then
+u can be articulation point.
+So we donot set `low[u]` as it would then lead make `low[u]<disc[u]` which result in not considering u as articulation point
 ```
 void dfs(vector<vector<int>> &adjlist,int u, vector<bool> &visited, vector<int> &disc, vector<int> &low, vector<int> &par, vector<int> &ans){
     
