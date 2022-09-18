@@ -424,3 +424,46 @@ public:
     }
 };
 ```
+#### [Minimum Time to Complete Trips](https://leetcode.com/problems/minimum-time-to-complete-trips/)
+You are given an array time where `time[i]` denotes the time taken by the ith bus to complete one trip.  
+
+Each bus can make multiple trips successively; that is, the next trip can start immediately after completing the current trip. Also, each bus operates independently; that is, the trips of one bus do not influence the trips of any other bus.  
+
+You are also given an integer totalTrips, which denotes the number of trips all buses should make in total. Return the minimum time required for all buses to complete at least totalTrips trips.  
+
+**Approach : Things happening in parallel (Buses making trips independently) and we have a range then use binary search**
+1. We know that the minimum time possible to complete `totTrips` is 1 and max time is `min time to cover 1 trip * totTrips`. 
+2. So we can apply binary search in this range and at each mid we can ask number of trips that can be completed before time = mid if it is <= `totTrips` then high=mid-1
+3. else low = mid+1;
+
+```
+class Solution {
+public:
+    long long minimumTime(vector<int>& time, int k) {
+        // int t=0;
+    if(time.size()==1) return (long long) k * (long long)time[0];   
+    int maxi = *min_element(time.begin(), time.end());
+    
+    long long high = (long long)k * (long long)maxi;
+    long long low = 1;
+    while(low<=high){
+        long long mid = (low+high)/2;
+        long long trips = 0;
+        
+        for(int i=0; i<time.size(); i++){
+            trips+=(mid/(long long)time[i]);
+            
+        }
+        if(trips >= k){
+            high = mid-1;
+        }
+        else{
+            low = mid+1;
+        }
+        
+    }
+    
+    return low;
+    }
+};
+```
