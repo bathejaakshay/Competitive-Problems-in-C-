@@ -247,6 +247,7 @@ class Solution {
 3. Similarly for all the nodes considering them at line l, their left child at l-1 and right at l+1.
 4. We store only the elements which comes first in that particular line.
 5. We use map for this.
+6. Bottom view is also same where we keep on updating the nodes coming for a particular line and the final element in that particular line is the ans.
 
 ```
 vector<int> topView(Node *root)
