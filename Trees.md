@@ -237,3 +237,52 @@ class Solution {
 ```
 
 ---
+
+
+#### [7. Top view of a binary tree](https://practice.geeksforgeeks.org/problems/top-view-of-binary-tree/1)  
+**Approach : Level order tricky**
+
+1. Consider vertical lines that you can see from above for each node.
+2. Now root is at line 0, its right child at line 1 and left at line -1
+3. Similarly for all the nodes considering them at line l, their left child at l-1 and right at l+1.
+4. We store only the elements which comes first in that particular line.
+5. We use map for this.
+
+```
+vector<int> topView(Node *root)
+    {
+        //Your code here
+     vector<int> ans;
+     map<int, int> mp;
+     
+     queue<pair<Node*, int>> q;
+     q.push({root, 0});
+     
+    while(!q.empty()){
+        
+        auto it=q.front();
+        q.pop();
+        
+        Node* ptr = it.first;
+        int line = it.second;
+        
+        if(mp.find(line) == mp.end()){
+            mp[line] = ptr->data;
+        }
+        
+        if(ptr->left!=NULL){
+            q.push({ptr->left, line-1});
+            
+        }
+        if(ptr->right!=NULL){
+            q.push({ptr->right, line+1});
+        }
+        
+    }
+        
+        for(auto it: mp){
+            ans.push_back(it.second);
+        }
+        return ans;
+    }
+```
