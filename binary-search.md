@@ -431,6 +431,10 @@ Each bus can make multiple trips successively; that is, the next trip can start 
 
 You are also given an integer totalTrips, which denotes the number of trips all buses should make in total. Return the minimum time required for all buses to complete at least totalTrips trips.  
 
+**Approach : Brute Force**  
+Check whether the min time can be 1, 2, 3, 4, 5...  
+Why do we need to check for each time linearly instead we check in jumps through binary search.
+
 **Approach : Things happening in parallel (Buses making trips independently) and we have a range then use binary search**
 1. We know that the minimum time possible to complete `totTrips` is 1 and max time is `min time to cover 1 trip * totTrips`. 
 2. So we can apply binary search in this range and at each mid we can ask number of trips that can be completed before time = mid if it is <= `totTrips` then high=mid-1
