@@ -636,3 +636,70 @@ int binarysearch(vector<vector<int>> &matrix, int k){
      return ans;   
 }
 ```
+
+#### [11. Minimum Limit of Balls in a Bag](https://leetcode.com/problems/minimum-limit-of-balls-in-a-bag/)  
+You are given an integer array nums where the ith bag contains nums[i] balls. You are also given an integer maxOperations.  
+
+You can perform the following operation at most maxOperations times:  
+
+Take any bag of balls and divide it into two new bags with a positive number of balls.  
+For example, a bag of 5 balls can become two new bags of 1 and 4 balls, or two new bags of 2 and 3 balls.  
+Your penalty is the maximum number of balls in a bag. You want to minimize your penalty after the operations.  
+
+Return the minimum possible penalty after performing the operations.  
+
+**Approach : Binary Search**
+1. We know that minimum penalty can be 1 and max can be the max element in the bag
+2. Now for each mid penalty we find the number of operations required to bring mid penalty
+3. If the number of operations came out to be lesser than or equal to the given number of operations then it means we can decrease the penalty so h = mid-1
+4. else l = mid+1
+5. Now how to compute number of operations required to get given penalty. Try to divide each bag into given penalty
+6. Lets say the bag bi has 5 balls and penalty is 2 so we get 2 2 1 so 5/2  = 2 operations
+7. if the number of balls had been divisible by penalty then say 4 balls and penalty is 2 then 2 2 i.e 4/2 - 1 operations
+8. We know for sure that there is atleast one element in the bag which has balls greater than the penalty.
+
+```
+int operations(vector<int> &nums, int mid){
+    int mini = *min_element(nums.begin(), nums.end());
+    int op = 0;
+    for(int &x: nums){
+        if(x > mid)
+            if(x%mid!=0)
+                op += ((x/mid));
+            else
+                op += ((x/mid) -1);
+    }
+    return op;
+}
+class Solution {
+public:
+    int minimumSize(vector<int>& nums, int maxOperations) {
+        // the minimum can be 1 and maximum penalty can be max element
+        // Now for each mid penalty we need to find the min number of operations to get to the penalty of mid
+        
+        // say we have 2 8 in one operation we can get 2 4 4 4 min
+        // with my approach it would be 2 2 6
+        // The question remains is how to find the minimum number of operations to get the given penalty
+        
+        int l = 1;
+        int h = *max_element(nums.begin(), nums.end());
+        
+        while(l<=h){
+            int mid = (l + h)>>1;
+            
+            int c = operations(nums, mid);
+            if(c <= maxOperations){
+                h = mid-1;
+                
+            }
+            else{
+                l=mid+1;
+            }
+        }
+        return l;
+    }
+};
+```
+
+
+
