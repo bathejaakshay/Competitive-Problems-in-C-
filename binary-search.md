@@ -424,7 +424,7 @@ public:
     }
 };
 ```
-#### [Minimum Time to Complete Trips](https://leetcode.com/problems/minimum-time-to-complete-trips/)
+#### [8. Minimum Time to Complete Trips](https://leetcode.com/problems/minimum-time-to-complete-trips/)
 You are given an array time where `time[i]` denotes the time taken by the ith bus to complete one trip.  
 
 Each bus can make multiple trips successively; that is, the next trip can start immediately after completing the current trip. Also, each bus operates independently; that is, the trips of one bus do not influence the trips of any other bus.  
@@ -470,4 +470,49 @@ public:
     return low;
     }
 };
+```
+
+#### [9. Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/)
+A conveyor belt has packages that must be shipped from one port to another within days `days`.  
+
+The ith package on the conveyor belt has a weight of `weights[i]`. Each day, we load the ship with packages on the conveyor belt (in the order given by weights). We may not load more weight than the maximum weight capacity of the ship.  
+
+Return the least weight capacity of the ship that will result in all the packages on the conveyor belt being shipped within days days.  
+**Approach**
+1. The range of capacity of the conveyer belt can be between max(weights) and sum(weights)
+2. Now for each mid we would check the number of days required. If it is more than given `days` then that meand current capacity is not enough so we need more capacity hence l =  mid+1; else h = mid - 1;
+
+```
+ int shipWithinDays(vector<int>& weights, int days) {
+        //minimum capacity should be equal to the maximum weight of any luggage and maximum capacity is sum of all weights;
+        
+        int h = accumulate(weights.begin(), weights.end(), 0);
+        // sort(weights.begin(), weights.end());
+        
+        int maxi = *max_element(weights.begin(), weights.end());
+        int l = maxi;
+        while(l<=h){
+            int mid = (l+h)>>1;
+            //compute number of days to ship packages with mid capacity
+            int day=1;
+            int w = 0;
+            
+            for(int i=0; i<weights.size(); i++){
+                w += (weights[i]);
+                if(w>mid){
+                    day++;
+                    w = weights[i];
+
+                }
+            }
+            if(day <= days){
+                h = mid-1;
+            }
+            else{
+                l = mid+1;
+            }
+            
+        }
+        return l;
+    }
 ```
