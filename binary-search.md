@@ -516,3 +516,4 @@ Return the least weight capacity of the ship that will result in all the package
         return l;
     }
 ```
+TC: O(log(range) * (for loop)) : O(log(sum(weights)) * len(weight vector))  
