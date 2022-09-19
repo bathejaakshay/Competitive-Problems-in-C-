@@ -517,3 +517,116 @@ Return the least weight capacity of the ship that will result in all the package
     }
 ```
 TC: O(log(range) * (for loop)) : O(log(sum(weights)) * len(weight vector))  
+
+
+#### [10. Kth Smallest Element in a Sorted Matrix : VVVIMP 3 concepts are covered](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/)  
+
+[Reference Post](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/1322101/C%2B%2BJavaPython-MaxHeap-MinHeap-Binary-Search-Picture-Explain-Clean-and-Concise)  
+**Approach 1 : Max heap : O(n\*mlog(k)) the sorted order of the elements doesnt really matter**
+1. Maintain a max heap of size k such that at any instant it keeps k smallest elements.
+2. Traverse each element in the matrix, and push it into max heap if it increases size to k+1 then pop the top
+3. The final ans is the top element in the max heap after all the iterations
+
+`TC: O( m * n * log(k))`
+
+```
+int usingMaxHeap(vector<vector<int>> &matrix, int k){
+    /*
+        Maintain a max heap of size k and keep pushing the elements. if heap size becomes greater than k then bring it back to size k.
+        This way at the end we will have our kth smallest element at the top and all the elements lesser than that will exist in the max heap.
+        Our max heap represents smallest k elements.
+    */
+    priority_queue<int> pq;
+    for(int i=0; i<matrix.size(); i++){
+        for(int j=0; j<matrix[i].size(); j++){
+            pq.push(matrix[i][j]);
+            if(pq.size()>k){
+                pq.pop();
+            }
+        }
+    }
+    return pq.top();
+}
+```
+
+**Approach 2 : Min heap : O(k log(k)) Awesome approach**  
+1. We apply the concept of finding k th smallest element in the n sorted lists.
+2. We maintain pointer to each sorted row and push them into min heap one by one.
+3. In each ith iteration we get the ith smallest element.
+4. First push all the starting indices and values of each row with min heap on values.
+5. Then for i=1 to k we pop the top and increment its column and add the respective element in the minheap
+
+```
+int usingMinHeap(vector<vector<int>> &matrix, int k){
+    priority_queue<vector<int>, vector<vector<int>>, greater<>> pq;
+    int n = matrix.size();
+    for(int i=0; i<min(k,n); i++){
+        pq.push({matrix[i][0],i,0});
+    }
+    
+    while(k>1){
+        auto it = pq.top();
+        pq.pop();
+        k--;
+        int i = it[1], j = it[2];
+        if(j+1<matrix.size()){
+            pq.push({matrix[i][j+1], i, j+1});
+        }
+        
+    }
+    return pq.top()[0];
+}
+
+```
+
+**Approach 3: Binary Search : O(M+N * (log (diff in max_element and min_element in the matrix)))**
+
+1. The range of the binary search is between the min element and the max_element in the array.
+2. We compute the mid value and the number of numbers less than equal to mid (O(M+N))
+3. If the numbers are less than k then it means we need to increase our value so we look at our right side  l = mid+1
+4. else if(numbers are greater or equal to mid then we decrease the val) h = mid-1
+5. Also we maintain our ans whenever numbers less than mid is equal to k
+
+```
+int nltk(vector<vector<int>> &matrix, int k){
+    /* We start at first row last col 
+       In each row we need to compute the numbers <=k 
+       so we start from last col in first row, we find the j where matrix[i][j] <= k then we move to next row and keep the j same because of increasing order nature in the columns.
+       as for j+1 to n we know our matrix[i][j'] is greater than k
+       
+ 	So O(M+N)
+    */
+    int i=0, j = matrix.size()-1;
+    int ans = 0;
+    for(int i= 0; i<matrix.size(); i++){
+        while(i<matrix.size() && j>=0 && matrix[i][j] > k){
+            j--;
+        }
+        ans+=(j+1);
+    }
+    return ans;
+}
+int binarysearch(vector<vector<int>> &matrix, int k){
+    int n = matrix.size();
+    int l = matrix[0][0], h = matrix[n-1][n-1];
+    int ans;
+    while(l <= h){
+        
+        int mid =  (l + h)>>1;
+        // count number of numbers <= mid
+        
+        int c = nltk(matrix, mid);
+        // if numer of numbers less than mid are less than k then we need to look at right half as we need bigger mid value else we look at left.
+        if(c<k){
+            l = mid+1;
+        
+        }
+        else{
+            ans = mid;
+            h = mid-1;
+        }
+        
+    }
+     return ans;   
+}
+```
