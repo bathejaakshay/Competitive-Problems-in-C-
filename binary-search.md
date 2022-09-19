@@ -521,6 +521,12 @@ TC: O(log(range) * (for loop)) : O(log(sum(weights)) * len(weight vector))
 
 #### [10. Kth Smallest Element in a Sorted Matrix : VVVIMP 3 concepts are covered](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/)  
 
+Given an n x n matrix where each of the rows and columns is sorted in ascending order, return the kth smallest element in the matrix.  
+
+Note that it is the kth smallest element in the sorted order, not the kth distinct element.  
+
+You must find a solution with a memory complexity better than O(n2).  
+
 [Reference Post](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/discuss/1322101/C%2B%2BJavaPython-MaxHeap-MinHeap-Binary-Search-Picture-Explain-Clean-and-Concise)  
 **Approach 1 : Max heap : O(n\*mlog(k)) the sorted order of the elements doesnt really matter**
 1. Maintain a max heap of size k such that at any instant it keeps k smallest elements.
