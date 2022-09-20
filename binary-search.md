@@ -803,3 +803,49 @@ int smallestDivisor(vector<int>& nums, int threshold) {
         return l;
     }
 ```
+
+---
+
+#### [14. Heaters](https://leetcode.com/problems/heaters/)  
+Given positions of houses and heaters on x axis. Find the minimum radius such that all of the houses are covered by some heater. The radius that you choose is the radius of each heater.
+
+**Approach**  
+1. WE apply bsearch on the radius which can be between 0 and max(max_pos of heater, max_pos of houses)  
+2. For each radius we find if it is possible to cover all the houses with that radius.
+
+```
+bool iscoverable(vector<int> &houses, vector<int> &he, int r){
+    int i=0,j=0;
+    while(i<houses.size() && j<he.size()){
+        if(houses[i] <= he[j] + r && houses[i] >= he[j]-r){
+            i++;
+        }
+        else{
+            j++;
+        }
+    }
+    if(i==houses.size()) return true;
+    return false;
+}
+
+class Solution {
+public:
+    int findRadius(vector<int>& houses, vector<int>& heaters) {
+     // We will bsearch on the radius and find with that particular radius can we cover all the houses. 
+        sort(houses.begin(), houses.end());
+        sort(heaters.begin(), heaters.end());
+        int l = 0, h = max(*max_element(heaters.begin(), heaters.end()),*max_element(houses.begin(), houses.end()));
+        while(l<=h){
+            
+            int mid = (l+h)>>1;
+            if(iscoverable(houses, heaters, mid)){
+                h = mid-1;
+            }
+            else{
+                l = mid+1;
+            }
+        }
+        return l;
+    }
+};
+```
