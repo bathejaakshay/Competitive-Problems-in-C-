@@ -701,5 +701,64 @@ public:
 };
 ```
 
+---
 
+#### [12.  Minimized Maximum of Products Distributed to Any Store : Interesting](https://leetcode.com/problems/minimized-maximum-of-products-distributed-to-any-store/)  You are given an integer n indicating there are n specialty retail stores. There are m product types of varying amounts, which are given as a 0-indexed integer array quantities, where quantities[i] represents the number of products of the ith product type.  
+
+You need to distribute all products to the retail stores following these rules:  
+
+A store can only be given at most one product type but can be given any amount of it.  
+After distribution, each store will have been given some number of products (possibly 0). Let x represent the maximum number of products given to any store. You want x to be as small as possible, i.e., you want to minimize the maximum number of products that are given to any store.
+Return the minimum possible x.  
+****
+
+**Approach : Binary Search**
+1. The main thing is to understand how to apply binary search in this problem.
+2. As the store can be given atmost one type of product and we need to minimize the maximum number of products that are given to any store. So we binary search for `x` number of products
+3. i.e is it possible to distribute atmax x products of a type in n stores? We do this by calculating the number of stores required with corresponding `x`.
+4. If it is not possible then we know we need to increase the value of `x` to have relative less stores.
+5. So the range of binary search is 1 (1 because min value of that needs to be distributed is 1) to max_products in any store.
+
+```
+class Solution {
+public:
+    int minimizedMaximum(int n, vector<int>& q) {
+        /*
+            We need to choose some number of shops for each product and divide the items evenly, This approach is not possible cuz. Instead we choose some number of products which we consider maximum for any store and check how many stores do we need to distribute quantities array.
+            
+        
+        */
+        int l=1, h=*max_element(q.begin(), q.end());
+        while(l<=h){
+            // mid is the maximum number of products of a type to be distributed to any store
+            int mid = (l+h)>>1;
+            // For this much amount of products we will find the total number of stores required
+            // are these many stores available
+            // if they are available then we want to see if we can ditruibute relatively less number of products into the stores so we do l = mid+1
+            
+            int stores=0;
+            for(int i = 0; i<q.size(); i++){
+                int j = q[i]/mid;
+                if(j*mid == q[i]){
+                    stores+=(j);
+                }
+                else{
+                    stores+=(j+1);
+                }
+            }
+            // "stores" are the total number of stores required to distribute "quantities" which each store having atmax mid products 
+            if(stores > n){
+                l = mid+1;
+            }
+            else{
+                h = mid-1;
+            }
+            
+            
+        }
+        return l;
+        
+    }
+};
+```
 
