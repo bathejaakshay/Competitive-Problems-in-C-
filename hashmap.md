@@ -248,3 +248,41 @@ int longsubstr(string A){
 }
 
 ```
+
+#### [7. Number of subarrays with arithmetic mean k]
+Given a subarray NUMS and value k, find number of subarrays in nums that have AM = k.
+**Approach**
+1. This problem simply gets converted into the number of subarrays sums=0
+2. The AM of 4 number say a,b,c,d = k i.e a+b+c+d = 4k, or (a-k) + (b-k) + (c-k) + (d-k) = 0 Now again if some subarray is there that has AM = k then the sum of their numbers - len of subarray \*(k) will be zero.
+3. So consider we have updated our nums with each value at index i = `nums[i] - k`
+4. Now we just need to find no. of subarray sum 0
+
+```
+int solve(vector<int> &nums, int k){
+	// number of subarrays with sum = 0 
+
+	/*
+		Basically a + b + c + d = 4k i.e a+b+c+d - 4k =0 now when does sum - (i+1)k becomes zero
+		This problem gets converted into a number of subarray sum =0 problem 
+	*/
+
+
+	int sum = 0;
+	unordered_map<int,int> mp;
+	// for(int i=0; i<nums.size(); i++) nums[i] -= k;
+		int count=0;
+	for(int i=0; i<nums.size(); i++){
+		sum+=(nums[i]-k);
+		if(sum == 0){
+			count++;
+		}
+		if(mp.find(sum)!=mp.end()){
+			count+=(mp[sum]);
+		}
+		cout<<"sum = "<<sum<<endl;
+		mp[sum]++;
+	}
+	return count;
+}
+```
+---
