@@ -370,3 +370,39 @@ string lcs(string a, string n){
 }
 ```
 ---
+
+#### [7. Min number of swaps to bring all Red balls together](https://algo.monster/problems/min_adj_swaps_to_group_red_balls)
+
+There are N balls positioned in a row. Each of them is either red or white . In one move we can swap two adjacent balls. We want to arrange all the red balls into a consistent segment. What is the minimum number of swaps needed?  
+
+Given string S of length N built from characters "R" and "W", representing red and white balls respectively, returns the minimum number of swaps needed to arrange all the red balls into a consistent segment. If the result exceeds 10^9, return -1.  
+
+**Approach** 
+- The optimal approach is to bring the all red balls to the middle of first and last red ball.
+- We use 2 pointer approach to do so.
+- We precompute the total occurence of Red balls which help us compute the white in any window starting and ending with red ball in one operation.
+- each find we find new start red and end red and compute white balls as swap.
+
+```
+int min_swaps(std::string s) {
+    // WRITE YOUR BRILLIANT CODE HERE
+    
+    int count_red=0;
+    for(int i=0; i<s.length(); i++){
+        if(s[i] == 'R') count_red++;
+    }
+    int count=0;    
+    int i=0, j = s.length()-1;
+    while(i<j){
+        if(s[i] == s[j] && s[i] == 'R'){
+            count += j-i-1-(count_red-2);
+            count_red-=2;
+            i++;
+            j--;
+        }
+        while(s[i]=='W') i++;
+        while(s[j] == 'W') j--;
+    }
+    return (count<0)?-1:count;
+}
+```
