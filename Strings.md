@@ -406,3 +406,55 @@ int min_swaps(std::string s) {
     return (count<0)?-1:count;
 }
 ```
+
+---
+#### [8. Duplicate letters](https://leetcode.com/problems/remove-duplicate-letters/)  
+Given a string s, remove duplicate letters so that every letter appears once and only once. You must make sure your result is the smallest in lexicographical order among all possible results.  
+
+
+**Approach: Monotonic Stack**  
+1. After thinking a while for the question we should understand that it is not straight forward take e.g bcabc and bcab. No simple greedy idea comes to mind.
+2. But we know that we need to maintain lexicographical order that is either increasing or decreasing and we need to keep distinct letters
+3. Hence an indication of Monotonic Stack.
+4. We will maintain an increasing monotonic stack we will be our ans.
+5. We will also maintain remaining frequency array for each alphabet. and seen array to indicate if that particular alphabet is currently in our ans or not.
+6. Now for each alphabet at index i if it is not already present in stack then we remove all the chars that are greater that current and have freq remaining more than 0. While popping off the elements we set their seen variable to false as they will no more be in our ans so that we can take its future occurence into consideration.
+7. Now we push are current char if not already present in the stack and set its seen variable and decrement its remaining frequency.
+
+```
+string removeDup(string s){
+    //freq of each letter
+    //element in the stack? seen 
+    // We will be maintaining monotonically increasing stack as our ans.
+    vector<int> freq(26,0);
+    vector<bool> seen(26,false);
+    for(char i: s){
+        freq[i-'a']++;
+    }
+    
+    stack<int> st;
+    for(int i=0; i<s.length(); i++){
+        
+        while(!st.empty() && st.top() >= s[i] && !seen[s[i]-'a'] && freq[st.top()-'a']>0){
+                seen[st.top()-'a'] = false;         
+                st.pop();
+            
+        }
+        if(!seen[s[i]- 'a']){
+            st.push(s[i]);    
+            seen[s[i]-'a'] = true;
+        }    
+        freq[s[i]-'a']--;
+        
+    }
+    string ans = "";
+    while(!st.empty()){
+        ans = (char)st.top() + ans;
+        st.pop();
+    }
+    return ans;
+}
+
+```
+---
+
