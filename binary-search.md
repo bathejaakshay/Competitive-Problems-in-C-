@@ -849,3 +849,65 @@ public:
     }
 };
 ```
+---
+#### [15. Job scheduling Oracle 2022]
+Given n(no of processors), m(total number of jobs), k (kth processor) and a constraint that the difference between the number of jobs allocated to any neighbouring processors shouldnt be more than 1.
+
+**Approach : Binary Search**
+1. We look at the max number of jobs that can be allocated to the kth processor.
+2. low  = 1, high = m
+3. Now for every mid number of jobs we find the minimum total jobs required for all processors to satisfy the constraint.
+4. If it does satisfy then we increase mid i.e low = mid+1
+5. else we do high = mid-1
+6. We also keep record of the last mid that satisfied the constraint.
+
+```
+
+bool isposs(int val, int n, int m, int k){
+	
+	int up = val - (n-k);
+
+	int req=0;
+	req += (n-k+1) * (up+val) /2;
+	int low = val - (k-1);
+	req += (k-1) * (low + val-1)/2;
+	return req<m;
+}
+
+int solve(int n,int m, int k){
+	// min number of jobs to kth processor
+	int low = 1;
+	// max number of jobs to kth processor
+	int high = m;
+	int ans=0;
+	while(low<=high){
+		// candidate jobs to kth processor
+		int mid = (low+high)>>1;
+		// Check minimum jobs required to have mid as the candidate jobs to kth processor 
+		if(isposs(mid, n, m, k)){
+			ans = mid;
+			low = mid+1;
+		}
+		else{
+			high = mid-1;
+		}
+	}
+	return ans;
+}
+
+int main(int argc, char const *argv[])
+{
+	
+	int t;
+	cin>>t;
+	while(t > 0){
+		t--;
+		int n,m,k;
+		cin>>n>>m>>k;
+
+		cout<<solve(n,m,k);
+	}
+
+	return 0;
+}
+```
