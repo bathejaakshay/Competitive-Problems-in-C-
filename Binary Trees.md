@@ -174,3 +174,34 @@ int main(int argc, char const *argv[])
 ```
 
 ---
+
+#### [2. Maximum path sum in a Binary Tree](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
+The  nodes can be positive or negative
+**Approach** 
+1. Similar to the diameter of the graph question.
+2. We make maxi as the global variable to keep record of the maximum path sum
+3. For current node we want max sum of the left straight path and right and then we update maxi if current + left_path +  right_path > maxi
+4. and return current + max(left_path, right_path)
+5. Note : We never want our left and right to be negative so we do left_path = max(0, left_path) and right_path = max(0, right_path)
+
+```
+int maxp(TreeNode *root, int &maxi){
+    if(root== NULL) return 0;
+    int left = max(0,maxp(root->left, maxi));
+    int right = max(0,maxp(root->right, maxi));
+    if(left + right + root->val > maxi)
+        maxi = left + right + root->val;
+    return max(left, right) + root->val;
+    
+    
+}
+
+class Solution {
+public:
+    int maxPathSum(TreeNode* root) {
+        int maxi = INT_MIN; 
+        maxp(root, maxi);
+        return maxi;
+    }
+};
+```
