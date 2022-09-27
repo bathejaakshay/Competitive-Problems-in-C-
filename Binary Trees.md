@@ -122,28 +122,25 @@ void inorder_stack(TreeNode *root){
 
 	}
 }
-void postorder_stack(TreeNode *root){
-	stack<TreeNode*> st;
-
-	st.push(root);
-	while(!st.empty()){
-		TreeNode *ptr = st.top();
-
-		if(ptr->right){
-
-			st.push(ptr->right);
-			ptr->right = NULL;
-		}
-		else if(ptr->left){
-			st.push(ptr->left);
-			ptr->left = NULL;
-		}
-		else{
-			st.pop();
-			cout<<ptr->val<<" ";
-		}
-
-	}
+vector<int> postorder_stack(TreeNode *root){
+    stack<TreeNode*> st;
+    stack<int> st2;
+    st.push(root);
+    while(!st.empty()){
+        TreeNode *ptr = st.top();
+        st.pop();
+        st2.push(ptr->val);
+        if(ptr->left) st.push(ptr->left);
+        if(ptr->right) st.push(ptr->right);
+    
+    }
+    
+    vector<int> ans;
+    while(!st2.empty()){
+        ans.push_back(st2.top()); 
+        st2.pop();
+    }
+    return ans;
 }
 
 int main(int argc, char const *argv[])
@@ -169,7 +166,9 @@ int main(int argc, char const *argv[])
 	cout<<endl;
 	inorder_stack(t->root); // Inorder stack and postorder stack empties the tree so make sure to comment one to run another.
 	cout<<endl;
-	postorder_stack(t->root);
+	vector<int> ans = postorder_stack(t->root);
+	for(int &x: ans) cout<<x<<" ";
+	
 	return 0;
 }
 ```
