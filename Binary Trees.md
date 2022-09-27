@@ -205,3 +205,9 @@ public:
     }
 };
 ```
+
+#### 3. Check if two trees are identical
+**Approach**
+- Try any traversal pre,post or inorder if it comes out to be same for both trees then they are identical
+- Another way is to do bfs using queue
+
