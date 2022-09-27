@@ -211,3 +211,43 @@ public:
 - Try any traversal pre,post or inorder if it comes out to be same for both trees then they are identical
 - Another way is to do bfs using queue
 
+
+#### [4. Binary ZigZag Traversal](https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/) 
+**Approach**
+- Using queue level order it is simple
+
+```
+vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+      int i=0;
+        if(root==NULL) return {};
+        queue<TreeNode*> q;
+        q.push(root);
+        vector<vector<int>> ans;
+        while(!q.empty()){
+            int s = q.size();
+            vector<int> v;
+            for(int i=0; i<s; i++){
+                TreeNode *ptr = q.front();
+                q.pop();
+                if(ptr->left)
+                    q.push(ptr->left);
+                if(ptr->right)
+                    q.push(ptr->right);
+                    
+                v.push_back(ptr->val);
+                
+            }
+            if(i%2==0){
+                ans.push_back(v);
+            }
+            else{
+                reverse(v.begin(), v.end());
+                ans.push_back(v);
+            }
+            i++;
+            
+        }
+        return ans;
+    }
+    
+```
