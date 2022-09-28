@@ -371,3 +371,19 @@ public:
 2. Second traversal we get right root left and each element in ans is tha val with the level info.
 3. Now the generated two ans should be exactly same for the tree to be symmetric
 
+#### [7. Lowest Common Ancestor](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/)
+
+**Approach: Easy recurrsion**
+```
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root==NULL) return NULL;
+        if(root == p || root == q) return root;
+        TreeNode *left = lowestCommonAncestor(root->left, p,q);
+        TreeNode *right = lowestCommonAncestor(root->right, p, q);
+        if(left== NULL && right == NULL) return NULL;
+        if(left == NULL) return right;
+        if(right == NULL) return left;
+        return root;
+        
+    }
+```
