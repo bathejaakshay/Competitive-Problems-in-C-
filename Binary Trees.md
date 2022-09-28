@@ -319,3 +319,55 @@ public:
     }
 };
 ```
+---
+#### [6. Symmetric Tree]()
+Is the tree symmetric along the center?
+Two ways
+**Approach: Two pointers One Traversal**\
+1. We can use two pointers and traverse the tree once and simultaneously move these pointers to the left and right to check mirror property.
+```
+//Approach 2
+void traverse1(TreeNode *root, vector<pair<int,int>> &a1, int level){   
+    if(root==NULL) return;
+    
+    traverse1(root->left, a1, level+1);
+    a1.push_back({root->val, level});
+    traverse1(root->right, a1, level+1);
+    
+}
+
+void traverse2(TreeNode *root, vector<pair<int,int>> &a2, int level){
+    if(root==NULL) return;
+    traverse2(root->right, a2, level+1);
+    a2.push_back({root->val, level});
+    traverse2(root->left, a2, level+1);
+    
+}
+
+//Approach 1
+bool sym(TreeNode *rootl, TreeNode *rootr){
+    if(rootl == NULL || rootr == NULL) return rootl == rootr;
+    if(rootl->val != rootr->val) return false;
+    return sym(rootl->left, rootr->right) && sym(rootl->right, rootr->left);
+}
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        return root==NULL || sym(root->left, root->right);
+        // vector<pair<int,int>> a1,a2;
+        // traverse1(root, a1, 0);
+        // traverse2(root, a2, 0);
+        // if(a1.size()!=a2.size()) return false;
+        // for(int i=0; i<a1.size(); i++){
+        //     if((a1[i].first != a2[i].first) || (a1[i].second!=a2[i].second)) return false;
+        // }
+        // return true;
+    }
+};
+```
+
+**Approach: 2 traversals**
+1. First traversal we get left root right and each element in ans is the val with the level info.
+2. Second traversal we get right root left and each element in ans is tha val with the level info.
+3. Now the generated two ans should be exactly same for the tree to be symmetric
+
