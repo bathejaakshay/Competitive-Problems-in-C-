@@ -387,3 +387,65 @@ TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         
     }
 ```
+
+#### [8. Width of a binary tree : Tricky](https://leetcode.com/problems/maximum-width-of-binary-tree/)
+Width is defined by the number of nodes possible in the first node and last node at any level
+**Approach**  
+- Level order traversal
+- We will keep the intuition of `2*i as left and 2*i+1 as right of root i=1`. But this will lead to over flow of the value int if the tree is skewed
+- So we act smart we need each of our level index should start with zero. This is possible if during computation of left index we substract the first index val in that level from i so `left = 2*(i-start_index of level)` and `right = 2*(i-start_index of level + 1)`
+
+```
+int widthOfBinaryTree(TreeNode* root) {
+        if(root==NULL) return 0;
+        queue<pair<TreeNode*, long long>> q;
+        q.push({root, 1});
+        long long maxi = 1;
+        while(!q.empty()){
+            int s = q.size();
+            if(s>1){
+                auto it = q.front();
+                s--;
+                q.pop();
+                long long start = it.second;
+                if(it.first->left){
+                    q.push({it.first->left, (long long)2*(it.second-start)});
+                    
+                }
+                if(it.first->right){
+                    q.push({it.first->right, (long long)2*(it.second-start)+1});
+                }
+                
+                for(int i=0; i<s; i++){
+                    auto it = q.front();
+                q.pop();
+                int end = (long long)it.second;
+            
+                if(it.first->left){
+                    q.push({it.first->left,(long long) 2*(it.second-start)});
+                    
+                }
+                if(it.first->right){
+                    q.push({it.first->right,(long long) 2*(it.second-start)+1});
+                }
+                    // cout<<"end = "<<end<<" start = "<<start<<" it = "<<it.first->val<<endl;
+                    maxi = max(maxi, end-start+1);
+                }
+                
+            }
+            else{
+                auto it = q.front();
+                q.pop();
+                if(it.first->left){
+                    q.push({it.first->left, (long long)2*(0)});
+                    
+                }
+                if(it.first->right){
+                    q.push({it.first->right, (long long)2*(0)+1});
+                }
+                
+            }
+        }
+        return maxi;
+    }
+```
