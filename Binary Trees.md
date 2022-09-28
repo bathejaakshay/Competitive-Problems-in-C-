@@ -293,3 +293,29 @@ For each node at position `(row, col)`, its left and right children will be at p
         return finall;
     }
 ```
+
+---
+#### [5. Right View of the binary Tree](https://leetcode.com/problems/binary-tree-right-side-view/)
+
+**Approach**
+1. Level order approach is easy but more space consuming.
+2. Recursive approach is using Reverse preorder traversal i.e root right left.
+3. maintain level count and only append to vector, the node which reach that level first.
+
+```
+void traverse(TreeNode *root, int level, vector<int> &ans){
+    // reverse pre order: root right left
+    if(root==NULL) return;
+    if(level == ans.size()) ans.push_back(root->val);
+    traverse(root->right, level+1, ans);
+    traverse(root->left, level+1, ans);
+}
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> ans;
+        traverse(root, 0, ans);
+        return ans;
+    }
+};
+```
