@@ -251,3 +251,45 @@ vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
     }
     
 ```
+
+####[4. Vertical Traversal in Binary Tree - IMPORTANT](https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/)
+
+Given the root of a binary tree, calculate the vertical order traversal of the binary tree.  
+
+For each node at position `(row, col)`, its left and right children will be at positions `(row + 1, col - 1) and (row + 1, col + 1)` respectively. The root of the tree is at `(0, 0)`.
+
+**Approach**
+- Maintain a queue with Node and its coordinate in x axis and y axis.
+- maintain a map of multisets. The key of the map is the y axis of a node. The values are x_axis comp and value of that node which goes into the corresponding multiset.
+
+```
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        queue<pair<TreeNode*, pair<int,int>>> q;
+        q.push({root,{0,0}});
+
+        map<int,multiset<pair<int,int>>> mp;
+        
+        while(!q.empty()){
+            int s = q.size();
+            for(int i=0; i<s; i++){
+                    auto it = q.front();
+                    q.pop();
+                    mp[it.second.second].insert({it.second.first, it.first->val});
+                    if(it.first->left)
+                        q.push({it.first->left, {it.second.first+1, it.second.second-1}});
+                if(it.first->right)
+                        q.push({it.first->right, {it.second.first+1, it.second.second+1}});
+                }
+        }
+        
+        vector<vector<int>> finall;
+        for(auto x: mp){
+            vector<int> m;
+            for(auto j : x.second){
+                m.push_back(j.second);
+            }            
+            finall.push_back(m);
+        }
+        return finall;
+    }
+```
