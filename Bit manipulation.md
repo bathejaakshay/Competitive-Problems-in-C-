@@ -109,3 +109,29 @@ public:
 ```
 
 ---
+
+#### [4.  Longest Subarray With Maximum Bitwise AND](https://leetcode.com/contest/weekly-contest-312/problems/longest-subarray-with-maximum-bitwise-and/)
+**Approach**
+- The only thing to remember here is that bitwise and of two different numbers is strictly lesser than the maximum of those two numbers.
+- By this logic the maximum bitwise `x`  possible is actually the max of the array.
+- And the subarray with maximum contigous elements equal to `x` is our ans. Because different number gives bitwise and lesser than max.
+
+```
+  int longestSubarray(vector<int>& nums) {
+        // Lets first find max bitwise and
+       int maxi = *max_element(nums.begin(), nums.end());
+       int max_win=1;
+       int win=1;
+       for(int i=1; i<nums.size(); i++){
+           if(nums[i] == nums[i-1] && nums[i] == maxi){
+               win++;
+               max_win = max(max_win, win);
+           } 
+           else{
+               win=1;
+               
+           }
+       } 
+       return max_win;
+    }
+```
