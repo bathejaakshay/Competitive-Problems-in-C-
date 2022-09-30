@@ -2209,3 +2209,182 @@ public:
     }
 };
 ```
+
+#### [33. Special Paths](https://www.hackerearth.com/practice/algorithms/searching/binary-search/practice-problems/algorithm/special-path-b3ac37d0/?) 
+Given edges, price of each val, start and end node.
+The cost of each edge is the abs difference between the price of each node in the edge.
+Find min cost in a path from start to end
+
+**Approach : DFS O(Number of paths between source and target nodes)**  
+- Traverse each path from source to target by setting visited and unsetting it every time you visit and unvisit it.
+
+**Approach : Union Find**  
+- Sort edges based on the cost
+- Apply union find
+- Start connecting edges till start and end node doesnt connect 
+- Return the cost of the edge which connected the graph
+
+```
+#include <iostream>
+#include<bits/stdc++.h>
+using namespace std;
+
+int find(int u, vector<int> &parent){
+	if(u==parent[u]){
+		return u;
+	}
+	return parent[u] = find(parent[u], parent);
+}
+
+void unionn(int u, int v, vector<int> &rank, vector<int> &parent){
+	int pu= find(u, parent);
+	int pv = find(v, parent);
+	if(pu!=pv){
+		if(rank[pu] > rank[pv]){
+			parent[pv] = pu;
+			rank[pu]+=rank[pv];
+		}
+		else{
+			parent[pu] = pv;
+			rank[pv]+=rank[pu];
+		}
+	}
+}
+bool compare(vector<int> &u, vector<int> &v){
+	return u[2]<=v[2];
+}
+
+int solve(vector<vector<int>> &edges, vector<int> &val, int start, int end){
+	for(int i=0; i<edges.size(); i++){
+		int w = abs(val[edges[i][0]]-val[edges[i][1]]);
+		edges[i].push_back(w);
+		
+	}
+
+	sort(edges.begin(), edges.end(), compare);	
+	vector<int> rank(val.size(),1);
+	vector<int> parent(val.size());
+	for(int i=0; i<val.size(); i++) parent[i] = i;
+
+	for(int i=0; i<edges.size(); i++){
+		unionn(edges[i][0], edges[i][1], rank, parent);
+		if(find(start, parent) == find(end, parent)){
+			return edges[i][2];
+		}
+	}
+
+	return -1;
+
+
+}
+int main() {
+
+	int n,m;
+	cin>>n>>m;
+	vector<vector<int>> edges(m);
+	for(int i=0; i<m; i++){
+		int u,v;
+		cin>>u>>v;
+		edges[i] = {u-1,v-1};
+
+	}
+	vector<int> val(n);
+	for(int i=0; i<n; i++){
+		int item;
+		cin>>item;
+		val[i] = item;
+
+	}
+	int start,end;
+	cin>>start>>end;
+	cout<<solve(edges, val, start-1, end-1);
+
+}
+```
+---
+
+#### [number of Good Path HARD](https://leetcode.com/contest/weekly-contest-312/problems/number-of-good-paths/)
+```
+int find(int u, vector<int> &parent){
+    if(u==parent[u]) return u;
+    return parent[u] = find(parent[u], parent); 
+}
+
+void unionn(int u, int v, vector<int> &parent, vector<int> &rank){
+    int pu = find(u, parent);
+    int pv = find(v, parent);
+    
+    if(pu!=pv){
+        if(rank[pu] > rank[pv]){
+            parent[pv]  = pu;
+            rank[pu]+=rank[pv];
+        }
+        else{
+            parent[pu] = pv;
+            rank[pv] += rank[pu];
+        }
+    }
+}
+
+class Solution {
+public:
+    int numberOfGoodPaths(vector<int>& vals, vector<vector<int>>& edge) {
+        int n= vals.size();
+        vector<int> visited(n,0);
+        vector<vector<int>> adjlist(n);
+        map<int,vector<int>> mp;
+        for(int i=0; i<edge.size(); i++){
+            adjlist[edge[i][0]].push_back(edge[i][1]);
+            adjlist[edge[i][1]].push_back(edge[i][0]);
+            
+        }
+        vector<int> parent(n,0);
+        for(int i=0; i<vals.size(); i++){
+            mp[vals[i]].push_back(i);
+            parent[i] = i;
+        }        
+        int ans=n;
+        
+        vector<int> rank(n,1);
+        
+        for(auto x: mp){
+            int val = x.first;
+            
+            vector<int> cand = x.second;
+            if(cand.size()==1){
+                visited[cand[0]]=1;
+                for(int a:adjlist[cand[0]]){
+                    if(visited[a]==1){
+                        unionn(a,cand[0],parent, rank);
+                    }
+                }
+            }
+            else{
+                for(auto i : cand){
+                    visited[i] = 1;
+                    for(int x:adjlist[i]){
+                        if(visited[x]==1){
+                            unionn(x,i,parent,rank);
+                        }
+                    }
+                    
+                }
+                unordered_map<int,int> comp;
+                for(auto i:cand){
+                    int pi = find(i, parent);
+                    comp[pi]++;
+                }
+                // if the path has 3 max values in it then no of good paths is 3C2
+                for(auto m: comp){
+                    if(m.second > 1){
+                        ans+=((m.second*(m.second-1))/2);
+                    }
+                }
+            }
+        
+        }
+        return ans;
+    }
+};
+```
+
