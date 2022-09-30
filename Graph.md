@@ -2114,4 +2114,98 @@ class Solution {
 };
 
 ```
-- 
+---
+
+#### [32. Number of good paths](https://leetcode.com/contest/weekly-contest-312/problems/number-of-good-paths/)
+
+
+**Approach : Union Find**  
+- Start with each vertex as a separate component and inactive i.e visited = False 
+- Iterate nodes as in the sorted order of their values.
+- Activate the nodes and join/union the neighbour nodes which are active (The neighbour nodes are active indicates that they have lesser value as compare to the current node)
+- Now once we have traversed all nodes with same value, we check how many of such nodes lie in the same comp. say there are 4 nodes with value 5 and 3 of them lie in compA and 2 in comp B so total number good paths = 3C2 + 2C2 = 4
+- Also each node is also considered a good path.
+
+```
+int find(int u, vector<int> &parent){
+    if(u==parent[u]) return u;
+    return parent[u] = find(parent[u], parent); 
+}
+
+void unionn(int u, int v, vector<int> &parent, vector<int> &rank){
+    int pu = find(u, parent);
+    int pv = find(v, parent);
+    
+    if(pu!=pv){
+        if(rank[pu] > rank[pv]){
+            parent[pv]  = pu;
+            rank[pu]+=rank[pv];
+        }
+        else{
+            parent[pu] = pv;
+            rank[pv] += rank[pu];
+        }
+    }
+}
+
+class Solution {
+public:
+    int numberOfGoodPaths(vector<int>& vals, vector<vector<int>>& edge) {
+        int n= vals.size();
+        vector<int> visited(n,0);
+        vector<vector<int>> adjlist(n);
+        map<int,vector<int>> mp;
+        for(int i=0; i<edge.size(); i++){
+            adjlist[edge[i][0]].push_back(edge[i][1]);
+            adjlist[edge[i][1]].push_back(edge[i][0]);
+            
+        }
+        vector<int> parent(n,0);
+        for(int i=0; i<vals.size(); i++){
+            mp[vals[i]].push_back(i);
+            parent[i] = i;
+        }        
+        int ans=n;
+        
+        vector<int> rank(n,1);
+        
+        for(auto x: mp){
+            int val = x.first;
+            
+            vector<int> cand = x.second;
+            if(cand.size()==1){
+                visited[cand[0]]=1;
+                for(int a:adjlist[cand[0]]){
+                    if(visited[a]==1){
+                        unionn(a,cand[0],parent, rank);
+                    }
+                }
+            }
+            else{
+                for(auto i : cand){
+                    visited[i] = 1;
+                    for(int x:adjlist[i]){
+                        if(visited[x]==1){
+                            unionn(x,i,parent,rank);
+                        }
+                    }
+                    
+                }
+                unordered_map<int,int> comp;
+                for(auto i:cand){
+                    int pi = find(i, parent);
+                    comp[pi]++;
+                }
+                // if the path has 3 max values in it then no of good paths is 3C2
+                for(auto m: comp){
+                    if(m.second > 1){
+                        ans+=((m.second*(m.second-1))/2);
+                    }
+                }
+            }
+        
+        }
+        return ans;
+    }
+};
+```
