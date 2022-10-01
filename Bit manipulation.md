@@ -161,3 +161,29 @@ vector<int> countBits(int n) {
     }
 ```
 
+---
+
+#### [6. Reverse bits](https://leetcode.com/problems/reverse-bits/description/)
+**Approach**
+- start with the Most significant bit and check if it is one, if it is then add its value as per the new LSB in the reverse order.
+- We take start variable which is set to MSB i.e `2^31`. ans `j=0` representing the position of bit in the reverse number.
+- Now check if start&number == start, if it is then add pow(2,j) in the ans.
+- other wise do j++ and start/=2;
+```
+uint32_t reverseBits(uint32_t n) {
+        uint32_t ans=0;
+        uint32_t start = pow(2,31);
+        int j=0;
+        while(start>0){
+            if((n&start) == start){
+                ans += pow(2,j);
+            }
+            j++;
+            start/=2;
+        }
+        return ans;
+
+    }
+
+```
+
