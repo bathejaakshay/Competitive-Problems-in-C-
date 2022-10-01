@@ -187,3 +187,21 @@ uint32_t reverseBits(uint32_t n) {
 
 ```
 
+#### [7. Missing number](https://leetcode.com/problems/missing-number/description/)
+Given an array nums containing n distinct numbers in the range `[0, n]`, return the only number in the range that is missing from the array.
+```
+int missing(vector<int> &nums){
+// take exor of 0 to n elements then exor the ans with the exor of all elements of nums , all the equal elements element will cancel out and give us the ans which appeared only once.
+
+int s = 0;
+for(int i=0;i<=nums.size();i++){
+    s^=i;
+}
+
+for(int i=0; i<nums.size(); i++){
+     s^=(nums[i]);
+    }
+    return s;
+}
+
+```
