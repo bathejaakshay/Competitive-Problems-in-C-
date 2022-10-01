@@ -135,3 +135,29 @@ public:
        return max_win;
     }
 ```
+
+---
+
+#### [5. Couting bits](https://leetcode.com/problems/counting-bits/description/)
+**Approach : O(n) dp **
+
+1. Observe the pattern that after every power of two one 1 bit is is fixed and the remaining number of ones can be computed from the previous number e.g
+2. 8 : 1000 : 1 + dp[0], 10 : 1010 = 1 + dp[2] , ... 15 : 1 + dp[7] i.e dp[i] = 1 + dp[i- offset]  where offset is the bit that is currently fixed.
+3. Offset changes once offset * 2 becomes equal to current i.
+
+```
+vector<int> countBits(int n) {
+        vector<int> dp;
+        int offset = 1;
+        dp.push_back(0);
+        for(int i=1; i<=n; i++){
+            if(offset*2 == i){
+                offset = i;
+            }
+            dp.push_back(1 + dp[i-offset]); 
+
+        }
+        return dp;
+    }
+```
+
