@@ -229,3 +229,8 @@ int main(){
     cout<<solve(q,k);
 }
 ```
+**Approach 2: Modified Binary Search**
+- Range min len =0 , max_len = n
+- Now mid gives us wind size. We have to check max 01 subseq in win size mid in O(n) time.
+- if count satisfies k then high = mid-1 else low = mid+1
+
