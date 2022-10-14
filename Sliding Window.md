@@ -164,3 +164,68 @@ vector<int> findLonely(vector<int>& nums) {
 }
 ```
 ---
+
+#### [Uber = Min length substring with subsequences](https://leetcode.com/discuss/interview-question/1845128/Uber-Software-Engineer-India-(University)-2022-Graduates-Coding-Test)  
+You are given a binary string of length n.
+You have to find a minimum length substring of the above given string such that the count of subsequences of this substring which equal "01" is atleast k.
+Your solution will return the length of the minimum length substring. If no such string exists then return -1.
+**Approach : Sliding window**
+Pattern: Min length substring in O(n) time with some computation.
+We using sliding window with window shrinkage i.e whenever we encounter sum of subseq >= k then we start shrinking our window. Simple.
+
+```
+#include<bits/stdc++.h>
+using namespace std;
+
+int solve(string q, int k){
+
+    int i=0,l=0;
+    while(i<q.length() && q[i] == '1') i++;
+    if(i == q.length()) return 0;
+    int c_z=0,c_o=0;
+    int count=0;
+    int ans = INT_MAX;
+    int j=i;
+    while(j<q.length()){
+        if(i==j && q[j] == '1') {
+            i++; j++;
+        }
+        if(q[j] == '0') c_z++;
+        else if(q[j] == '1'){
+            c_o++;
+            count+=(c_z);
+        }
+        if(count >= k){
+            ans = min(ans, j-i+1);
+            while(i<=j && count>=k){
+                ans = min(ans, j-i+1);
+                if(q[i] == '0'){
+                    count-=(c_o);
+                    c_z--;
+                    
+
+                }
+                else c_o--;
+                i++;
+            }
+            while(i<=j && q[i] == '1') {
+                i++;
+                c_o--;
+            }
+        }
+        j++;
+
+    }
+    return (ans==INT_MAX)?-1:ans;
+}
+
+int main(){
+    string q;
+    cin>>q;
+
+    int k;
+    cin>>k;
+
+    cout<<solve(q,k);
+}
+```
