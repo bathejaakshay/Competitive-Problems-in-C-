@@ -11,15 +11,15 @@ Steps:
 
 **Approach 1** Memoization: (Top Down)
 ```
-int fibbo(n){
-  if(n<=1) return 1;
+int fibbo(int n, vector<int> &dp){
+  if(n==0) return 0;
+  if(n==1) return 1;
   if(dp[n]!=-1) return dp[n];
   
-  dp[n] = fibbo(n-1) + fibbo(n-2);
+  dp[n] = fibbo(n-1, dp) + fibbo(n-2,dp);
   return dp[n];
   
 }
-
 TC: O(n)
 Space : O(n) + O(n) : Aux + DP_array
 ```
