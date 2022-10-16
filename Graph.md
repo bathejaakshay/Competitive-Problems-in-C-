@@ -419,7 +419,9 @@ class Solution
     { // adj is an array of vectors of vectors where a[0] = {{1,5},{2,1}} i.e weight of edge (0,1) is 5 and (0,2) is 1.
         // code here
         vector<bool> mset(V,false); // To keep record of all the nodes that have been poped out
-        priority_queue<pair<int,int>, vector<pair<int,int>>, comparator> q; // Min heap of pairs , remember that the comparator should be a class with operator() as its function. for minheap return greater.
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> q; // This works; dont use greater<pair<int,int>>()
+	//priority_queue<pair<int,int>, vector<pair<int,int>>, comparator> q; // Min heap of pairs , remember that the comparator should be a class with operator() as its function. for minheap return greater. 
+	
         // Priority queue represents : pair<int,int> where pair.first is the distance of vertex pair.second from the current vertex.
 	int src=0;
         q.push(make_pair(0,src)); // making paris of the next node and the distance to reach there from the current node
@@ -520,7 +522,7 @@ class Solution
         vector<int> dist(V,INT_MAX);
         vector<bool> final(V, false);
         dist[S]=0;
-        priority_queue<pair<int,int>, vector<pair<int,int>> , Solution::compare> pq; // We can use greater<pair<int,int>> here instead of compare class but greater<>() always sort on first element so make sure first element of pair is the distance.
+        priority_queue<pair<int,int>, vector<pair<int,int>> , Solution::compare> pq; // We can use greater<pair<int,int>> here instead of compare class but greater always sort on first element so make sure first element of pair is the distance. (Use greater<pair<int,int>> and not greater<pair<int,int>>(), for simple sorting using greater<>())
         // cout<<"pushing"<<endl;
         pq.push(make_pair(0,S));
         // cout<<"S = "<<S<<endl;
