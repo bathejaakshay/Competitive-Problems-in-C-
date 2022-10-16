@@ -1,3 +1,6 @@
+## Dijkstra Pattern
+Source and Destination is given and something shortest path or minimum  path value is asked
+
 #### [1a. Find Cycle in Directed Graph/ Course Schedule](https://leetcode.com/problems/course-schedule/)
 **Main Idea:**  
 1. We will use DFS for the cycle detection. It is not as easy as in the undirected graph in which we just check visited array and parent (if a child is already visited and is not my parent then it is a cycle)
