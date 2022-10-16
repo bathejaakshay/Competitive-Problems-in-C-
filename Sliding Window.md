@@ -234,3 +234,48 @@ int main(){
 - Now mid gives us wind size. We have to check max 01 subseq in win size mid in O(n) time.
 - if count satisfies k then high = mid-1 else low = mid+1
 
+---
+
+#### [Count Subarrays With Fixed Bounds - Good](https://leetcode.com/contest/weekly-contest-315/problems/count-subarrays-with-fixed-bounds/)  
+You are given an integer array nums and two integers minK and maxK.  
+
+A fixed-bound subarray of nums is a subarray that satisfies the following conditions:  
+
+The minimum value in the subarray is equal to minK.  
+The maximum value in the subarray is equal to maxK.  
+Return the number of fixed-bound subarrays.  
+
+A subarray is a contiguous part of an array.  
+
+**Approach**
+1. we will use sliding window approach.
+2. intially i=0,j=0 and iterate j till end
+3. we also mantain two pointers mi and mj representing latest index when `num[j] == minK` , `num[j] == maxK respt`.
+4. Now at every step, we find x = min(mi,mj) now we know we cant have any subarray from x till j that have both minK and maxk  and our starting index is `i`, so Number of subarrays ending at j from i that have mini = minK and maxi = maxK are min(mi,mj) - i + 1 (i.e we can start with any element in [i, min(mi,mj)] and end at j).
+
+```
+class Solution {
+public:
+    long long countSubarrays(vector<int>& nums, int minK, int maxK) {
+        long long count=0;
+        
+        int i=0;
+        int mini=INT_MAX, maxi=INT_MIN;
+        int flag=0;
+        long long mi=-1,mj=-1;
+        
+        for(int j=0; j<nums.size(); j++){
+            if(nums[j] < minK || nums[j] > maxK){
+                mi=-1; mj=-1;
+                i=j+1;
+            } 
+            if(nums[j] == minK) mi=j;
+            if(nums[j] == maxK) mj=j;
+            count+=( max((long long)0, (long long)min(mi,mj) -i + 1));
+        }
+        return count;
+    }
+};
+```
+
+ 
