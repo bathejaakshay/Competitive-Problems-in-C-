@@ -297,7 +297,7 @@ int ninja_spc(int n, vector<vector<int>> &points){
 #### [6. No of ways to reach a destination in `M*N` grid/ Unique paths](https://www.codingninjas.com/codestudio/problems/total-unique-paths_1081470?leftPanelTab=1)
 
 **Approach**
-1. Representing problem in terms of index: f(i,j) represents number of unique paths from point(m,n) to point (i,j).
+1. Representing problem in terms of index: f(i,j) represents number of unique paths from point(i,j) to point (0,0).
 2. Doing all stuff on indices: as we are doing top down hence we start from m,n and we can move left or up. So we find f(m-1,n) and f(m,n-1)
 3. Sum up all paths: f(m,n) = f(m-1,n) + f(m,n-1)
 4. As there are a lot of overlapping subproblems, hence we can use DP
