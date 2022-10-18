@@ -381,6 +381,13 @@ int aggressiveCows(vector<int> &v, int k)
 
 #### [7. Median of two sorted arrays](https://leetcode.com/problems/median-of-two-sorted-arrays/)
 **Approach Binary Search: O(log(m+n))**  
+
+![Image](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/1.1.jpeg)
+![Image](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/1.2.jpeg)
+![Image](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/1.3.jpeg)
+![Image](https://github.com/bathejaakshay/Competitive-Problems-in-C-/blob/master/Images/1.4.jpeg)
+
+
 Notes to be added
 
 ```
