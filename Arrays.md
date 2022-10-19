@@ -1106,7 +1106,7 @@ string shiftingLetters(string s, vector<vector<int>>& shifts) {
     }
 ```
 ---
-#### [Maximal Recatangle]()
+#### [Maximal Recatangle](https://leetcode.com/problems/largest-rectangle-in-histogram/description/)
 This is not easy as maximal square
 **Approach**
 Consider each row and compute histograms with current row as base and find largest rectangle area in the histogram using and left next smallest and right next smallest array
