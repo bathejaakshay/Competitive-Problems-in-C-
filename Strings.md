@@ -458,3 +458,7 @@ string removeDup(string s){
 ```
 ---
 
+### Questions that ask if a string s is a rotation of string g
+
+Simple trick is to concatenate string g to itself and all of its substrings of size(g) are its rotations.
+So we can simply find s in concatenated string
