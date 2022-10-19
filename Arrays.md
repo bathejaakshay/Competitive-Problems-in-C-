@@ -1105,7 +1105,79 @@ string shiftingLetters(string s, vector<vector<int>>& shifts) {
         return s;
     }
 ```
+---
+#### [Maximal Recatangle]()
+This is not easy as maximal square
+**Approach**
+Consider each row and compute histograms with current row as base and find largest rectangle area in the histogram using and left next smallest and right next smallest array
 
+O(M\*N)
+
+```
+
+int largestRectangleArea(vector<int>& heights) {
+    vector<int> left_mini(heights.size());
+    vector<int> right_mini(heights.size());
+    stack<int> st;
+    // left_mini[0]=0;
+    // st.push(0);
+
+    
+    for(int i=0; i<heights.size(); i++){
+        // cout<<" i = "<<i<<
+        if(st.empty()){
+            st.push(i);
+            left_mini[i] = -1;
+        }
+        else{
+            while(!st.empty() && heights[st.top()] >= heights[i]){
+                st.pop();
+            }
+            if(st.empty()) 
+                left_mini[i] = -1;
+            else left_mini[i] = st.top();
+            
+            st.push(i);
+        }
+
+    }
+
+    while(!st.empty()) st.pop();
+    for(int i = heights.size()-1; i>=0; i--){
+        while(!st.empty() && heights[st.top()] >= heights[i]){
+            st.pop();
+        }
+        if(st.empty()) right_mini[i] = heights.size();
+        else right_mini[i] = st.top();
+        st.push(i);
+    }
+
+    int area = 0;
+    for(int i=0; i<heights.size(); i++){
+        area = max(area, heights[i]*(right_mini[i]-1 - (left_mini[i] + 1) + 1));
+    } 
+    return area;
+}
+
+
+class Solution {
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        int maxi=0;
+        vector<int> hist(matrix[0].size(),0);
+        for(int i=0; i<matrix.size(); i++){
+            for(int j=0; j<matrix[0].size(); j++){
+                if(matrix[i][j]-'0'>0)
+                    hist[j]++;
+                else hist[j] = 0;
+                
+            }
+            maxi = max(maxi , largestRectangleArea(hist));
+        }
+        return maxi;
+    }
+};
+```
 ---
 #### [18. Maximum Triplet Sum](https://www.interviewbit.com/old/problems/maximum-sum-triplet/)  
 We need to find a triplet ai, aj ,ak such that ai<aj<ak and i<j<k and their sum is max   
@@ -1160,4 +1232,6 @@ for(int i=1; i<A.size()-1; i++){
 return maxi;
 }
 			 
+			   
 ```
+			 
