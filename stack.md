@@ -390,3 +390,49 @@ long long usingstack(vector<int> &nums){
 }
 ```
 
+---
+
+#### [ Shortest Unsorted Continuous Subarray IMP](https://leetcode.com/problems/shortest-unsorted-continuous-subarray/description/)  
+Given an integer array nums, you need to find one continuous subarray that if you only sort this subarray in ascending order, then the whole array will be sorted in ascending order.  
+
+Return the shortest such subarray and output its length.  
+**Approach**
+1. Using monotonic stack
+2. we use two traversal to find min start of the unsorted subarray and max end of unsorted subarray
+3. for start we find previous smaller or equal and while popping previous greater elements compared to current we update start.
+4. for end we traverse backwards and find next eq or greater and while popping smaller elements than current in the stack we update end.
+5. finally if end-start>1 then return end-start+1 else 0
+
+```
+int findUnsortedSubarray(vector<int>& nums) {
+        stack<int> st;
+        int start = nums.size();
+        int end = 0;
+        int i;
+        for( i=1;i<nums.size(); i++){
+            if(nums[i]<nums[i-1]) break;
+        }
+        if(i==nums.size()) return 0;
+        st.push(0);
+        for(i=1; i<nums.size(); i++){
+            while(!st.empty() && nums[st.top()] > nums[i]) {
+                start  = min(start, st.top());
+                st.pop();
+                }
+            st.push(i);
+            
+        }
+        while(!st.empty()) st.pop();
+        st.push(nums.size()-1);
+        for(i=nums.size()-2; i>=0; i--){
+            while(!st.empty() && nums[st.top()] < nums[i]) {
+                end = max(end, st.top());
+                st.pop();
+                }
+            
+            st.push(i);
+        }
+        return (end-start <= 0) ? 0 : end-start+1;
+    }
+```
+
