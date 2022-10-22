@@ -104,3 +104,32 @@ void solve2(string s){
 }
 
 ```
+#### [3. Sieve of Eratosthenes](https://leetcode.com/problems/count-primes/solutions/)  
+Count primes from 1 to n
+(In question we need to calculate primes strictly less than n)
+**Approach : O(NloglogN)**
+- create an array of primes of size n+1
+- Now for each int i from 2 till n do following
+-   if i is prime i.e `prime[i] = 0` then mark all its multiples as non-prime i.e `prime[i] = 1`
+-   for each int j = i\*i (all the numbers less than i\*i would have already be marked by the number less than i) till n mark `prime[j] =1` i.e non prime
+-   increment j by i
+
+- count all `prime[i] = 0`
+
+```
+int countPrimes(int n) {
+        vector<int> primes(n,0);
+        int count=0;
+        for(long long i=2; i<n; i++){
+            if(primes[i]==0){
+                count++;
+                for(long long j=i*i; j<n; j+=i){
+                    primes[j] = 1;
+                }
+            }
+        }
+     return count;
+    }
+```
+---
+
