@@ -28,3 +28,5 @@ Note: Similarly you can use **__builtin_ctzl(x) & __builtin_ctzll(x)** for long 
 Returns 0 if both a and b are zero otherwise returns gcd of a and b
 
 Present in <numeric>
+TC: O(log(n))
+  
