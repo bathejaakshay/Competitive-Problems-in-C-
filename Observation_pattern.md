@@ -43,3 +43,20 @@ Return the minimum number of operations required to make nums similar to target.
     }
 ```
 ---
+
+
+#### [2. Minimum Cost to Make Array Equal](https://leetcode.com/problems/minimum-cost-to-make-array-equal/description/)  
+You are given two 0-indexed arrays nums and cost consisting each of n positive integers.  
+
+You can do the following operation any number of times:  
+
+Increase or decrease any element of the array nums by 1.  
+The cost of doing one operation on the ith element is `cost[i]`.  
+
+Return the minimum total cost such that all the elements of the array nums become equal.  
+
+**Approach** 
+- pre-req minCost to make array equal when cost of each element is 1. In this case our cost is minimum/ coverges at median of the array e.g `[1,5,7,8,10]` : min is cost when we do `[7,7,7,7,7]`
+- Similarly here we have been given cost of each element. We can simply observe that we can reduce the current problem into the above one by finding "weighted median" i.e replace the num[i] which `cost[i]` times `nums[i]` and then find median of the whole array
+- E.g `[1,5,7,8,10]` cost: `[2,3,1,4,1]` :-> updated array A: `[1,1,5,5,5,7,8,8,8,8,10]` Now we find medain of A and calculate the number of operations.
+
