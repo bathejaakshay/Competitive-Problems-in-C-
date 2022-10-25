@@ -59,4 +59,43 @@ Return the minimum total cost such that all the elements of the array nums becom
 - pre-req minCost to make array equal when cost of each element is 1. In this case our cost is minimum/ coverges at median of the array e.g `[1,5,7,8,10]` : min is cost when we do `[7,7,7,7,7]`
 - Similarly here we have been given cost of each element. We can simply observe that we can reduce the current problem into the above one by finding "weighted median" i.e replace the num[i] which `cost[i]` times `nums[i]` and then find median of the whole array
 - E.g `[1,5,7,8,10]` cost: `[2,3,1,4,1]` :-> updated array A: `[1,1,5,5,5,7,8,8,8,8,10]` Now we find medain of A and calculate the number of operations.
+```
+long long calculate(vector<pair<int,int>> &num, int mid){
+    long long op=0;
+    for(int i=0; i<num.size(); i++){
+        
+        op+=((long long)(abs(num[i].first - mid)*(long long)num[i].second ));
+        // cout<<"num = "<<num[i]<<" "
+    }
+    return op;
+}
 
+class Solution {
+public:
+    long long minCost(vector<int>& nums, vector<int>& cost) {
+        // pre-req minCost to make array equal when cost of each element is 1. In this case our cost is minimum/ coverges at median of the array e.g [1,5,7,8,10] : min is cost when we do [7,7,7,7,7]
+        // Similarly here we have been given cost of each element. We can simply observe that we can reduce the current problem into the above one by finding "weighted median" i.e replace the num[i] which cost[i] times nums[i] and then find median of the whole array
+        // E.g [1,5,7,8,10] cost: [2,3,1,4,1] :-> updated array A: [1,1,5,5,5,7,8,8,8,8,10] Now we find medain of A and calculate the number of operations.
+        
+        vector<pair<int,int>> num;
+        
+        for(int i=0; i<nums.size(); i++){
+            num.push_back({nums[i], cost[i]});
+            
+            
+        }
+        sort(num.begin(), num.end());
+       
+        long long sum=0;
+        for(int i=0; i< cost.size(); i+=1) sum = sum + (long long)(cost[i]);
+        long long tot=0;
+        int i=0,mid=0;
+        while(tot<sum/2 && i<num.size()){
+            tot+=(num[i].second);
+            mid = num[i].first;
+            i++;
+        }
+        return calculate(num, mid);
+    }
+};
+```
