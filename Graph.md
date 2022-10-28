@@ -2308,6 +2308,68 @@ int main() {
 ```
 ---
 
+#### [Rotting Oranges](https://www.codingninjas.com/codestudio/problems/rotting-oranges_701655?leftPanelTab=1)
+N X M matrix is given each element has either 0 or 1 or 2 value. 0 means empty, 1 means good orange, 2 means rotten orange.
+Our task is to find min time to make all good oranges into rotten if at one time stamp all the neighbouring good oranges of rotten orange (4 direc) gets rotted.
+
+**Approach**
+- push all the rotten oranges with i,j coord and 0 time stamp initially
+- Apply bfs and traverse all neighbours
+
+```
+int minTimeToRot(vector<vector<int>>& grid, int n, int m)
+{
+    // Write your code here. 
+    long long int count=0;
+    vector<vector<int>> visited(n, vector<int> (m,0));
+    
+    queue<vector<int>> q;
+    long long int collect=0;
+    for(int i=0; i<n; i++){
+        for(int j=0; j<m; j++){
+            if(grid[i][j] == 1) count++;
+            if(grid[i][j] == 2){
+                q.push({i,j,0});
+            }
+        }
+    }
+    
+    int maxi=INT_MIN;
+    while(!q.empty()){
+        vector<int> it = q.front();
+        int i=it[0];
+        int j=it[1];
+        q.pop();
+        if(grid[i][j]==1)
+            collect++;
+        maxi = max(maxi, it[2]);
+        visited[i][j]=1;
+        
+        int grad_i[] = {-1,0,1,0};
+        int grad_j[] = {0,-1,0,1};
+        for(int x=0; x<4; x++){
+            int dx = i+grad_i[x];
+            int dy = j+grad_j[x];
+            
+            if(dx>=0 && dy>=0 && dx<n && dy<m){
+                if(visited[dx][dy]==0 && grid[dx][dy]==1){
+                    q.push({dx,dy, it[2]+1});
+                    visited[dx][dy]=1;
+                }
+            }
+        }
+        
+    }
+    if(count==0) return 0;
+    if(collect == count) return maxi;
+    return -1;
+    
+    
+}
+```
+
+---
+
 #### [number of Good Path HARD](https://leetcode.com/contest/weekly-contest-312/problems/number-of-good-paths/)
 ```
 int find(int u, vector<int> &parent){
