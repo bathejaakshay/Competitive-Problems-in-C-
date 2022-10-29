@@ -1,6 +1,6 @@
 All these builting functions reside in stdio.h
 
-#### __builtin_pop_count(x)
+#### __builtin_popcount(x)
 Count number of setbits (1's) in an integer  
 **for long long type x use: __builtin_pop_countll(x)  
 e.g cout<<__builtin_pop_count(10) 
