@@ -2601,6 +2601,51 @@ int cost(int n, int c, vector<int> &cuts){
 
 ---
 
+#### [ Last Stone Weight II](https://leetcode.com/problems/last-stone-weight-ii/description/)  
+You are given an array of integers stones where stones[i] is the weight of the ith stone.  
+
+We are playing a game with the stones. On each turn, we choose any two stones and smash them together. Suppose the stones have weights x and y with x <= y. The result of this smash is:  
+
+If x == y, both stones are destroyed, and  
+If x != y, the stone of weight x is destroyed, and the stone of weight y has new weight y - x.  
+At the end of the game, there is at most one stone left.  
+
+Return the smallest possible weight of the left stone. If there are no stones left, return 0.  
+**Approach**  
+- Lets say you select two stones a and b  now the val becomes a-b
+- Now you select say (a-b) and c, the val becomes c-(a-b) which is b+c - a
+- Now you select (b+c) -a and d , the val becomes (a+d) - (b+c)
+- Clearly we are dividing the array into two subarrays whose sum diff is minimum
+
+```
+int find(int i, int sum, vector<int> &stones, vector<vector<int>> &dp){
+    if(sum<0) return INT_MAX;
+    if(i>=stones.size()) return sum;
+    if(dp[i][sum]!=-1) return dp[i][sum];
+    // pick
+    int temp = sum;
+    temp = sum - 2*stones[i];
+    int left = find(i+1, temp, stones, dp);
+
+    // not pick
+    int right = find(i+1, sum, stones, dp);
+
+    return dp[i][sum] = min(left, right);
+}
+
+class Solution {
+public:
+    int lastStoneWeightII(vector<int>& stones) {
+        int sum = accumulate(stones.begin(), stones.end(),0);
+
+        vector<vector<int>> dp (stones.size(), vector<int> (sum+1, -1));
+
+      return find(0, sum, stones, dp);
+    }
+};
+```
+
+---
 #### [37. ArmChairs](https://codeforces.com/contest/1525/problem/D)
 Given a  binary array representing if the ith seat is occupied or not. We need to make all the seats currently occupied empty as shift them to free. Find the min cost to do so where cost of moving a person from ith chair to jth char is its abs(i-j).   
 **Approach : DP**
