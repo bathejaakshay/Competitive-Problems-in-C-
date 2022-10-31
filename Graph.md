@@ -2506,3 +2506,72 @@ bool measure2(int j1, int j2, int t){
     return false;
 }
 ```
+
+#### [433. Minimum Genetic Mutation](https://leetcode.com/problems/minimum-genetic-mutation/description/)  
+
+A gene string can be represented by an 8-character long string, with choices from 'A', 'C', 'G', and 'T'.  
+
+Suppose we need to investigate a mutation from a gene string start to a gene string end where one mutation is defined as one single character changed in the gene string.  
+
+For example, "AACCGGTT" --> "AACCGGTA" is one mutation.  
+There is also a gene bank bank that records all the valid gene mutations. A gene must be in bank to make it a valid gene string.  
+
+Given the two gene strings start and end and the gene bank bank, return the minimum number of mutations needed to mutate from start to end. If there is no such a mutation, return -1.  
+
+Note that the starting point is assumed to be valid, so it might not be included in the bank.  
+**Approach** 
+- Whenever we need to find minimum and we can represent question in a state graph, think of using shortest distance using BFS
+- Now we can represent each state as the string and edges a mutation char 'A', 'C', 'G', 'T'. All states are valid mutations. 
+- We need to find min distance between start and end edges weight is 1.
+- So we build the state graph and find the min move using dfs.
+- we start with the `start` string we apply all mutations to all char and push valid and unvisited ones to the queue by incrementing move.
+- we stop when our mutation matches end
+```
+bool exist(string s, vector<string> &bank){
+    for(int i=0; i<bank.size(); i++){
+        if(s==bank[i]) return true;
+    }
+    return false;
+}
+class Solution {
+public:
+    int minMutation(string start, string end, vector<string>& bank) {
+        if(start==end) return 0;
+
+        queue<pair<string, int>> q;
+
+        q.push({start,0});
+
+        vector<char> grad = {'A','C','G','T'};
+        unordered_map <string, int> visited;
+        while(!q.empty()){
+            auto it = q.front();
+            string n = it.first;
+            q.pop();
+            if(n == end){
+                return it.second;
+            }
+            for(int i = 0; i<n.length(); i++){
+                // string start = n.substr(0,i);
+                for(int j=0; j<grad.size(); j++){
+                    string temp = n;
+                    temp[i] = grad[j];
+                    if(exist(temp, bank) && temp!=n && visited.find(temp)==visited.end()){
+                        visited[temp] = 1;
+                        q.push({temp, it.second+1});
+                    }    
+                }
+            }
+
+
+
+
+
+        }   
+        return -1;
+
+    }
+};
+```
+
+
