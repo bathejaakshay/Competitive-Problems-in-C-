@@ -2455,3 +2455,54 @@ public:
 };
 ```
 
+## BFS: Converting problem into State Graph Pattern 
+
+#### [365. Water and Jug Problem](https://leetcode.com/problems/water-and-jug-problem/description/)
+You are given two jugs with capacities jug1Capacity and jug2Capacity liters. There is an infinite amount of water supply available. Determine whether it is possible to measure exactly targetCapacity liters using these two jugs.  
+
+If targetCapacity liters of water are measurable, you must have targetCapacity liters of water contained within one or both buckets by the end.  
+
+Operations allowed:  
+
+Fill any of the jugs with water.  
+Empty any of the jugs.  
+Pour water from one jug into another till the other jug is completely full, or the first jug itself is empty.  
+**Approach**
+1. Math ques but we can do with bfs
+2. Each state in queue is represented by the water captured total by both jugs.
+3. At any state we have total water captured in two jugs say x and now we have four steps possible.
+4. x + j1_cap, x-j1_cap, x+j2_cap, x-j2_cap if all these sums are unvisited and lie in range `[0,j1+j2]` then add them to queue
+5. return true when q.front() == target.
+
+```
+bool measure2(int j1, int j2, int t){
+    /*
+        At any step we can perform 4 things
+        add j1, add j2, sub j1 or sub j2 from the current total amount filled in both jugs.
+
+    
+    */
+
+    if(j1+j2< t) return false;
+    if(j1+j2 == t) return true; 
+    vector<int> grad = {j1,-j1,j2,-j2};
+
+    unordered_map<int, int> visited;
+    queue<int> q;
+    q.push(0);
+    visited[0]=1;
+    while(!q.empty()){
+        int node = q.front();
+        q.pop();
+        if(node == t) return true;
+
+        for(int &x: grad){
+            if(visited.find(node + x)==visited.end() && node+x >=0 && node+x <= j1+j2 ){
+                visited[node+x]=1;
+                q.push(node+x);
+            }
+        }
+    }
+    return false;
+}
+```
