@@ -2574,4 +2574,53 @@ public:
 };
 ```
 
+## Opposite Thinking
 
+#### [542. 01 Matrix](https://leetcode.com/problems/01-matrix/description/)
+Given an m x n binary matrix mat, return the distance of the nearest 0 for each cell.  
+
+The distance between two adjacent cells is 1. 
+**Approach TC:(m\*n)**  
+- Whenever min or nearest dist is req, think in terms of bfs instead of dfs.
+- Intitalize dist matrix with INT_MAX values
+- Now smart brute force is to push all 0 nodes in queue intially with dist 0 and then traverse their neighbour one by one, if neighbour's original dist > curr + 1 then update dist and add neighbour to the queue
+
+```
+vector<vector<int>> bfs_approach(vector<vector<int>> &mat){
+    // TC: O(m*n)
+    // push all zeroes with d=0 to queue then find nearest 1s and update dist and add them to queue
+
+    queue<vector<int>> q;
+
+    vector<vector<int>> dist(mat.size(), vector<int> (mat[0].size(),INT_MAX));
+    for(int i=0; i<mat.size(); i++){
+        for(int j=0; j<mat[0].size(); j++){
+            if(mat[i][j] == 0){
+                dist[i][j] = 0;
+                q.push({i,j,0});
+            }
+        }
+    }
+
+    while(!q.empty()){
+        auto it = q.front(); q.pop();
+        vector<int> grad_i = {-1,0,1,0};
+        vector<int> grad_j = {0,-1,0,1};
+        
+        int i = it[0]; 
+        int j = it[1];
+        int d = it[2];
+        for(int x = 0; x<4; x++){
+            int gi = i+grad_i[x];
+            int gj = j + grad_j[x];
+            if(gi>=0 && gj>=0 && gi<mat.size() && gj<mat[0].size() && dist[gi][gj] > d+1){
+                dist[gi][gj]= d+1;
+                q.push({gi,gj,d+1});
+            }
+        }
+    
+
+    }
+    return dist;
+}
+```
