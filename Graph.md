@@ -109,7 +109,58 @@ public:
     }
 };
 ```
+ 
+**Another approach for toposort using dfs and cycle detection**
+- Maintain a stack st and array recstk.
+- Recstk is to detect cycles and stack st is to store the toposort order.
+- We can start traversing from any node we push a node into st when all its neighbour nodes are visited.
+- This way we get a toposort in the stack from top to bottom.
 
+```
+bool dfs(int  i, stack<int> &st, vector<int> &recst,vector<int> &visited,vector<vector<int>> &adjlist){
+    visited[i] = 1;
+    recst[i] =1;
+    for(int &x: adjlist[i]){
+        if(!visited[x]){
+            if(dfs(x, st, recst, visited, adjlist) == false){
+                return false;
+            }
+        }
+        else{
+            if(recst[x] == 1)
+                return false;
+        }
+    }
+    st.push(i);
+    recst[i] = 0;
+    return true;
+}
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+
+     vector<int> visited(numCourses, 0);
+     stack<int> st;
+     vector<vector<int>> adjlist(numCourses);
+     vector<int> recst(numCourses,0);
+     for(int i=0; i<prerequisites.size(); i++){
+         adjlist[prerequisites[i][1]].push_back(prerequisites[i][0]);
+
+     }   
+     for(int i=0; i<numCourses; i++){
+         if(!visited[i]){
+            if( dfs(i, st, recst, visited, adjlist) == false) return {}; 
+         }
+     }
+    vector<int> ans;
+    while(!st.empty()){
+        ans.push_back(st.top());
+        st.pop();
+    }
+    return ans;
+    }
+};
+```
 ---
 
 #### [2. Cycle Detection in UnDirected Graph](https://www.codingninjas.com/codestudio/problems/1062670?topList=striver-sde-sheet-problems&utm_source=striver&utm_medium=website&leftPanelTab=0)
