@@ -436,3 +436,68 @@ int findUnsortedSubarray(vector<int>& nums) {
     }
 ```
 
+
+---
+
+#### [Sum of min elements of all subarrays](https://www.geeksforgeeks.org/count-of-contiguous-subarrays-possible-for-every-index-by-including-the-element-at-that-index/)
+**Approach : O(N)**
+
+- For each element `i` we need to know no. of contigous elements strictly greater than `val[i]` before index `i`  and after index `i` say `left[i] and right[i]`.
+- Now for element i the contribution to the sum would be `val[i] * (left[i]+1) * (right[i] + 1)`. `(left[i]+1) * (right[i] + 1)` are all subarrays that has `val[i]` as the min element.  
+- Do this for all elements.
+- We can perform this using monotonic stack. Find next smaller elements and for each index i the number of elements `"count"` greater than equal to `val[i]` after i would be index of next smaller element - current. so `right[i] = count`
+- Similarily for `left[i]` we can compute
+
+### Try to always store indices in the stack instead of actual values
+
+```
+int solve(int n, vector<int> &choco){
+// Finding sum of min elements of all possible subarrays
+// For each index find left[i] strictly contigous greater number after i + 1
+// ans right[i] strick contigous greater number before i  + 1
+
+stack<int> st;
+
+vector<int> left(n), right(n);
+// find prev smaller
+for(int i=0; i<n; i++){
+    while(!st.empty() && st.top() > choco[i]){
+        st.pop();
+    }
+    if(st.empty()){
+        left[i] = i+1;
+    }
+    else{
+        left[i] = i-st.top();
+    }
+    st.push(choco[i]);
+}
+//find next smaller to get strictly greater elements 
+while(!st.empty()) st.pop();
+for(int i=n-1; i>=0; i--){
+    while(!st.empty() && choco[st.top()] > choco[i]){
+        st.pop();
+    }
+    // we know that st.top is prev smaller element to i so all elements between st.top + 1 to i are greater than i
+    // That is what we wanted
+    if(st.empty()){
+        right[i] = n-i;
+    }
+    else{
+        right[i] = st.top()-i;
+    }
+    st.push(i);
+}
+
+int sum=0;
+
+for(int i=0; i<n; i++){
+    sum+=(choco[i]*left[i]*right[i]);
+}
+return sum;
+
+}
+
+```
+- 
+
