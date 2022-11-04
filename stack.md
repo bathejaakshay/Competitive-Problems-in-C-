@@ -499,5 +499,52 @@ return sum;
 }
 
 ```
-- 
+---
 
+#### [Second Greatest Element in Array / Next Greatest IV - Hard](https://leetcode.com/contest/biweekly-contest-90/problems/next-greater-element-iv/)
+
+For each element in the array find their second next greater element in the array.  
+**Approach O(nlogn)**
+- Firstly we find next greater element
+- Now we find for each element `A[i]` , all the elements for who `A[i]` is next greater.
+- Now we maintain min heap
+- for each element `A[i]` we check all top elements in min heap that are lesser than `A[i]` and make `A[i]` their second greater.
+- Now push all elements for whom `A[i]` is next greater into the pq. We are pushing cuz we know `A[i]` is their first greater now whatever comes next element that is greater than pq.top is their second greater.
+
+```
+vector<int> secondGreaterElement3(vector<int> &nums){
+    stack<int> st;
+    int n = nums.size();
+    vector<int> ng(n,n);
+    for(int i=n-1; i>=0; i--){
+        while(!st.empty() && nums[st.top()] <= nums[i]){
+            st.pop();
+        }
+        if(!st.empty()){
+            ng[i] = st.top();
+        }
+        st.push(i);
+    }
+    unordered_map<int,vector<int>> mp;
+    for(int i=0; i<ng.size(); i++){
+        if(ng[i]<n)
+            mp[ng[i]].push_back(i);
+    }
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>> > q;
+    vector<int> sng(n,-1);
+    for(int i=0; i<nums.size(); i++){
+        while(!q.empty() && q.top().first < nums[i]){
+            sng[q.top().second] = nums[i];
+            q.pop();
+        }
+        if(!mp[i].empty()){
+            for(int &it: mp[i]){
+                q.push({nums[it],it});
+            }
+        }
+    }
+    return  sng;
+}
+
+```
+---
