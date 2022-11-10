@@ -2757,3 +2757,56 @@ int maxp(vector<int> &nums){
     return maxi;
 }
 ```
+
+####  [Minimum Total Distance Traveled](https://leetcode.com/contest/weekly-contest-318/problems/minimum-total-distance-traveled/)  
+Go through the statements.
+
+There are n robots and m factories on x axis. Each robot need to be repaired. Each factory can repair a limited amount of robots represented in its `factory`. 
+The robots can move in both left and right direction to reach a factory. Find the minimum distance traveled by the robots so that all robots gets repaired.
+
+**Approach**  
+- At first this problem seems like a binary search in which we query min dist required by all robots to get repaired.
+- But it cant be done because we always consider factories from left to right but optimally it is possible that `robot[i]` doesnt give min dist with first fact but with second fact.
+- So we use DP.
+- We first flatten out our factory arr i.e if we have `[-1,2]` i.e factory at -1 pos with 2 limit then we add two -1 factories in our array.
+- Then we sort both new fact array and robot array.
+- Now for each robot we consider each other fact starting from one.
+- So the first robot will get its nearest fact then second robot will get its nearest fact.
+
+```
+long long f(int i, int j, vector<int> &robot, vector<int> &fact, vector<vector<long long>> &dp){
+    // robot i can get repaired from factory j
+    if(i >= robot.size() ) return 0;
+    if(j>=fact.size()) return 1e17;
+    if(dp[i][j]!=-1) return dp[i][j];
+    long long mini = LLONG_MAX;
+    long long left = abs(robot[i]- fact[j]) + f(i+1, j+1, robot, fact, dp);
+    long long right = f(i, j+1, robot, fact, dp);
+    
+    return dp[i][j] = min(left, right);
+}
+class Solution {
+public:
+    long long minimumTotalDistance(vector<int>& robot, vector<vector<int>>& factory) {
+        // Can apply binary search due to too much variables, robot can move in both the directions so how to choose which factory that it should go. 
+        // For each robot we need to consider each factory and see if it gives us min dist.     
+        vector<int> fact;
+        for(auto it: factory){
+            for(int i=0; i<it[1]; i++){
+                fact.push_back(it[0]);
+            }
+        }
+        sort(robot.begin(), robot.end());
+        sort(fact.begin(), fact.end());
+        vector<vector<long long>> dp(robot.size(), vector<long long>( fact.size(), -1));
+        
+        
+        return f(0,0, robot, fact, dp);
+        
+        
+    
+    }
+};
+```
+
+---
