@@ -139,3 +139,219 @@ public:
 };
 
 ```
+
+---
+
+#### [Total Cost to Hire K Workers](https://leetcode.com/problems/total-cost-to-hire-k-workers/description/)
+You are given a 0-indexed integer array costs where costs[i] is the cost of hiring the ith worker.  
+
+You are also given two integers k and candidates. We want to hire exactly k workers according to the following rules:  
+
+You will run k sessions and hire exactly one worker in each session.  
+In each hiring session, choose the worker with the lowest cost from either the first candidates workers or the last candidates workers. Break the tie by the smallest index.  
+For example, if costs = [3,2,7,7,1,2] and candidates = 2, then in the first hiring session, we will choose the 4th worker because they have the lowest cost [3,2,7,7,1,2].  
+In the second hiring session, we will choose 1st worker because they have the same lowest cost as 4th worker but they have the smallest index [3,2,7,7,2]. Please note that the indexing may be changed in the process.  
+If there are fewer than candidates workers remaining, choose the worker with the lowest cost among them. Break the tie by the smallest index.  
+A worker can only be chosen once.  
+Return the total cost to hire exactly k workers.  
+
+**Approach: Segment Tree MLE**  
+- K times we need to find min of (0,i) and (n-j,n) and add it to cost.
+- At every iteration we update the smallest value picked up with INT_MAX and change the range to (0,i+1) if it comes from left other wise (j-1,n)
+```
+class SegmentTree{
+    // In segment Tree each node contains sum, max, min of some range [tl,tr]
+    // The range of leaf elements is just one element.
+
+    // This is a min segment tree.
+    public:
+    int cap;
+    int *t;
+    int *posi; // This is to store the actual positions of leaf nodes in the segment tree. e.g arr [1,10,20,33] , suppose val 10 is stored at node V i.e 5, t[5] = 10, we also store its corresponding location in arr, posi[5] = 1.
+    // We use posi to retrieve the location of val in arr and update its val in segment tree. (For simple queries just use *t and ignore *posi)
+    SegmentTree(){
+
+    }
+    SegmentTree(int n){
+        cap = n;
+        int size=1;
+		posi = new int[4*n];
+        t = new int[4*n];
+    }
+    void build(vector<int> a, int v, int tl, int tr){
+        // This takes O(N) time.
+        // V is the node in the segment tree e.g V=1 is the root node
+        // tl and tr is the range of node V e.g range of root is 0 to n-1
+
+        
+        if(tl == tr){
+        // once tl==tr it means the range contains only one element e.g (0) or (1) or (n) and its node in segment tree is V, v is the location in segment tree where the ans to this range lies.
+            t[v] = a[tl];
+            posi[v] = tl;
+        }
+        else{
+            // Build the tree in top down manner.
+            int tm = (tl+tr)>>1;
+
+            build(a, 2*v, tl, tm);
+            
+            build(a, 2*v+1, tm+1, tr);
+            
+
+            // While back tracking set the val of curr t[v] = min of its left and right child. and set posi accordingly.
+            if(t[2*v] <= t[2*v+1]){
+                t[v] = t[2*v];
+                posi[v] = posi[2*v];
+            }
+            else{
+                t[v] = t[2*v+1];
+                posi[v] = posi[2*v+1];
+            }
+        }
+    }
+
+    pair<int,int> find_min(int v, int tl , int tr, int l, int r){
+        // To find min in the range [l,r], we perform divide and conquer.
+        // Three cases are possible, either the range matches the current range.
+        // If not then we find mid and get two intervals [l,mid] and [mid+1,r]
+        // If it left range doesnt overlap with current range and we keep on diving it until l becomes <= r where we stop and return INT_MAX.
+        // If it overlaps then we go into the overlapping interval and find the value of that interval.
+        
+        if(l>r) return {INT_MAX,0};
+        if(tl == l && tr == r){
+            return {t[v], posi[v]};
+        }
+        int tm = (tl+tr)>>1;
+        auto min1 = find_min(2*v, tl, tm, l, min(r,tm));
+        auto min2 = find_min(2*v+1, tm+1, tr, max(l, tm+1), r);
+        
+        if(min1.first<=min2.first){
+            return min1;
+        }
+        return min2;
+
+    }
+
+    void update(int v, int tl, int tr, int pos, int new_val){
+        // V corresponds to the current location in the segment tree whose interval is tl,tr
+
+        // We want to update the val at pos in given arr and update its val.
+        // So we first find its location v in the segment tree and update all its parents recursively.
+        if(tl == tr) {
+            t[v] = new_val;
+            posi[v] = tl;         
+                     
+             }
+        else {
+            int tm = (tl+tr)>>1;
+            if(pos<=tm){
+                update(2*v, tl, tm, pos, new_val);
+            }
+            else update(2*v+1, tm+1, tr, pos, new_val);
+            // while tracing back after value is updated, update all the min values along the path
+            if(t[2*v] <= t[2*v+1]){
+                t[v] = t[2*v];
+                posi[v] = posi[2*v];
+            }
+            else{
+                t[v] = t[2*v+1];
+                posi[v] = posi[2*v+1];
+            }
+            
+        }
+        
+
+    }
+};
+
+long long totcost(vector<int>& costs, int k, int candidates){
+    SegmentTree t(costs.size());
+        t.build(costs, 1, 0, costs.size()-1);
+        long long cost=0;
+        int n = costs.size();
+        int l1=0, h1=candidates-1;
+        int l2=costs.size()-candidates , h2 = costs.size()-1;
+        while(k>0){
+            auto min1 = t.find_min(1, 0, n-1, l1, h1);
+            auto min2 = t.find_min(1, 0, n-1, l2, h2);
+            if(min1.first <= min2.first){
+                t.update(1, 0, n-1, min1.second, INT_MAX);
+                cost+=((long long)(min1.first));
+                h1 = min(h1+1, n-1);
+            }
+            else{
+                t.update(1, 0, n-1, min2.second, INT_MAX);
+                cost+=((long long)(min2.first));
+                l2 = max(0, l2-1);
+            }
+            k--;
+            
+        }
+        return cost;
+   
+}
+
+```
+
+---
+
+**Approach : Priority queue**  
+-  As we saw in segment tree after each update of minimum value we either increase our range from left or right.
+-  as the query range is monotonically increasing or decreasing and it is not like (0,4), (1,2) (0,3), we can simply apply Priority queue.
+-  first add first candidates and last candidate int the pq with ditinction between first candidates and last candidates elements.
+-  We also maintain visited arr to not visit a node more than once.
+-  Now for each K we sum up the min element and push more elements accoring to the min element being from  left part or right part.
+
+```
+ong long totalCost(vector<int>& costs, int k, int candidates) {
+            int n = costs.size(), i=0, j= n-1;
+
+            priority_queue<pair<int,pair<int,int>>, vector<pair<int, pair<int,int>>>, greater<pair<int,pair<int,int>>> > pq;
+
+            vector<int> visited(n,0);
+            while(i<candidates){
+
+                if(!visited[i]){
+                    visited[i]=1;
+                    pq.push({costs[i], {i,1}});
+
+                }
+                i++;
+            }
+
+            while(j>=n-candidates){
+                if(!visited[j]){
+                    visited[j]=1;
+                    pq.push({costs[j], {j,2}});
+                }
+                j--;
+            }
+    long long cost=0;
+
+    while(k>0){
+        k--;
+
+        cost+=pq.top().first;
+        auto it = pq.top();
+        pq.pop();
+        if(i<=j){
+            if(it.second.second==1){
+                if(!visited[i]){
+                    visited[i] =1;
+                    pq.push({costs[i],{i,1}});
+                    i++;
+                }
+            }
+            else {
+                if(!visited[j]){
+                    visited[j] =1;
+                    pq.push({costs[j],{j,2}});
+                    j--;
+                 }
+            }
+        }
+        
+        }
+    return cost;
+    }
+```
