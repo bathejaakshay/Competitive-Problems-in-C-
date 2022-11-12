@@ -1149,7 +1149,7 @@ long long countways(int *denominations, int n, int value, vector<vector<long lon
 ```
 ---
 #### [18. Unbounded 0/1 Knapsack](https://www.codingninjas.com/codestudio/problems/unbounded-knapsack_1215029?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1)
-Similar to 0/1 Knapsack with a difference that we have infinite bags with weight w and value v.
+Similar to 0/1 Knapsack with a difference that we have infinite bags with weight w and value v. It just means that you can take each item multiple times.
 **Note**: In case of infinite supply ques the base cases are different and important
 
 ```
