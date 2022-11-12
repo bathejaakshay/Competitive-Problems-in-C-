@@ -2675,3 +2675,98 @@ vector<vector<int>> bfs_approach(vector<vector<int>> &mat){
     return dist;
 }
 ```
+
+## Multitasking DFS
+
+#### [Most Profitable Path in a Tree](https://leetcode.com/contest/biweekly-contest-91/problems/most-profitable-path-in-a-tree/)  
+Given an undirected Tree, amount of each node and location of BOB. Alice aloways start at root. Traverse Bob to root and Alice to leaf node.
+Such that they both move together. If they meet at some point at the same time they share the value at that node.  
+Otherwise whoever reaches first takes the value of that node.
+
+Nodes value lies in `[-1e4, 1e4]`. Calculate maximum amount collection possible by alice such that it always end at some leaf.
+
+**Approach**
+
+- First DFS : Find parents of each node (Useful for backtracking traversal of bob to root). Also mark the time that particular node is visited in dfs.
+- Now traverse bob to root using parent vector and keep record of time starting from 1 at bob. If bob traversal time to some node is lesser than alice's then mark its amount as zero. if both reaches at same time then half it.
+- Second DFS: Calculate Maximum Cost Path in the tree using DFS
+
+```
+void dfs(int i, vector<int> &visited, int p, int t, vector<vector<int>> &adjlist, vector<int> &parent, vector<int> &time){
+    visited[i] = 1;
+    time[i] = t;
+    parent[i] = p;
+    for(int &x: adjlist[i]){
+        if(!visited[x]){
+            dfs(x, visited, i, t+1, adjlist, parent, time);
+        }
+    }
+    return;
+}
+
+int dfs2(int i, vector<int> &visited, vector<vector<int>> &adjlist, vector<int> &amount){
+    
+    
+    visited[i] = 1;
+    
+    
+    bool flag=false;
+    int maxi = -1e7;
+    for(int &x: adjlist[i]){
+        if(!visited[x]){
+            flag = true;
+            // visited[x] = 1;
+            maxi = max(maxi, dfs2(x, visited, adjlist, amount));
+        }
+    }
+    if(flag == false){
+        return amount[i];
+    }
+    return amount[i] + maxi;
+    
+}
+class Solution {
+public:
+    int mostProfitablePath(vector<vector<int>>& edges, int bob, vector<int>& amount) {
+        vector<vector<int>> adjlist1(amount.size());
+        for(int i=0; i<edges.size(); i++){
+            adjlist1[edges[i][0]].push_back(edges[i][1]);
+            adjlist1[edges[i][1]].push_back(edges[i][0]);
+        }
+        
+        // we talk in visit time, traverse the whole graph from the zero node and keep record of the visit time and parents of each node.
+        // Then traceback the path of bob to the root and mark all the nodes amount as zero where bob reaches first and half the amount where both bob and alice reaches together.
+        
+        
+        vector<int> parent(amount.size());
+        vector<int> time(amount.size());
+        vector<int> visited(amount.size(),0);
+        
+        dfs(0,visited, -1, 1, adjlist1, parent, time);
+        
+        int current = bob;
+        int ct=1;
+        while(current>0){
+            if(ct < time[current]){
+                amount[current] = 0;
+            }
+            else if(ct == time[current]){
+                amount[current]/=2;
+            }
+            ct++;
+            current = parent[current];
+        }
+        // for(int &x: amount) cout<<x<<" ";
+        // cout<<endl;
+        fill(visited.begin(), visited.end(),0);
+        // Now the problem boils down to finding max profit path in a tree
+        return dfs2(0, visited, adjlist1, amount);
+        
+        
+        
+        
+        
+    }
+};
+```
+---
