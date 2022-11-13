@@ -1179,6 +1179,27 @@ public:
 };
 ```
 ---
+
+#### LCM of an array
+**Approach**
+- We cannot directly apply LCM approch of two numbers directly i.e `LCM(a,b) = Prod(a*b)/gcd(a*b)`but `LCM(a,b,c) != Prod(a*b*c)/gcd(a,b,c)`.
+- LCM of first n elements in arr = LCM( LCM of first n-1 elements in arr,  nth element)
+- Lets say LCM of first n-1 elements is a and our nth element is b then LCM of first n elements is LCM(a,b). Now we can apply two product and gcd formula.
+
+We can easily see this. 
+`e.g 
+arr = [8,12, 48]
+lcm(8,12) is 24
+8 = 4*(2)
+12 = 4 * 3
+48 = (4 * 4) * (3)
+
+lcm = 4*4*3*2
+
+(now we know that lcm of (8,12,48) has to be >= 24)
+now our ans intuitively is lcm (24,48) = 48
+`
+---
 #### [18. Maximum Triplet Sum](https://www.interviewbit.com/old/problems/maximum-sum-triplet/)  
 We need to find a triplet ai, aj ,ak such that ai<aj<ak and i<j<k and their sum is max   
 								  
@@ -1233,5 +1254,8 @@ return maxi;
 }
 			 
 			   
+			   
 ```
+			   
+			   
 			 
