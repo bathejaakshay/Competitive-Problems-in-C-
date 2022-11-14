@@ -463,7 +463,42 @@ int findUnsortedSubarray(vector<int>& nums) {
         return (end-start <= 0) ? 0 : end-start+1;
     }
 ```
+**Approach 2**
+- We just need to find first decreasing pair's start index and last decreasing pair's end index.
+- For this we compute next least element (nle) (for first dec) and prev greater elements (pge) (for last dec).
+- in nle the first index from i=0 where `nle[i]!=-1` is our start index of unsorted arr.
+- in pge the first index from last i=n-1 where `pge[i]!=-1` is our last index of unsorted arr.
 
+```
+int find(vector<int> &nums){
+    // we need first dec pair and last dec pair
+    // find next smallest
+    stack<int> st;
+    vector<int> nle(nums.size(),-1);
+    vector<int> pge(nums.size(), -1);
+    for(int i=nums.size()-1; i>=0; i--){
+        while(!st.empty() && nums[st.top()] >= nums[i]) st.pop();
+        if(!st.empty()){
+            nle[i] = st.top();
+        }
+        st.push(i);
+    }
+    while(!st.empty()) st.pop();
+
+    for(int i=0; i<nums.size(); i++){
+        while(!st.empty() && nums[st.top()] <= nums[i]) st.pop();
+        if(!st.empty()) pge[i] = st.top();
+        st.push(i);
+    }
+
+    int i=0,j=nums.size()-1;
+    for(;i<nle.size(); i++) if(nle[i]!=-1) break;
+    for(;j>=0; j--) if(pge[j]!=-1) break;
+
+    if(i<=j) return j-i+1;
+    return 0;
+}
+```
 
 ---
 
