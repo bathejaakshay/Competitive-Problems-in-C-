@@ -270,7 +270,7 @@ public:
     }
         for(int i=arr.size()-1; i>=0; i--){
         // cout<<" i = "<<i<<endl;
-        while(!st2.empty() && arr[st2.top()] >=arr[i]){ // Always remember to keep one bound to be tight and other to be loose, here bound for finding right is loose and for left is tight
+        while(!st2.empty() && arr[st2.top()] >=arr[i]){ // Always remember to keep one bound to be tight and other to be loose, here bound for finding right is loose and for left is tight. This is because while dealing with repeating elements we want only once to consider  the subarrays that contains both elements.
             st2.pop();
         }
         if(!st2.empty()){
