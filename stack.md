@@ -178,6 +178,34 @@ vector<int> Solution::slidingMaximum(const vector<int> &A, int B) {
 ```
 
 `TC: O(n) + O(n)`
+
+
+**Approach-2 : Sliding Window using Priority queue O(nlogn)**
+- push all elements into pq till we reach the window size
+- once we reach find maxi
+- if window size becomes greater than required then shrink window size and pop all out of bounds elements.
+- As out of bounds elements can be smaller and be at lower level in pq. So be before setting maxi we always try to pop the out of bounds elements.
+
+```
+vector<int> slidingMaximum_pq(const vector<int> &A, int B){
+    priority_queue<pair<int,int>> pq;
+    vector<int> ans;
+    int j=0;
+    for(int i=0; i<A.size(); i++){
+        pq.push({A[i], i});
+        if(i-j+1 > B){
+            j++;
+        }
+        while(pq.top().second < j) pq.pop();
+        
+        if(i-j+1 == B){
+            ans.push_back(pq.top().first);
+        }
+        
+    }
+    return ans;
+}
+```
 ---
 
 #### [5. Next Greater Element 2](https://leetcode.com/problems/next-greater-element-ii/)
