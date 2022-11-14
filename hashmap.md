@@ -79,18 +79,18 @@ int Solution::maxPoints(vector<int> &A, vector<int> &B) {
             {   overlap++;
             }
             else if(A[i]==A[j])
-            {   vertical++;
+            {   vertical++; // we are computing vertical separately because its slope is inf and we cant use the below code for thet
             }
             else
             {   double ydif=(double)B[j]-(double)B[i];
                 double xdif=(double)A[j]-(double)A[i];
                 double slope=ydif/xdif;
                 m[slope]++;
-                cur=max(cur,m[slope]);
+                cur=max(cur,m[slope]); // for a particular fixed point all the other points that make same slope lies on the same straight line. 
             }
-            cur=max(cur,vertical);
+            cur=max(cur,vertical); // finally for the fixed point compute the max by comparing it with points in vertical line that passes through it.
         }
-        maxp=max(maxp,cur+overlap+1);
+        maxp=max(maxp,cur+overlap+1); // so max points are the for a point overlapping + max points on any single slope plus itself.
         m.clear();
     }
     return maxp;
