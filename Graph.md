@@ -2828,3 +2828,50 @@ string Solution::solve(int A, int B, int C, int D, vector<int> &E, vector<int> &
 }
 
 ```
+
+#### [Knight On Chess Board](https://www.interviewbit.com/problems/knight-on-chess-board/)  
+Given any source point, (C, D) and destination point, (E, F) on a chess board, we need to find whether Knight can move to the destination or not.  
+If yes, then what would be the minimum number of steps for the knight to move to the said point.  
+
+If knight can not move from the source point to the destination point, then return -1.  
+
+Note: A knight cannot go out of the board.  
+**Approach : BFS**
+- Whenever single source and single destination given, and asked for min dist, always go for BFS and not DFS as it will give incorrect ans.
+- In this case also DFS with dp gives incorrect ans.
+- BFS approach is simple using queue, expand level by level and relax edges. Maintain a distance vector. Apply djikstra with unit edge weights basically.
+
+```
+int Solution::knight(int A, int B, int C, int D, int E, int F) {
+// for min path its always prefer bfs
+vector<vector<int>> visited(A, vector<int> (B, 0));
+vector<vector<int>> dist(A, vector<int>(B,1e7));
+queue<pair<int,int>> q;
+dist[C-1][D-1] = 0;
+q.push({C-1,D-1});
+while(!q.empty()){
+    pair<int,int> it = q.front();
+    q.pop();
+    int i = it.first;
+    int j = it.second;
+    if(i == E-1 && j == F-1) return dist[i][j];
+    int di[] = {-2,-2,-1,-1,1,1,2,2};
+    int dj[] = {-1,1,-2,2,2,-2,1,-1};
+    for(int x=0; x<8;x++){
+        int ni = i+di[x];
+        int nj = j+dj[x];
+        if(ni>=0 && nj>=0 && ni<visited.size() && nj<visited[0].size() && !visited[ni][nj]){
+            visited[ni][nj]=1;
+            if(dist[ni][nj] > 1+dist[i][j]){
+                dist[ni][nj] = 1+dist[i][j];
+            }
+            q.push({ni,nj});
+        }
+    }
+}
+ 
+return -1;
+
+}
+
+```
