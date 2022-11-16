@@ -2770,3 +2770,61 @@ public:
 };
 ```
 ---
+
+#### [Valid Path](https://www.interviewbit.com/old/problems/valid-path/)
+There is a rectangle with the left top as  (0, 0) and right bottom as (x, y). There are N circles such that their centers are inside the rectangle. Radius of each circle is R. Now we need to find out if it is possible that we can move from (0, 0) to (x, y) without touching any circle.  
+
+Note :  
+
+We can move from any cell to any of its 8 adjecent neighbours and we cannot move outside the boundary of the rectangle at any point of time.  
+A circle doesn't touch a cell (i,j) if the distance from its centre to the cell (i,j) is less than R.  
+
+**Approach**
+- Dont think of taking every circle center and marking all points inside a circle as invalid. This is very hard to cover all points inside circle.
+- Instead just do a simple traversing for all the paths from (0,0) to target and see if we can take next neighbouring node by checking if it lies inside any circle.
+```
+let say point p (x1, y1) be the neighbouring next point and pointn c (x,y) be the center of the circle then p lies inside circle if
+
+	(x-x1)^2 + (y-y1)^2 <= r^2
+
+```
+
+O(N\*M*\M)
+```
+bool valid(int i, int j, vector<int> &E, vector<int> &F, int r){
+    for(int a=0; a<E.size(); a++){
+     if(((E[a]-i)*(E[a]-i) + (F[a]-j)*(F[a]-j)) <= r*r) return false;
+       
+    }
+    return true;
+}
+
+bool path(int i, int j, vector<vector<int>> &grid, vector<vector<int>> &visited, int D, vector<int> &E, vector<int> &F){
+    if(i == grid.size()-1 && j == grid[0].size()-1){
+        if(valid(i,j,E,F,D)) return true;
+        return false;
+    }
+    visited[i][j] = 1;
+    int di[] = {-1,-1,-1,0,0,1,1,1};
+    int dj[] = {-1,1,0,-1,1,1,-1,0};
+    for(int x=0; x<8; x++){
+        int ni = i+di[x];
+        int nj = j+dj[x];
+        
+        if(ni>=0 && nj>=0 && ni<grid.size() && nj<grid[0].size() && !visited[ni][nj] && valid(ni,nj,E,F, D)){
+            if(path(ni, nj, grid, visited, D,E, F) == true) return true;
+        }  
+    }
+    return false;
+}
+
+
+string Solution::solve(int A, int B, int C, int D, vector<int> &E, vector<int> &F) {
+    vector<vector<int>> grid(A+1, vector<int> (B+1,0));
+    vector<vector<int>> visit(A+1, vector<int>(B+1,0));
+    if(path(0,0, grid, visit, D, E, F)) return "YES";
+    return "NO";
+    
+}
+
+```
