@@ -105,3 +105,29 @@ ORDER BY
 END);
 ```
 
+## Sorting with case statement
+#### [I hate Vowels](https://www.interviewbit.com/problems/i-hate-vowels/)
+You are given a ‘Students’ table consisting of Id,Name and marks of two tests namely Marks1 and Marks2. The teacher wants to sort the table based on their marks(in descending order). However the teacher has a particular hate towards students whose Names starts with a vowel. Therefore the teacher would take the maximum of the two tests for students whose name doesn’t start with a vowel while sorting, and would take the minimum of the two tests for the students whose name starts with a vowel while sorting.  
+
+**Approach**
+- Put case conditions of name and marks in order by
+
+```
+select Name  from Students order by case when ((Name like 'A%') or (Name like 'E%') or (Name like 'I%' )or (Name like 'O%') or (Name like 'U%')) then (
+    case when Marks1 > Marks2 then Marks2 else Marks1 end
+ ) else (
+     case when Marks1 > Marks2 then Marks1 else Marks2 end
+ ) end desc;
+
+```
+
+We can also check string starts with vowel using LEFT(string, number of chars) function
+
+```
+select Name  from Students order by case when (Left(Name,1) IN ('A','E','I','O','U')) then (
+    case when Marks1 > Marks2 then Marks2 else Marks1 end
+ ) else (
+     case when Marks1 > Marks2 then Marks1 else Marks2 end
+ ) end desc;
+```
+---
