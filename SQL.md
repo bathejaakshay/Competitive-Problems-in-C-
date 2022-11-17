@@ -61,3 +61,35 @@ select Name from Players where Id in(select Id from Matches  group by Id having 
 
 ```
 
+---
+
+## Case-when operator
+
+It is like an If-Then-Else statement.  
+Syntax:
+```
+CASE
+    WHEN condition1 THEN result1
+    WHEN condition2 THEN result2
+    WHEN conditionN THEN resultN
+    ELSE result
+END;
+```
+
+Question: #### [NULL Sorting](https://www.interviewbit.com/problems/null-sorting/)
+You are given a table ‘Students’ which consists of the student information of every student along with the marks that they obtained in a test out of 100. However there were students who were Absent for the test, their marks section would contain ‘Absent’ word. Help the teacher arrange the students first based on their marks and second based on their first name.(You just have to output the names of the students).  
+
+**Approach**
+- One Approach is to update the marks attribute when marks='absent' and set it to -1. Now just sort by Marks desc and Name asc.
+- Instead we can do this in one query. Firstly create another column which shows when Marks are absent as 0 and when they are not as 1.
+- Now Simply first desc sort by this column then by Marks and then by Name.
+
+```
+select Name from(  
+    select Id, Name, Marks, 
+    case when Marks = 'Absent' then 0 else 1 end as is_absent from Students) as x order by x.is_absent desc, x.Marks desc, x.Name;
+```
+
+---
+
+
