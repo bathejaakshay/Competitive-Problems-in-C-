@@ -93,3 +93,15 @@ select Name from(
 ---
 
 
+## Application of Case statement in sorting
+
+```
+SELECT CustomerName, City, Country
+FROM Customers
+ORDER BY
+(CASE
+    WHEN City IS NULL THEN Country
+    ELSE City
+END);
+```
+
