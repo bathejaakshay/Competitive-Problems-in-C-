@@ -131,3 +131,34 @@ select Name  from Students order by case when (Left(Name,1) IN ('A','E','I','O',
  ) end desc;
 ```
 ---
+
+### Where to not use having clause
+
+#### [Class Average](https://www.interviewbit.com/problems/class-average/)
+You are given a table ‘Students’ which consists of the marks that students from different classes obtained in the final exam. Write an SQL query to find for each departments the number of students who managed to score above total average (average considering students of all classes) . The output should be sorted by ClassId .  
+
+```
+Students: Id,Name,Marks,Classid
+
+```
+
+**Approach**
+- We cannot directly use group and having. i.e groupby classId having marks > avg(Total Marks of class). This doesnot make sense beacuse each classId has multiple students and we are filtering on classId i.e say there are two students having classid 101, one has marks > avg and the other has < avg.
+- Then whichever record comes first in grouping statement will set if classId 101 should appear in the output or not and we cant count all of them in this way.
+- Had it been, Output classIDs having enrolled students > 5 then we could have done group by classId having count(ID)>5. 
+- Remember having condition must always have an aggregate.
+- Instead we can do it simpy
+
+```
+select count(g.Id) as A from (select t.Id, t.Name, t.Marks, t.Classid from Students as t where t.Marks > (select AVG(s.Marks) from Students as s)) as g group by g.classid
+
+```
+
+---
+
+#### NOTE: In Group By statement, if we want to project attributes other than those on which the table has been grouped upon then the other attributes must appear in an aggregate function. 
+```
+e.g Select Classid, count(Id) from Students group by Classid
+```
+
+---
