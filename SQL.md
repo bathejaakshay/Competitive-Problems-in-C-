@@ -166,6 +166,12 @@ e.g Select Classid, count(Id) from Students group by Classid
 e.g select round(SUM(c.Result)/count(c.Result),4) as 'Percentage Wins' from (select m.PlayerId1, m.PlayerId2, m.Result, m.Date from Matches as m where m.PlayerId2 not in ( select p.Id from Team2 as p where p.Cheater = 1)) as c group by c.Date
 
 ```
+
+#### NOTE3: String Length function
+
+In Mysql: CHAR_LENGTH()
+In SQL Server: LEN()
+
 ---
 
 #### JOINS
