@@ -167,3 +167,28 @@ e.g select round(SUM(c.Result)/count(c.Result),4) as 'Percentage Wins' from (sel
 
 ```
 ---
+
+#### JOINS
+Joins are by default inner joins and `ON` keyword is necessary for specifying the joining attribute otherwise it will do a cartezian join.
+
+#### [Job Offer]()
+ou are given 3 tables namely ‘Students’ , ‘Departments’ and ‘Jobs’.  
+
+Write an SQL query to find for each student their name and the date of the job offer. The output should be sorted by Department Names. Note that there might be students who did not receive a single offer, in such cases you should not include them in the output table.  
+
+```
+Students: Id, Name, DepartmentId
+Departments: DepartmentId, DepartmentName
+Jobs: Id, Date
+
+```
+
+**Approach**
+- Inner join students with jobs first, it will only keep the students who got job.
+- then join it with department and sort on department name.
+
+```
+select CONCAT(s.Name,',',j.Date) as Offers from  Students as s join Jobs as j on s.id = j.id join Departments as d on d.DepartmentId = s.DepartmentId order by d.DepartmentName
+```
+
+---
