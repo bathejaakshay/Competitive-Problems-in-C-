@@ -172,6 +172,11 @@ e.g select round(SUM(c.Result)/count(c.Result),4) as 'Percentage Wins' from (sel
 In Mysql: CHAR_LENGTH()
 In SQL Server: LEN()
 
+#### NOTE4: Case Insentitive sort
+
+Way1 : order by lower(Name)
+Way2 : order by Name COLLATE utf8_general_ci
+
 ---
 
 #### JOINS
