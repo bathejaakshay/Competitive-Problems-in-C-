@@ -1200,6 +1200,60 @@ lcm = 4*4*3*2
 now our ans intuitively is lcm (24,48) = 48
 `
 ---
+#### Number of subarrays that have max as maxp and min as minp
+Given two elements maxp and minp, find the total number of subarrays that have minimum element as minp and maximum element as maxp
+
+**Approach**
+- Main idea is to find subarrays starting with each index.
+- for each index i we calculate 
+	- index of element j1 such that j>=i && nums[j1] > maxp 
+	- index of element j2 such that j>=i && nums[j2] < minp
+        - index of element j3 such that j>=i && nums[j3] == maxp
+    	- index of element j4 such that j>=i && nums[j4] == minp
+- now number of subarrays starting with index i that has minp and maxp as min and max will be
+	- (min(j1,j2) - max(j3,j4))     (handle situations when (j1 , j2) < (j3 , j4))
+    
+```
+int solve(vector<int> &nums, int minp, int maxp){
+    vector<int> g4(nums.size(), nums.size()); // indices of element greater than4
+    vector<int> e4(nums.size(), -1);	      // indices of element equal to 4
+    vector<int> g2(nums.size(), nums.size());	// indices of element lesser than 2
+    vector<int> e2(nums.size(), -1);		// indices of element equal to 2
+    int g4i=nums.size(), e4i = -1, g2i = nums.size(), e2i = -1;
+    for(int i=nums.size()-1; i>=0; i--){
+        if(nums[i] > maxp){
+            g4i = i;
+        }
+        else if(nums[i] == maxp){
+            e4i = i;
+        }
+        else if(nums[i] < minp){
+            g2i = i;
+        }
+        else if(nums[i] == minp){
+            e2i = i;
+        }
+
+        g4[i] = g4i;
+        e4[i] = e4i;
+        g2[i] = g2i;
+        e2[i] = e2i;
+    }
+    int count =0;
+    for(int i=0; i<nums.size(); i++){
+        if(e4[i] == -1 || e2[i] == -1 || ( g4[i] < e4[i] || g4[i] < e2[i]) || ( g2[i] < e2[i] || g2[i] < e4[i]) ) continue;
+        else{
+            count+=( min(g4[i], g2[i]) -  max(e2[i], e4[i]) );
+        }
+    }
+    return count;
+
+}
+
+
+```
+
+---
 #### [18. Maximum Triplet Sum](https://www.interviewbit.com/old/problems/maximum-sum-triplet/)  
 We need to find a triplet ai, aj ,ak such that ai<aj<ak and i<j<k and their sum is max   
 								  
