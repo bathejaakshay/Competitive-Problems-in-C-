@@ -2875,3 +2875,83 @@ return -1;
 }
 
 ```
+
+---
+## Dijkstra Standard Pattern
+#### [Useful Extra Edges](https://www.interviewbit.com/problems/useful-extra-edges/)  
+Given a graph with A nodes and B edges and E extra edges (All edges are weighted given)  
+Find the min dist from source `src` to dest `dst`, if we are allowed to choose atmost one extra edge.
+All edges are Bidirectional
+**Approach**
+- Brute Force way is to try every extra edge and apply dijkstra and see it min dist changes.
+- But this will take `O(E*BlogA)`.
+- Instead do we really need to apply dijkstra again and again?
+- We can simply use a property of the bidirectional graph. min dist from src to dst is same as dst to src.
+- So we can compute min dist from src to every other node and min dist from dst to every other node.
+- Now we try every extra edge say (u,v), now we compute `dist from src to u + w(u,v) + dist from v to dst` and `dist from src to v + w(u,v) + dist from u to dst` and take their minimum. and update our answer if required.
+
+`O(E+ BlogA)`
+
+```
+vector<int> dikstra_mindist(vector<vector<vector<int>>> adjlist, int src, int dst){
+    
+    vector<int> dist(adjlist.size(),1e7);
+    vector<int> visited(adjlist.size(),0);
+    
+    priority_queue<pair<int,int>, vector<pair<int,int>> , greater<pair<int,int>>> pq;
+    
+    dist[src] = 0;
+    pq.push({0, src});
+    while(!pq.empty()){
+        auto it = pq.top();
+        pq.pop();
+        
+        
+        if(!visited[it.second]){
+            visited[it.second] = 1;
+            for(auto x : adjlist[it.second]){
+                int v = x[0];
+                int w = x[1];
+                if(dist[v] > it.first + w){
+                    dist[v] = it.first + w;
+                    pq.push({dist[v], v});
+                }
+                
+            }    
+        }
+        
+    }
+    return dist;
+    
+}
+
+int Solution::solve(int A, vector<vector<int> > &B, int C, int D, vector<vector<int> > &E) {
+    int mini = 1e7;
+    int size;
+    size =A;
+    vector<vector<vector<int>>> adjlist(size+1);
+    for(int i=0; i<B.size(); i++){ 
+        adjlist[B[i][0]].push_back({B[i][1], B[i][2]});
+        adjlist[B[i][1]].push_back({B[i][0], B[i][2]});
+    }
+    
+    vector<int> distc = dikstra_mindist(adjlist, C, D);
+    vector<int> distd = dikstra_mindist(adjlist, D, C);
+    
+    if(distc[D]<1e7){
+        mini = min(mini,distc[D]);
+    }
+    
+    for(int i=0; i<E.size(); i++){
+        
+        if(E[i][0] >= 0 && E[i][1]<=A){
+            mini = min(mini, distc[E[i][0]] + E[i][2] + distd[E[i][1]]);
+            mini = min(mini, distc[E[i][1]] + E[i][2] + distd[E[i][0]]);
+        }
+        
+    }
+    
+    return (mini >= 1e7)?-1:mini;
+}
+
+```
