@@ -2955,3 +2955,85 @@ int Solution::solve(int A, vector<vector<int> > &B, int C, int D, vector<vector<
 }
 
 ```
+
+---
+
+#### [Diameter of Tree Graph/ Largest distance between two nodes in a graph which is a tree]()
+Given an arbitrary unweighted rooted tree which consists of N nodes.  
+
+The goal of the problem is to find largest distance between two nodes in a tree.  
+
+Distance between two nodes is a number of edges on a path between the nodes (there will be a unique path between any pair of nodes since it is a tree).  
+
+The nodes will be numbered 0 through N - 1.  
+
+The tree is given as an array A, there is an edge between nodes A[i] and i (0 <= i < N). Exactly one of the i's will have A[i] equal to -1, it will be root node.  
+
+
+**Approach DFS**
+- For each node get max heights from the two children if possible say m1 and m2.
+- Now update max dia as `m1+m2+2`. If we had only one children then update it as m1+1. return the new height i.e max(m1,m2) + 1 
+
+```
+
+int dfs(int i, vector<vector<int>> &adjlist, int &maxi){
+    if(adjlist[i].size() == 0) return 0;
+    int m1=0,m2=0;
+     for(int &x: adjlist[i]){
+        int m = dfs(x, adjlist, maxi);
+        if(m>m1){
+             m2 = max(m1,m2);
+             m1 = m;}
+        else if(m>m2) m2 = m;
+    }
+    
+    if(adjlist[i].size() > 1){
+        maxi = max(m1 + m2 + 2, maxi);
+        return max(m1,m2) + 1;
+    }
+    if(adjlist[i].size() == 1){
+        maxi = max(m1+1,maxi);
+        return m1 + 1;
+    }
+    
+    return 0;
+}
+int find_diameter(vector<vector<int>> &adjlist, int root, int &maxi)
+{
+    int m1=0,m2=0;
+    
+    for(int &x: adjlist[root]){
+        int m = dfs(x, adjlist, maxi);
+        if(m>m1){
+             m2 = max(m1,m2);
+             m1 = m;}
+        else if(m>m2) m2 = m;
+    }
+    if(adjlist[root].size()>1){
+        maxi = max(m1+m2 + 2, maxi);
+    }
+    else if(adjlist[root].size()==1){
+        
+        maxi = max(maxi, m1 + 1);
+    }
+        
+    return 0; 
+}
+
+int Solution::solve(vector<int> &A) {
+    vector<vector<int>> adjlist(A.size());
+    
+    int root;
+    for(int i=0; i<A.size(); i++){
+        if(A[i] == -1) root = i;
+        else{
+            adjlist[A[i]].push_back(i);
+        }
+    }
+    
+    int maxi = 0;
+    find_diameter(adjlist, root, maxi);
+    return maxi;
+}
+
+```
