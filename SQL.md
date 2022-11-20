@@ -203,3 +203,18 @@ select CONCAT(s.Name,',',j.Date) as Offers from  Students as s join Jobs as j on
 ```
 
 ---
+
+#### Full outer Join, only SQL server has full outer join
+
+We are given a table with schema:
+
+```
+Children: CId, ParentId, Name, Gender
+```
+
+Now we need to print children name his male father name and his female mother null, if any of the above doesn't exist then print null
+
+```
+select case when(t1.me IS NULL) then t2.me else t1.me end as Myself, t1.p1 as papa, t1.p1 as mumma from (select g1.CId, g1.Name as me, g2.Name as p1 from god as g1, god as g2 where g1.Parentid = g2.CId and g2.Gender = "male")as t1 full outer join (select g1.CId, g1.Name as me, g2.Name as p1 from god as g1, god as g2 where g1.Parentid = g2.CId and g2.Gender = "female")as t2 on t1.Cid = t2.Cid;
+
+```
