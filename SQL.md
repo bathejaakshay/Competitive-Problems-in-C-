@@ -214,6 +214,9 @@ Children: CId, ParentId, Name, Gender
 
 Now we need to print children name his male father name and his female mother null, if any of the above doesn't exist then print null
 
+**Approach**
+- Firstly join children with their fathers as t1 and children with their mothers as t2. Now join t1 and t2 as full outer join. (Keep in mind to handle null values)
+
 ```
 select case when(t1.me IS NULL) then t2.me else t1.me end as Myself, t1.p1 as papa, t1.p1 as mumma from (select g1.CId, g1.Name as me, g2.Name as p1 from god as g1, god as g2 where g1.Parentid = g2.CId and g2.Gender = "male")as t1 full outer join (select g1.CId, g1.Name as me, g2.Name as p1 from god as g1, god as g2 where g1.Parentid = g2.CId and g2.Gender = "female")as t2 on t1.Cid = t2.Cid;
 
