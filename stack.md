@@ -98,6 +98,49 @@ int MinStack::getMin() {
 
 ---
 
+#### [3a. Remove k digits to convert string to minimum number representation](https://leetcode.com/problems/remove-k-digits/description/)  
+**Approach**
+- We use stack to keep monotonically increasing number
+- the moment we get a number smaller than previous one, we remove all numbers in stack that are greater than current number.
+- Now if the stack gets empty and current number is zero then dont push it as our ans cant have leading zeros
+- now push current char
+- Now After above whole processing if still k>0 then we remove top k elements from the stack as they are in increasing order.
+- now empty stack into a string ans, reverse the string. if string is empty then return "0" else return ans itself.
+
+```
+string removeKdigits(string nums, int k) {
+        stack<char> st;
+
+        for(int i=0; i<nums.size(); i++){
+            while(!st.empty() && st.top() - '0' > nums[i] - '0' && k>0){
+                k--;
+                st.pop();
+            }
+            if(st.empty() && nums[i] == '0') continue;
+            st.push(nums[i]);
+        }
+
+        while(k>0 && !st.empty()){
+
+            k--;
+            st.pop();
+
+        }
+
+        string ans = "";
+        while(!st.empty()) {
+            ans+=(st.top());
+            st.pop();
+        }
+        reverse(ans.begin(), ans.end());
+
+        if(ans == "") return "0";
+        return ans;
+    }
+```
+
+---
+
 #### [3. Next Greater Element](https://leetcode.com/problems/next-greater-element-i/)
 **Approach**
 1. For each element we need to find the next greater element just at its right side.
