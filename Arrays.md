@@ -1254,6 +1254,22 @@ int solve(vector<int> &nums, int minp, int maxp){
 ```
 
 ---
+#### Pattern: Observation  
+#### [Rotate 2d Array by 90 deg](https://leetcode.com/problems/rotate-image/description/)
+Intuition: Make observation by taking tanspose of the output if it resembles in some way to the input then apply that transformation.
+**Approach**
+- Reverse 2d array then take transpose
+
+```
+reverse(matrix.begin(), matrix.end());
+     for(int i=0;i<matrix.size();i++){
+         for(int j=i; j<matrix.size();j++){
+             swap(matrix[i][j],matrix[j][i]);
+         }
+     }
+```
+
+---
 #### [18. Maximum Triplet Sum](https://www.interviewbit.com/old/problems/maximum-sum-triplet/)  
 We need to find a triplet ai, aj ,ak such that ai<aj<ak and i<j<k and their sum is max   
 								  
@@ -1310,6 +1326,7 @@ return maxi;
 			   
 			   
 ```
+		
 			   
 			   
 			 
