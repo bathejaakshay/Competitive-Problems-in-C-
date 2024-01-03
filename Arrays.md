@@ -935,6 +935,57 @@ pair<int,int> search(vector<vector<int>> &mat, int item){
 }
 
 ```
+
+---
+
+#### [15.5. Subsets - **Medium**]([https://leetcode.com/problems/trapping-rain-water/](https://leetcode.com/problems/subsets/description/))
+Given an integer array nums of unique elements, return all possible subsets `(the power set)`.
+**Approach - (a) Backtracking** 
+TC: O(2^n)
+1. Backtracking is a general code for all such subsets, permutation, combination functions.
+2. for each index i we say what all subsets will be there if we include element at i.
+
+```
+void subset(int i, vector<int> &nums, vector<int> curr, vector<vector<int>> &ans){
+    if(i>nums.size()) return;
+    ans.push_back(curr);
+
+    for(int idx = i; idx<nums.size(); idx++){
+        curr.push_back(nums[idx]);
+        subset(idx+1, nums, curr, ans);
+        curr.pop_back();
+    }
+
+    return;
+}
+```
+
+**Approach - (b) Recursion**
+TC: O(2^n)
+1. For each element we have either include or not include choice.
+
+```
+void subset(int i, vector<int> &nums, vector<int> curr ,vector<vector<int>> &ans){
+
+    if(i >= nums.size()) {
+        ans.push_back(curr);
+        return;
+    }
+
+    //not choose
+    subset(i+1, nums, curr, ans);
+    curr.push_back(nums[i]);
+
+    //choose
+    subset(i+1, nums, curr, ans);
+
+    return;
+
+}
+
+
+```
+
 ---
 #### [16. Kth permutation sequence - HARD](https://leetcode.com/problems/permutation-sequence/)  
 Given N numbers `[1..N]` find the k th permutation  
