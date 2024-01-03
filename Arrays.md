@@ -938,7 +938,7 @@ pair<int,int> search(vector<vector<int>> &mat, int item){
 
 ---
 
-#### [15.5. Subsets - **Medium**](https://leetcode.com/problems/subsets/description/)
+####[15.5. Subsets](https://leetcode.com/problems/subsets/description/)
 Given an integer array nums of unique elements, return all possible subsets `(the power set)`.
 **Approach - (a) Backtracking** 
 TC: O(2^n)
