@@ -938,12 +938,13 @@ pair<int,int> search(vector<vector<int>> &mat, int item){
 
 ---
 
-#### [15.5. Subsets - **Medium**]([https://leetcode.com/problems/trapping-rain-water/](https://leetcode.com/problems/subsets/description/))
+#### [15.5. Subsets - **Medium**](https://leetcode.com/problems/subsets/description/)
 Given an integer array nums of unique elements, return all possible subsets `(the power set)`.
 **Approach - (a) Backtracking** 
 TC: O(2^n)
 1. Backtracking is a general code for all such subsets, permutation, combination functions.
 2. for each index i we say what all subsets will be there if we include element at i.
+3. For all such pattern check this [post](https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/).
 
 ```
 void subset(int i, vector<int> &nums, vector<int> curr, vector<vector<int>> &ans){
