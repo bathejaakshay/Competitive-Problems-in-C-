@@ -3037,3 +3037,102 @@ int Solution::solve(vector<int> &A) {
 }
 
 ```
+---
+
+## State BFS Questions
+
+### [Minimum Number of Operations to Make X and Y Equal](https://leetcode.com/problems/minimum-number-of-operations-to-make-x-and-y-equal/description/)
+
+**Approach 1: State BFS**  
+1. Each state will be `{num, state}` where num is the current num which needs to be converted to y and state is the minimum number of operations to reach num. The queue will always contain the states in increasing number of operations.
+2. use hash_map to keep record of not pushing a `num` value twice in queue.
+
+```
+int mino(int x , int y){
+    // state dfs
+    queue<pair<int,int>> q;
+    if(x<y) return y-x;
+    q.push({x, 0});
+
+    unordered_map<int,int> mp;
+    mp[x] = 1;
+
+    while(!q.empty()){
+        int num = q.front().first;
+        int state = q.front().second;
+        q.pop();
+
+        if(num == y) return state;
+
+        if(num%11 == 0){
+            if(mp.find(num/11) == mp.end()){
+                mp[num/11] = 1;
+                q.push({num/11, state+1});
+            }
+        }
+
+        if(num%5 == 0){
+            if(mp.find(num/5) == mp.end()){
+                mp[num/5] = 1;
+                q.push({num/5, state+1});
+            }
+        }
+
+        if(mp.find(num+1)==mp.end()){
+            mp[num+1] = 1;
+            q.push({num+1, state+1});
+
+        }
+        if(mp.find(num-1) == mp.end()){
+            mp[num-1] = 1;
+            q.push({num-1, state+1});
+        }
+    }
+    return -1;
+}
+
+```
+
+**Approach 2: DP**  
+1. The issue with dp is there are inc and dec operation available for each num. This could lead us to deadlock.
+2. So we utilize inc operator in smarter way and keep only dec operation as a function call.
+
+```
+
+int min_op(int x, int y, vector<int> &dp){
+
+    
+    if(x<=y) return y-x; // utilize inc operator
+    
+    if(dp[x]!=INT_MAX) return dp[x];    
+    int a=INT_MAX, b=INT_MAX,c=INT_MAX;
+     
+    if(x%11 == 0) {
+        cout<<"x%11"<<endl;
+        a = 1 + min_op(x/11, y, dp);
+    }
+    else{  
+	a = ((x/11 + 1)*11)-x +1 + min_op(((x/11 + 1)*11)/11, y, dp); // a = min_num_operations to make x divisible of 11 using inc operator (i.e new_x)  + 1 (for new_x/11 operation) + min_op(new_x/11)
+        
+    }
+     if(x%5 == 0) {
+        b = 1 + min_op(x/5, y, dp);
+    }
+    else{
+       
+	b = ((x/5 + 1)*5)-x +1 + min_op((x/5 + 1)*5/5, y ,dp); // b = min_num_operations to make x divisible of 5 using inc operator (i.e new_x)  + 1 (for new_x/5 operation) + min_op(new_x/5)
+     
+    }
+    c = 1 + min_op(x-1, y, dp);
+    dp[x] = min(dp[x],  min(c,min(a,b)));
+    return dp[x];
+    
+}
+
+```
+
+**Approach 3: Dijkstra**  
+1. This approach is very similar to state bfs with a difference that min number of operations will the distance array and no need to use hashmap as the nodes that already got visited wont be visited again as dist of that node will always be lesser.
+2. [Follow striver video for more explanation](https://www.youtube.com/watch?v=_BvEJ3VIDWw)
+
+
