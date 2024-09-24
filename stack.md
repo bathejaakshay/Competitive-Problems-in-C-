@@ -132,9 +132,10 @@ string removeKdigits(string nums, int k) {
             ans+=(st.top());
             st.pop();
         }
+        if(ans.empty()) return "0";
         reverse(ans.begin(), ans.end());
-
-        if(ans == "") return "0";
+        size_t pos = ans.find_first_not_of('0'); // Remove leading zeroes
+        ans = (pos == std:string:npos) ? "0" : ans.substr(pos);
         return ans;
     }
 ```
